@@ -1,0 +1,6 @@
+{
+  "parent": "tloz:item/bow",
+  "textures": {
+    "layer0": "tloz:item/bow_pulling_1"
+  }
+}

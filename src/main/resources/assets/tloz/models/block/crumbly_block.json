@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "tloz:block/crumbly_block_top",
+    "side": "tloz:block/crumbly_block_side"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "tloz:block/bomb_breakable_block"
+    }
+  }
+}
