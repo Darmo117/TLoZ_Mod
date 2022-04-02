@@ -21,6 +21,9 @@ public final class ModBlocks implements IModBlock {
 
   public static final Block JAR = new JarBlock().setRegistryName("jar");
 
+  public static final Block SAFE_ZONE = new SafeZoneBlock().setRegistryName("safe_zone");
+  public static final Block SAFE_ZONE_EFFECT_AREA = new SafeZoneEffectAreaBlock().setRegistryName("safe_zone_effect_area");
+
   /**
    * The list of all declared blocks for this mod.
    */

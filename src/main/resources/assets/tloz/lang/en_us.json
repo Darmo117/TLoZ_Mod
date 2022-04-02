@@ -39,5 +39,6 @@
   "block.tloz.crumbly_block": "Crumbly Block",
   "block.tloz.spikes_base": "Spikes Base",
   "block.tloz.spikes": "Spikes",
-  "block.tloz.jar": "Jar"
+  "block.tloz.jar": "Jar",
+  "block.tloz.safe_zone": "Safe Zone"
 }

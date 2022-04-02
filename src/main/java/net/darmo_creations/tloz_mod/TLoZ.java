@@ -11,6 +11,7 @@ import net.darmo_creations.tloz_mod.items.QuiverItem;
 import net.darmo_creations.tloz_mod.tile_entities.ModTileEntities;
 import net.darmo_creations.tloz_mod.tile_entities.renderers.BombBreakableBlockTileEntityRenderer;
 import net.darmo_creations.tloz_mod.tile_entities.renderers.BombFlowerTileEntityRenderer;
+import net.darmo_creations.tloz_mod.tile_entities.renderers.SafeZoneEffectAreaTileEntityRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -30,6 +31,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Mod’s main class.
+ */
 @Mod(TLoZ.MODID)
 public class TLoZ {
   public static final String MODID = "tloz";
@@ -56,6 +60,7 @@ public class TLoZ {
     RenderingRegistry.registerEntityRenderingHandler(ModEntities.BOMB.get(), BombEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.BOMB_FLOWER.get(), BombFlowerTileEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.BOMB_BREAKABLE_BLOCK.get(), BombBreakableBlockTileEntityRenderer::new);
+    ClientRegistry.bindTileEntityRenderer(ModTileEntities.SAFE_ZONE_EFFECT_AREA.get(), SafeZoneEffectAreaTileEntityRenderer::new);
     RenderTypeLookup.setRenderLayer(ModBlocks.BOMB_FLOWER, RenderType.getCutoutMipped());
   }
 

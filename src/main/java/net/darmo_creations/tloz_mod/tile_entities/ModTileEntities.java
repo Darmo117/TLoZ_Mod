@@ -16,10 +16,14 @@ public class ModTileEntities {
       "bomb_plant_tile_entity",
       () -> TileEntityType.Builder.create(BombFlowerTileEntity::new, ModBlocks.BOMB_FLOWER).build(null)
   );
-
   @SuppressWarnings("ConstantConditions")
   public static final RegistryObject<TileEntityType<BombBreakableBlockTileEntity>> BOMB_BREAKABLE_BLOCK = REGISTER.register(
       "bomb_breakable_block_tile_entity",
       () -> TileEntityType.Builder.create(BombBreakableBlockTileEntity::new, ModBlocks.BOMB_BREAKABLE_BLOCK).build(null)
+  );
+  @SuppressWarnings("ConstantConditions")
+  public static final RegistryObject<TileEntityType<SafeZoneEffectAreaTileEntity>> SAFE_ZONE_EFFECT_AREA = REGISTER.register(
+      "safe_zone_effect_area_tile_entity",
+      () -> TileEntityType.Builder.create(SafeZoneEffectAreaTileEntity::new, ModBlocks.SAFE_ZONE_EFFECT_AREA).build(null)
   );
 }
