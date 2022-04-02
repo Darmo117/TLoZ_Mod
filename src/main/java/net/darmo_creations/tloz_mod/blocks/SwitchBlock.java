@@ -50,7 +50,7 @@ public abstract class SwitchBlock extends Block {
   public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
     if (!isMoving && !state.matchesBlock(newState.getBlock())) {
       if (state.get(POWERED)) {
-        this.updateNeighbors(world, pos);
+        this.updateNeighbors(world, pos, state);
       }
       //noinspection ConstantConditions
       super.onReplaced(state, world, pos, newState, isMoving);
@@ -69,13 +69,13 @@ public abstract class SwitchBlock extends Block {
     float pitch = powered ? 0.6F : 0.5F;
     world.playSound(null, pos, sound, SoundCategory.BLOCKS, 0.3F, pitch);
     world.setBlockState(pos, state.with(POWERED, powered), 3);
-    this.updateNeighbors(world, pos);
+    this.updateNeighbors(world, pos, state);
     return true;
   }
 
-  private void updateNeighbors(World world, BlockPos pos) {
+  private void updateNeighbors(World world, BlockPos pos, BlockState state) {
     world.notifyNeighborsOfStateChange(pos, this);
-    world.notifyNeighborsOfStateChange(pos.offset(this.getStrongPowerDirection(world.getBlockState(pos))), this);
+    world.notifyNeighborsOfStateChange(pos.offset(this.getStrongPowerDirection(state)), this);
   }
 
   @SuppressWarnings("deprecation")
