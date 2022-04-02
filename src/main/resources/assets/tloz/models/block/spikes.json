@@ -1,107 +1,140 @@
 {
-	"credit": "Made with Blockbench",
-	"textures": {
-		"0": "tloz:block/spikes",
-		"particle": "tloz:block/spikes"
-	},
-	"elements": [
-		{
-			"name": "spike_base",
-			"from": [1, 0, 6],
-			"to": [4, 6, 9],
-			"faces": {
-				"north": {"uv": [0, 10, 3, 16], "texture": "#0"},
-				"east": {"uv": [0, 10, 3, 16], "texture": "#0"},
-				"south": {"uv": [0, 10, 3, 16], "texture": "#0"},
-				"west": {"uv": [0, 10, 3, 16], "texture": "#0"},
-				"up": {"uv": [0, 7, 3, 10], "texture": "#0"},
-				"down": {"uv": [0, 7, 3, 10], "texture": "#0"}
-			}
-		},
-		{
-			"name": "spike_top",
-			"from": [2, 6, 7],
-			"to": [3, 12, 8],
-			"faces": {
-				"north": {"uv": [4, 10, 5, 16], "texture": "#0"},
-				"east": {"uv": [4, 10, 5, 16], "texture": "#0"},
-				"south": {"uv": [4, 10, 5, 16], "texture": "#0"},
-				"west": {"uv": [4, 10, 5, 16], "texture": "#0"},
-				"up": {"uv": [4, 9, 5, 10], "texture": "#0"},
-				"down": {"uv": [4, 9, 5, 10], "texture": "#0"}
-			}
-		},
-		{
-			"name": "spike_base",
-			"from": [7, 0, 1],
-			"to": [10, 6, 4],
-			"faces": {
-				"north": {"uv": [0, 10, 3, 16], "texture": "#0"},
-				"east": {"uv": [0, 10, 3, 16], "texture": "#0"},
-				"south": {"uv": [0, 10, 3, 16], "texture": "#0"},
-				"west": {"uv": [0, 10, 3, 16], "texture": "#0"},
-				"up": {"uv": [0, 7, 3, 10], "texture": "#0"},
-				"down": {"uv": [0, 7, 3, 10], "texture": "#0"}
-			}
-		},
-		{
-			"name": "spike_top",
-			"from": [8, 6, 2],
-			"to": [9, 12, 3],
-			"faces": {
-				"north": {"uv": [4, 10, 5, 16], "texture": "#0"},
-				"east": {"uv": [4, 10, 5, 16], "texture": "#0"},
-				"south": {"uv": [4, 10, 5, 16], "texture": "#0"},
-				"west": {"uv": [4, 10, 5, 16], "texture": "#0"},
-				"up": {"uv": [4, 9, 5, 10], "texture": "#0"},
-				"down": {"uv": [4, 9, 5, 10], "texture": "#0"}
-			}
-		},
-		{
-			"name": "spike_base",
-			"from": [11, 0, 10],
-			"to": [14, 6, 13],
-			"faces": {
-				"north": {"uv": [0, 10, 3, 16], "texture": "#0"},
-				"east": {"uv": [0, 10, 3, 16], "texture": "#0"},
-				"south": {"uv": [0, 10, 3, 16], "texture": "#0"},
-				"west": {"uv": [0, 10, 3, 16], "texture": "#0"},
-				"up": {"uv": [0, 7, 3, 10], "texture": "#0"},
-				"down": {"uv": [0, 7, 3, 10], "texture": "#0"}
-			}
-		},
-		{
-			"name": "spike_top",
-			"from": [12, 6, 11],
-			"to": [13, 12, 12],
-			"faces": {
-				"north": {"uv": [4, 10, 5, 16], "texture": "#0"},
-				"east": {"uv": [4, 10, 5, 16], "texture": "#0"},
-				"south": {"uv": [4, 10, 5, 16], "texture": "#0"},
-				"west": {"uv": [4, 10, 5, 16], "texture": "#0"},
-				"up": {"uv": [4, 9, 5, 10], "texture": "#0"},
-				"down": {"uv": [4, 9, 5, 10], "texture": "#0"}
-			}
-		}
-	],
-	"groups": [
-		{
-			"name": "spike_1",
-			"origin": [8, 8, 8],
-			"color": 0,
-			"children": [0, 1]
-		},
-		{
-			"name": "spike_2",
-			"origin": [8, 8, 8],
-			"color": 0,
-			"children": [2, 3]
-		},
-		{
-			"name": "spike_3",
-			"origin": [8, 8, 8],
-			"color": 0,
-			"children": [4, 5]
-		}
-	]
+  "credit": "Made with Blockbench",
+  "textures": {
+    "0": "tloz:block/spikes",
+    "particle": "tloz:block/spikes"
+  },
+  "elements": [
+    {
+      "name": "spike_base",
+      "from": [1, 0, 6],
+      "to": [4, 6, 9],
+      "faces": {
+        "north": {"uv": [0, 10, 3, 16], "texture": "#0"},
+        "east": {"uv": [0, 10, 3, 16], "texture": "#0"},
+        "south": {"uv": [0, 10, 3, 16], "texture": "#0"},
+        "west": {"uv": [0, 10, 3, 16], "texture": "#0"},
+        "up": {"uv": [0, 7, 3, 10], "texture": "#0"},
+        "down": {"uv": [0, 7, 3, 10], "texture": "#0"}
+      }
+    },
+    {
+      "name": "spike_top",
+      "from": [2, 6, 7],
+      "to": [3, 12, 8],
+      "faces": {
+        "north": {"uv": [4, 10, 5, 16], "texture": "#0"},
+        "east": {"uv": [4, 10, 5, 16], "texture": "#0"},
+        "south": {"uv": [4, 10, 5, 16], "texture": "#0"},
+        "west": {"uv": [4, 10, 5, 16], "texture": "#0"},
+        "up": {"uv": [4, 9, 5, 10], "texture": "#0"},
+        "down": {"uv": [4, 9, 5, 10], "texture": "#0"}
+      }
+    },
+    {
+      "name": "spike_base",
+      "from": [7, 0, 1],
+      "to": [10, 6, 4],
+      "faces": {
+        "north": {"uv": [0, 10, 3, 16], "texture": "#0"},
+        "east": {"uv": [0, 10, 3, 16], "texture": "#0"},
+        "south": {"uv": [0, 10, 3, 16], "texture": "#0"},
+        "west": {"uv": [0, 10, 3, 16], "texture": "#0"},
+        "up": {"uv": [0, 7, 3, 10], "texture": "#0"},
+        "down": {"uv": [0, 7, 3, 10], "texture": "#0"}
+      }
+    },
+    {
+      "name": "spike_top",
+      "from": [8, 6, 2],
+      "to": [9, 12, 3],
+      "faces": {
+        "north": {"uv": [4, 10, 5, 16], "texture": "#0"},
+        "east": {"uv": [4, 10, 5, 16], "texture": "#0"},
+        "south": {"uv": [4, 10, 5, 16], "texture": "#0"},
+        "west": {"uv": [4, 10, 5, 16], "texture": "#0"},
+        "up": {"uv": [4, 9, 5, 10], "texture": "#0"},
+        "down": {"uv": [4, 9, 5, 10], "texture": "#0"}
+      }
+    },
+    {
+      "name": "spike_base",
+      "from": [11, 0, 10],
+      "to": [14, 6, 13],
+      "faces": {
+        "north": {"uv": [0, 10, 3, 16], "texture": "#0"},
+        "east": {"uv": [0, 10, 3, 16], "texture": "#0"},
+        "south": {"uv": [0, 10, 3, 16], "texture": "#0"},
+        "west": {"uv": [0, 10, 3, 16], "texture": "#0"},
+        "up": {"uv": [0, 7, 3, 10], "texture": "#0"},
+        "down": {"uv": [0, 7, 3, 10], "texture": "#0"}
+      }
+    },
+    {
+      "name": "spike_top",
+      "from": [12, 6, 11],
+      "to": [13, 12, 12],
+      "faces": {
+        "north": {"uv": [4, 10, 5, 16], "texture": "#0"},
+        "east": {"uv": [4, 10, 5, 16], "texture": "#0"},
+        "south": {"uv": [4, 10, 5, 16], "texture": "#0"},
+        "west": {"uv": [4, 10, 5, 16], "texture": "#0"},
+        "up": {"uv": [4, 9, 5, 10], "texture": "#0"},
+        "down": {"uv": [4, 9, 5, 10], "texture": "#0"}
+      }
+    }
+  ],
+  "groups": [
+    {
+      "name": "spike_1",
+      "origin": [8, 8, 8],
+      "color": 0,
+      "children": [0, 1]
+    },
+    {
+      "name": "spike_2",
+      "origin": [8, 8, 8],
+      "color": 0,
+      "children": [2, 3]
+    },
+    {
+      "name": "spike_3",
+      "origin": [8, 8, 8],
+      "color": 0,
+      "children": [4, 5]
+    }
+  ],
+  "gui_light": "side",
+  "display": {
+    "gui": {
+      "rotation": [30, 225, 0],
+      "translation": [0, 0, 0],
+      "scale": [0.625, 0.625, 0.625]
+    },
+    "ground": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 3, 0],
+      "scale": [0.25, 0.25, 0.25]
+    },
+    "fixed": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 0, 0],
+      "scale": [0.5, 0.5, 0.5]
+    },
+    "thirdperson_righthand": {
+      "rotation": [75, 45, 0],
+      "translation": [0, 2.5, 0],
+      "scale": [0.375, 0.375, 0.375]
+    },
+    "firstperson_righthand": {
+      "rotation": [0, 45, 0],
+      "translation": [0, 0, 0],
+      "scale": [0.40, 0.40, 0.40]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0, 225, 0],
+      "translation": [0, 0, 0],
+      "scale": [0.40, 0.40, 0.40]
+    }
+  }
 }
