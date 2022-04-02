@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "tloz:block/spikes_base_top_n",
+    "bottom": "tloz:block/spikes_base_bottom",
+    "side": "tloz:block/spikes_base_side"
+  }
+}

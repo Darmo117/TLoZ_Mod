@@ -1,0 +1,10 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "tloz:block/shock_switch",
+	"textures": {
+		"orb": "tloz:block/shock_switch_orb_off",
+		"pedestal_side": "tloz:block/shock_switch_pedestal_side_off",
+		"pedestal_top": "tloz:block/shock_switch_pedestal_top_off",
+		"pedestal_bottom": "tloz:block/shock_switch_pedestal_top_off"
+	}
+}

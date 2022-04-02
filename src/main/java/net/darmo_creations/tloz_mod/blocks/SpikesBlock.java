@@ -14,8 +14,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public class SpikesBlock extends Block implements IModBlock {
-  protected static final VoxelShape COLLISION_SHAPE = makeCuboidShape(1, 0, 1, 15, 32, 15);
-  protected static final VoxelShape OUTLINE_SHAPE = makeCuboidShape(1, 0, 1, 15, 16, 15);
+  protected static final VoxelShape SHAPE = makeCuboidShape(1, 0, 1, 15, 32, 15);
 
   public SpikesBlock() {
     super(Properties.create(Material.IRON)
@@ -27,13 +26,13 @@ public class SpikesBlock extends Block implements IModBlock {
   @SuppressWarnings("deprecation")
   @Override
   public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-    return COLLISION_SHAPE;
+    return SHAPE;
   }
 
   @SuppressWarnings("deprecation")
   @Override
   public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-    return OUTLINE_SHAPE;
+    return SHAPE;
   }
 
   @SuppressWarnings("deprecation")

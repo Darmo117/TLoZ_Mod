@@ -1,0 +1,164 @@
+{
+  "variants": {
+    "east=false,north=false,powered=false,south=false,west=false": [
+      {
+        "model": "tloz:block/spikes_base"
+      }
+    ],
+    "east=false,north=false,powered=false,south=false,west=true": [
+      {
+        "model": "tloz:block/spikes_base_w"
+      }
+    ],
+    "east=false,north=false,powered=false,south=true,west=false": [
+      {
+        "model": "tloz:block/spikes_base_s"
+      }
+    ],
+    "east=false,north=false,powered=false,south=true,west=true": [
+      {
+        "model": "tloz:block/spikes_base_sw"
+      }
+    ],
+    "east=false,north=true,powered=false,south=false,west=false": [
+      {
+        "model": "tloz:block/spikes_base_n"
+      }
+    ],
+    "east=false,north=true,powered=false,south=false,west=true": [
+      {
+        "model": "tloz:block/spikes_base_nw"
+      }
+    ],
+    "east=false,north=true,powered=false,south=true,west=false": [
+      {
+        "model": "tloz:block/spikes_base_ns"
+      }
+    ],
+    "east=false,north=true,powered=false,south=true,west=true": [
+      {
+        "model": "tloz:block/spikes_base_nsw"
+      }
+    ],
+    "east=true,north=false,powered=false,south=false,west=false": [
+      {
+        "model": "tloz:block/spikes_base_e"
+      }
+    ],
+    "east=true,north=false,powered=false,south=false,west=true": [
+      {
+        "model": "tloz:block/spikes_base_ew"
+      }
+    ],
+    "east=true,north=false,powered=false,south=true,west=false": [
+      {
+        "model": "tloz:block/spikes_base_se"
+      }
+    ],
+    "east=true,north=false,powered=false,south=true,west=true": [
+      {
+        "model": "tloz:block/spikes_base_sew"
+      }
+    ],
+    "east=true,north=true,powered=false,south=false,west=false": [
+      {
+        "model": "tloz:block/spikes_base_ne"
+      }
+    ],
+    "east=true,north=true,powered=false,south=false,west=true": [
+      {
+        "model": "tloz:block/spikes_base_new"
+      }
+    ],
+    "east=true,north=true,powered=false,south=true,west=false": [
+      {
+        "model": "tloz:block/spikes_base_nse"
+      }
+    ],
+    "east=true,north=true,powered=false,south=true,west=true": [
+      {
+        "model": "tloz:block/spikes_base_nsew"
+      }
+    ],
+    "east=false,north=false,powered=true,south=false,west=false": [
+      {
+        "model": "tloz:block/spikes_base"
+      }
+    ],
+    "east=false,north=false,powered=true,south=false,west=true": [
+      {
+        "model": "tloz:block/spikes_base_w"
+      }
+    ],
+    "east=false,north=false,powered=true,south=true,west=false": [
+      {
+        "model": "tloz:block/spikes_base_s"
+      }
+    ],
+    "east=false,north=false,powered=true,south=true,west=true": [
+      {
+        "model": "tloz:block/spikes_base_sw"
+      }
+    ],
+    "east=false,north=true,powered=true,south=false,west=false": [
+      {
+        "model": "tloz:block/spikes_base_n"
+      }
+    ],
+    "east=false,north=true,powered=true,south=false,west=true": [
+      {
+        "model": "tloz:block/spikes_base_nw"
+      }
+    ],
+    "east=false,north=true,powered=true,south=true,west=false": [
+      {
+        "model": "tloz:block/spikes_base_ns"
+      }
+    ],
+    "east=false,north=true,powered=true,south=true,west=true": [
+      {
+        "model": "tloz:block/spikes_base_nsw"
+      }
+    ],
+    "east=true,north=false,powered=true,south=false,west=false": [
+      {
+        "model": "tloz:block/spikes_base_e"
+      }
+    ],
+    "east=true,north=false,powered=true,south=false,west=true": [
+      {
+        "model": "tloz:block/spikes_base_ew"
+      }
+    ],
+    "east=true,north=false,powered=true,south=true,west=false": [
+      {
+        "model": "tloz:block/spikes_base_se"
+      }
+    ],
+    "east=true,north=false,powered=true,south=true,west=true": [
+      {
+        "model": "tloz:block/spikes_base_sew"
+      }
+    ],
+    "east=true,north=true,powered=true,south=false,west=false": [
+      {
+        "model": "tloz:block/spikes_base_ne"
+      }
+    ],
+    "east=true,north=true,powered=true,south=false,west=true": [
+      {
+        "model": "tloz:block/spikes_base_new"
+      }
+    ],
+    "east=true,north=true,powered=true,south=true,west=false": [
+      {
+        "model": "tloz:block/spikes_base_nse"
+      }
+    ],
+    "east=true,north=true,powered=true,south=true,west=true": [
+      {
+        "model": "tloz:block/spikes_base_nsew"
+      }
+    ]
+  }
+}

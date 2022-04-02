@@ -1,0 +1,24 @@
+{
+  "variants": {
+    "manual_switch_off=false,powered=false": [
+      {
+        "model": "tloz:block/shock_switch_off"
+      }
+    ],
+    "manual_switch_off=true,powered=false": [
+      {
+        "model": "tloz:block/shock_switch_off"
+      }
+    ],
+    "manual_switch_off=false,powered=true": [
+      {
+        "model": "tloz:block/shock_switch_on"
+      }
+    ],
+    "manual_switch_off=true,powered=true": [
+      {
+        "model": "tloz:block/shock_switch_on"
+      }
+    ]
+  }
+}

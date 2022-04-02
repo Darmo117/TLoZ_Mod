@@ -38,7 +38,7 @@ public class ShockSwitchBlock extends Block implements IModBlock {
   @SuppressWarnings("deprecation")
   @Override
   public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-    return makeCuboidShape(1, 0, 1, 15, 15, 15);
+    return makeCuboidShape(2, 0, 2, 14, 16, 14);
   }
 
   // Allow right-click for ease of use
