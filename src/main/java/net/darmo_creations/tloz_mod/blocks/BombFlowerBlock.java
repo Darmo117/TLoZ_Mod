@@ -107,7 +107,7 @@ public class BombFlowerBlock extends ContainerBlock implements IModBlock {
   @SuppressWarnings("deprecation")
   @Override
   public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-    if (!world.isRemote && entity instanceof BombEntity) {
+    if (!world.isRemote && entity instanceof BombEntity && entity.getMotion().length() > BombEntity.EXPLOSION_SPEED_THRESHOLD) {
       this.explodeBomb(world, pos);
     }
   }

@@ -59,7 +59,7 @@ public class ShockSwitchBlock extends Block implements IModBlock {
   @SuppressWarnings("deprecation")
   @Override
   public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-    if (entity instanceof BombEntity) {
+    if (entity instanceof BombEntity && entity.getMotion().length() > BombEntity.EXPLOSION_SPEED_THRESHOLD) {
       if (!world.isRemote) {
         this.toggleState(state, world, pos);
       }

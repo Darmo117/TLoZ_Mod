@@ -81,11 +81,18 @@ public class BombEntity extends Entity {
   private static final DataParameter<Integer> FUSE = EntityDataManager.createKey(BombEntity.class, DataSerializers.VARINT);
   private static final DataParameter<Boolean> IS_PLANT = EntityDataManager.createKey(BombEntity.class, DataSerializers.BOOLEAN);
 
+  /**
+   * Explosion radius.
+   */
   public static final float EXPLOSION_SIZE = 2;
   /**
    * Number of hearts to remove from entities’ health.
    */
   public static final int EXPLOSION_DAMAGE = 2;
+  /**
+   * Speed above which a bomb should explode when hitting a block or entity.
+   */
+  public static final float EXPLOSION_SPEED_THRESHOLD = 0.05f;
 
   private int fuse;
   private boolean isPlant;
