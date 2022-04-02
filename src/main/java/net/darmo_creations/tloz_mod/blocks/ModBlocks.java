@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public final class ModBlocks implements IModBlock {
+public final class ModBlocks {
   public static final Block SHOCK_SWITCH = new ShockSwitchBlock().setRegistryName("shock_switch");
 
   public static final Block BOMB_FLOWER = new BombFlowerBlock().setRegistryName("bomb_flower");
