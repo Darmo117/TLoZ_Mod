@@ -43,10 +43,7 @@ public class BombFlowerBlock extends ContainerBlock implements IModBlock {
         .sound(SoundType.PLANT)
         .hardnessAndResistance(-1)
         .notSolid()
-        .setAllowsSpawn((blockState, blockReader, pos, entityType) -> false)
-        .setOpaque((blockState, blockReader, pos) -> false)
-        .setSuffocates((blockState, blockReader, pos) -> false)
-        .setBlocksVision((blockState, blockReader, pos) -> false));
+        .setAllowsSpawn((blockState, blockReader, pos, entityType) -> false));
   }
 
   @SuppressWarnings("deprecation")

@@ -1,8 +1,6 @@
 package net.darmo_creations.tloz_mod.blocks;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -12,8 +10,8 @@ public final class ModBlocks implements IModBlock {
   public static final Block SHOCK_SWITCH = new ShockSwitchBlock().setRegistryName("shock_switch");
 
   public static final Block BOMB_FLOWER = new BombFlowerBlock().setRegistryName("bomb_flower");
-  public static final Block FLOWER_BOMB = new Block(AbstractBlock.Properties.create(Material.MISCELLANEOUS)).setRegistryName("flower_bomb");
-  public static final Block BOMB = new Block(AbstractBlock.Properties.create(Material.MISCELLANEOUS)).setRegistryName("bomb");
+  public static final Block FLOWER_BOMB = new DummyBombBlock().setRegistryName("flower_bomb");
+  public static final Block BOMB = new DummyBombBlock().setRegistryName("bomb");
 
   public static final Block BOMB_BREAKABLE_BLOCK = new BombBreakableBlock().setRegistryName("bomb_breakable_block");
   public static final Block CRUMBLY_BLOCK = new CrumblyBlock().setRegistryName("crumbly_block");
