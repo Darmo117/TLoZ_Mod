@@ -37,7 +37,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * @see BombFlowerTileEntity
  * @see BombEntity
  */
-public class BombFlowerBlock extends ContainerBlock implements IModBlock {
+public class BombFlowerBlock extends ContainerBlock {
   public BombFlowerBlock() {
     super(Properties.create(Material.PLANTS)
         .sound(SoundType.PLANT)

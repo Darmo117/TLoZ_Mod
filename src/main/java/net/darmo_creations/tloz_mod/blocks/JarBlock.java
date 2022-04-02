@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 import java.util.Collections;
 import java.util.List;
 
-public class JarBlock extends Block implements IModBlock {
+public class JarBlock extends Block {
   public JarBlock() {
     super(Properties.create(Material.MISCELLANEOUS, DyeColor.LIGHT_BLUE)
         .sound(SoundType.GLASS)

@@ -20,7 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * <p>
  * Generates {@link SafeZoneEffectAreaBlock}s above itself when placed.
  */
-public class SafeZoneBlock extends Block implements IModBlock {
+public class SafeZoneBlock extends Block {
   private static final VoxelShape SHAPE = makeCuboidShape(0, 0, 0, 16, 1, 16);
 
   public static final int EFFECT_HEIGHT = 3;

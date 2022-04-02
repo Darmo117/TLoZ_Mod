@@ -13,7 +13,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class SpikesBlock extends Block implements IModBlock {
+public class SpikesBlock extends Block {
   protected static final VoxelShape SHAPE = makeCuboidShape(1, 0, 1, 15, 32, 15);
 
   public SpikesBlock() {

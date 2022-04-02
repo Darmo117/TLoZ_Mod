@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 import java.util.Map;
 
-public class SpikesBaseBlock extends Block implements IModBlock {
+public class SpikesBaseBlock extends Block {
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
   public static final BooleanProperty NORTH = SixWayBlock.NORTH;
   public static final BooleanProperty EAST = SixWayBlock.EAST;

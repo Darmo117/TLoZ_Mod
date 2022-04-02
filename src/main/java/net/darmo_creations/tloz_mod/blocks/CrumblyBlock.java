@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 /**
  * A block that can be destroyed by bombs. Subject to gravity and breaks upon touching the ground.
  */
-public class CrumblyBlock extends FallingBlock implements IModBlock {
+public class CrumblyBlock extends FallingBlock {
   public CrumblyBlock() {
     super(Properties.create(Material.ROCK).sound(SoundType.ANCIENT_DEBRIS));
   }

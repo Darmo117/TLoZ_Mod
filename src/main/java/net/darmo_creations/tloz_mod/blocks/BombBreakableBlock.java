@@ -26,7 +26,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @SuppressWarnings("deprecation")
-public class BombBreakableBlock extends Block implements IModBlock, ITileEntityProvider {
+public class BombBreakableBlock extends Block implements ITileEntityProvider {
   public BombBreakableBlock() {
     super(Properties.create(Material.ROCK)
         .hardnessAndResistance(-1, 1));
