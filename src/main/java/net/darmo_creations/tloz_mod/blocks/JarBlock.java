@@ -1,51 +1,26 @@
 package net.darmo_creations.tloz_mod.blocks;
 
-import net.darmo_creations.tloz_mod.entities.BombEntity;
-import net.minecraft.block.Block;
+import net.darmo_creations.tloz_mod.entities.PickableEntity;
+import net.darmo_creations.tloz_mod.tile_entities.JarTileEntity;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.DyeColor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-import java.util.Collections;
-import java.util.List;
-
-public class JarBlock extends Block {
+public class JarBlock extends PickableBlock<JarTileEntity> {
   public JarBlock() {
     super(Properties.create(Material.MISCELLANEOUS, DyeColor.LIGHT_BLUE)
-        .sound(SoundType.GLASS)
-        .notSolid()
-        .zeroHardnessAndResistance()
-        .setAllowsSpawn((blockState, blockReader, pos, entityType) -> false)
-        .setOpaque((blockState, blockReader, pos) -> false)
-        .setSuffocates((blockState, blockReader, pos) -> false)
-        .setBlocksVision((blockState, blockReader, pos) -> false));
-  }
-
-  @SuppressWarnings("deprecation")
-  @Override
-  public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
-    return facing == Direction.DOWN && !state.isValidPosition(world, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
-  }
-
-  @SuppressWarnings("deprecation")
-  @Override
-  public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
-    BlockPos blockpos = pos.down();
-    return hasSolidSideOnTop(world, blockpos) || hasEnoughSolidSide(world, blockpos, Direction.UP);
+            .sound(SoundType.GLASS)
+            .zeroHardnessAndResistance()
+            .setBlocksVision((blockState, blockReader, pos) -> false),
+        JarTileEntity.class);
   }
 
   @SuppressWarnings("deprecation")
@@ -60,19 +35,29 @@ public class JarBlock extends Block {
     );
   }
 
-  // Collision with bomb entity -> explode bomb
-  @SuppressWarnings("deprecation")
   @Override
-  public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-    if (entity instanceof BombEntity && entity.getMotion().length() > BombEntity.EXPLOSION_SPEED_THRESHOLD) {
-      ((BombEntity) entity).explode();
+  protected InteractionResult onInteraction(JarTileEntity tileEntity, World world, BlockPos pos, Interaction interaction) {
+    switch (interaction.interactionType) {
+      case PLAYER_INTERACT:
+        return tileEntity.spawnJarEntity(world, false) ? InteractionResult.BREAK_BLOCK : InteractionResult.FAIL;
+      case ENTITY_COLLISION:
+        if (interaction.entity instanceof PickableEntity) {
+          tileEntity.spawnJarEntity(world, true);
+          return InteractionResult.BREAK_BLOCK;
+        }
+        break;
+      case PLAYER_HIT:
+      case PROJECTILE_COLLISION:
+      case BOMB_EXPLOSION:
+        tileEntity.spawnJarEntity(world, true);
+        return InteractionResult.BREAK_BLOCK;
     }
+    return InteractionResult.FAIL;
   }
 
   @SuppressWarnings("deprecation")
   @Override
-  public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-    // TODO change dropped items depending on player’s available weapons
-    return Collections.emptyList();
+  public BlockRenderType getRenderType(BlockState state) {
+    return BlockRenderType.MODEL;
   }
 }

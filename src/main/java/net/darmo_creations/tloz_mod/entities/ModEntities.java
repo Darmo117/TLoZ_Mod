@@ -20,4 +20,13 @@ public class ModEntities {
           .immuneToFire()
           .build("bomb_entity")
   );
+  public static final RegistryObject<EntityType<JarEntity>> JAR = REGISTER.register(
+      "jar_entity",
+      () -> EntityType.Builder.<JarEntity>create(JarEntity::new, EntityClassification.MISC)
+          .size(0.98f, 0.98f)
+          .trackingRange(10)
+          .updateInterval(10)
+          .immuneToFire()
+          .build("jar_entity")
+  );
 }

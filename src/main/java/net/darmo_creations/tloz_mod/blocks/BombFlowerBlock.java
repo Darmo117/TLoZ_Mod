@@ -1,27 +1,20 @@
 package net.darmo_creations.tloz_mod.blocks;
 
 import net.darmo_creations.tloz_mod.entities.BombEntity;
+import net.darmo_creations.tloz_mod.entities.PickableEntity;
 import net.darmo_creations.tloz_mod.tile_entities.BombFlowerTileEntity;
-import net.minecraft.block.*;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * A plant-like block that grows bombs that can be picked up by players.
@@ -37,32 +30,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * @see BombFlowerTileEntity
  * @see BombEntity
  */
-public class BombFlowerBlock extends ContainerBlock {
+public class BombFlowerBlock extends PickableBlock<BombFlowerTileEntity> {
+  /**
+   * Speed above which a bomb should explode when hitting this block.
+   */
+  public static final float EXPLOSION_SPEED_THRESHOLD = 0.05f;
+
   public BombFlowerBlock() {
-    super(Properties.create(Material.PLANTS)
-        .sound(SoundType.PLANT)
-        .hardnessAndResistance(-1)
-        .notSolid()
-        .setAllowsSpawn((blockState, blockReader, pos, entityType) -> false));
-  }
-
-  @SuppressWarnings("deprecation")
-  public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
-    return facing == Direction.DOWN && !state.isValidPosition(world, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
-  }
-
-  @Override
-  @SuppressWarnings("deprecation")
-  public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
-    BlockPos blockpos = pos.down();
-    return hasSolidSideOnTop(world, blockpos) || hasEnoughSolidSide(world, blockpos, Direction.UP);
-  }
-
-  @SuppressWarnings("deprecation")
-  @Override
-  @OnlyIn(Dist.CLIENT)
-  public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
-    return 1;
+    super(Properties.create(Material.PLANTS).sound(SoundType.PLANT), BombFlowerTileEntity.class);
   }
 
   @SuppressWarnings("deprecation")
@@ -85,64 +60,37 @@ public class BombFlowerBlock extends ContainerBlock {
     }
   }
 
-  // Pop out bomb
-  @SuppressWarnings("deprecation")
-  @Override
-  public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-    if (!world.isRemote) {
-      TileEntity te = world.getTileEntity(pos);
-      if (te instanceof BombFlowerTileEntity) {
-        BombFlowerTileEntity t = (BombFlowerTileEntity) te;
-        if (t.hasBomb()) {
-          return t.popBomb(player, world, BombFlowerTileEntity.FUSE_DELAY) ? ActionResultType.SUCCESS : ActionResultType.FAIL;
-        }
-      }
-      return ActionResultType.FAIL;
-    } else {
-      return ActionResultType.CONSUME;
-    }
-  }
-
-  // Player attacked -> explode bomb
-  @SuppressWarnings("deprecation")
-  @Override
-  public void onBlockClicked(BlockState state, World world, BlockPos pos, PlayerEntity player) {
-    if (!world.isRemote) {
-      this.explodeBomb(world, pos);
-    }
-  }
-
-  // Collision with bomb entity -> explode bomb
-  @SuppressWarnings("deprecation")
   @Override
   public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-    if (!world.isRemote && entity instanceof BombEntity && entity.getMotion().length() > BombEntity.EXPLOSION_SPEED_THRESHOLD) {
-      this.explodeBomb(world, pos);
-    }
-  }
-
-  // Projectile hit -> explode bomb
-  @SuppressWarnings("deprecation")
-  @Override
-  public void onProjectileCollision(World world, BlockState state, BlockRayTraceResult hit, ProjectileEntity projectile) {
-    if (!world.isRemote) {
-      this.explodeBomb(world, hit.getPos());
-    }
-  }
-
-  private void explodeBomb(World world, BlockPos pos) {
-    TileEntity te = world.getTileEntity(pos);
-    if (te instanceof BombFlowerTileEntity) {
-      BombFlowerTileEntity t = (BombFlowerTileEntity) te;
-      if (t.hasBomb()) {
-        t.popBomb(null, world, 0);
-      }
+    this.onInteraction(world, pos, Interaction.entityCollision(entity));
+    if (entity instanceof PickableEntity
+        // Prevent bomb from this block to explode when spawning
+        && (!(entity instanceof BombEntity) || entity.getMotion().length() > EXPLOSION_SPEED_THRESHOLD)) {
+      ((PickableEntity) entity).die();
     }
   }
 
   @Override
-  public TileEntity createNewTileEntity(IBlockReader world) {
-    return new BombFlowerTileEntity();
+  protected InteractionResult onInteraction(BombFlowerTileEntity tileEntity, World world, BlockPos pos, Interaction interaction) {
+    switch (interaction.interactionType) {
+      case PLAYER_INTERACT:
+        return this.spawnBomb(tileEntity, BombFlowerTileEntity.FUSE_DELAY, false);
+      case ENTITY_COLLISION:
+        if (interaction.entity instanceof PickableEntity) {
+          return this.spawnBomb(tileEntity, 0, true);
+        }
+        break;
+      case PLAYER_HIT:
+      case PROJECTILE_COLLISION:
+        return this.spawnBomb(tileEntity, 0, false);
+      case BOMB_EXPLOSION:
+        return this.spawnBomb(tileEntity, 3, true); // Small delay to mimic in-game behavior
+    }
+    return InteractionResult.FAIL;
+  }
+
+  private InteractionResult spawnBomb(BombFlowerTileEntity tileEntity, int fuse, boolean invulnerable) {
+    return tileEntity.popBomb(fuse, invulnerable) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
   }
 
   @SuppressWarnings("deprecation")

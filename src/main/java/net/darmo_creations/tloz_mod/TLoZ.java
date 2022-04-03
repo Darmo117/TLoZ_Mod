@@ -4,6 +4,7 @@ import net.darmo_creations.tloz_mod.blocks.IModBlock;
 import net.darmo_creations.tloz_mod.blocks.ModBlocks;
 import net.darmo_creations.tloz_mod.entities.ModEntities;
 import net.darmo_creations.tloz_mod.entities.renderers.BombEntityRenderer;
+import net.darmo_creations.tloz_mod.entities.renderers.JarEntityRenderer;
 import net.darmo_creations.tloz_mod.items.BombBagItem;
 import net.darmo_creations.tloz_mod.items.HeartItem;
 import net.darmo_creations.tloz_mod.items.ModItems;
@@ -58,6 +59,7 @@ public class TLoZ {
 
   private void setup(final FMLCommonSetupEvent event) {
     RenderingRegistry.registerEntityRenderingHandler(ModEntities.BOMB.get(), BombEntityRenderer::new);
+    RenderingRegistry.registerEntityRenderingHandler(ModEntities.JAR.get(), JarEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.BOMB_FLOWER.get(), BombFlowerTileEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.BOMB_BREAKABLE_BLOCK.get(), BombBreakableBlockTileEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.SAFE_ZONE_EFFECT_AREA.get(), SafeZoneEffectAreaTileEntityRenderer::new);

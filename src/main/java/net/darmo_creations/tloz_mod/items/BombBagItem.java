@@ -65,7 +65,7 @@ public class BombBagItem extends TLoZItem {
     int damage = item.getDamage();
     if (damage < item.getMaxDamage()) {
       if (!world.isRemote) {
-        BombEntity bomb = new BombEntity(world, player.getPosX(), player.getPosY(), player.getPosZ(), FUSE_DELAY, false);
+        BombEntity bomb = new BombEntity(world, player.getPosX(), player.getPosY(), player.getPosZ(), FUSE_DELAY, false, false);
         world.addEntity(bomb);
         item.setDamage(damage + 1);
       }

@@ -1,14 +1,16 @@
 package net.darmo_creations.tloz_mod.entities;
 
 import net.darmo_creations.tloz_mod.blocks.BombFlowerBlock;
+import net.darmo_creations.tloz_mod.blocks.ExplodableBlock;
 import net.darmo_creations.tloz_mod.blocks.ModBlocks;
-import net.darmo_creations.tloz_mod.blocks.ShockSwitchBlock;
 import net.darmo_creations.tloz_mod.items.BombBagItem;
 import net.darmo_creations.tloz_mod.tile_entities.BombFlowerTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.BatEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -17,12 +19,11 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -42,22 +43,17 @@ import java.util.List;
  * @see BombFlowerTileEntity
  * @see BombBagItem
  */
-public class BombEntity extends Entity {
+public class BombEntity extends PickableEntity {
   /**
    * List of blocks that can be destroyed.
    */
   private static final List<Block> DESTROYABLE_BLOCKS = new ArrayList<>();
   /**
-   * List of blocks that are affected in some way but not destroyed.
-   */
-  private static final List<Block> AFFECTED_BLOCKS = new ArrayList<>();
-  /**
-   * List of entity types that can be hurt.
+   * List of entity types that can be hurt by explosions.
    */
   private static final List<Class<? extends Entity>> HURTABLE_ENTITIES = new ArrayList<>();
 
   static {
-    DESTROYABLE_BLOCKS.add(ModBlocks.JAR);
     DESTROYABLE_BLOCKS.add(ModBlocks.BOMB_BREAKABLE_BLOCK);
     DESTROYABLE_BLOCKS.add(ModBlocks.CRUMBLY_BLOCK);
     DESTROYABLE_BLOCKS.add(Blocks.GRASS);
@@ -66,9 +62,6 @@ public class BombEntity extends Entity {
     DESTROYABLE_BLOCKS.add(Blocks.LARGE_FERN);
     DESTROYABLE_BLOCKS.add(Blocks.DEAD_BUSH);
 
-    AFFECTED_BLOCKS.add(ModBlocks.SHOCK_SWITCH);
-    AFFECTED_BLOCKS.add(ModBlocks.BOMB_FLOWER);
-
     HURTABLE_ENTITIES.add(BombEntity.class);
     HURTABLE_ENTITIES.add(PlayerEntity.class);
     HURTABLE_ENTITIES.add(BatEntity.class);
@@ -76,7 +69,7 @@ public class BombEntity extends Entity {
 
   private static final String FUSE_KEY = "Fuse";
   private static final String IS_PLANT_KEY = "IsPlant";
-  private static final String JUST_SPAWNED_KEY = "JustSpawned";
+  private static final String INVULNERABLE_KEY = "Invulnerable";
 
   private static final DataParameter<Integer> FUSE = EntityDataManager.createKey(BombEntity.class, DataSerializers.VARINT);
   private static final DataParameter<Boolean> IS_PLANT = EntityDataManager.createKey(BombEntity.class, DataSerializers.BOOLEAN);
@@ -89,139 +82,45 @@ public class BombEntity extends Entity {
    * Number of hearts to remove from entities’ health.
    */
   public static final int EXPLOSION_DAMAGE = 2;
-  /**
-   * Speed above which a bomb should explode when hitting a block or entity.
-   */
-  public static final float EXPLOSION_SPEED_THRESHOLD = 0.05f;
 
   private int fuse;
   private boolean isPlant;
-  private boolean justSpawned;
+  private boolean invulnerable;
 
   public BombEntity(EntityType<? extends BombEntity> type, World world) {
     super(type, world);
   }
 
-  public BombEntity(World world, double x, double y, double z, int fuse, boolean isPlant) {
-    this(ModEntities.BOMB.get(), world);
-    this.setPosition(x, y, z);
+  public BombEntity(World world, double x, double y, double z, int fuse, boolean isPlant, boolean invulnerable) {
+    super(ModEntities.BOMB.get(), world, x, y, z);
     this.setFuse(fuse);
     this.setPlant(isPlant);
-    this.prevPosX = x;
-    this.prevPosY = y;
-    this.prevPosZ = z;
+    this.invulnerable = invulnerable;
     world.playSound(null, x, y, z, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1, 1);
-    this.justSpawned = true;
-  }
-
-  @Override
-  public boolean canBeCollidedWith() {
-    return true;
-  }
-
-  // Attacked by entity -> explode
-  @Override
-  public boolean hitByEntity(Entity entity) {
-    this.explode();
-    return true;
-  }
-
-  // FIXME never called
-  @Override
-  public void applyEntityCollision(Entity entity) {
-    System.out.println(entity);
-    super.applyEntityCollision(entity);
-    if (!(entity instanceof PlayerEntity) && HURTABLE_ENTITIES.contains(entity.getClass())) {
-      this.explode();
-    }
-  }
-
-  @Override
-  public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
-    return ActionResultType.SUCCESS;
-  }
-
-  @Override
-  public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
-    if (this.getRidingEntity() == player) {
-      this.dropFromPlayer(player);
-    } else {
-      this.pickUpByPlayer(player);
-    }
-    return ActionResultType.SUCCESS;
-  }
-
-  public void pickUpByPlayer(PlayerEntity player) {
-    // Drop currently help bomb
-    if (player.isBeingRidden()) {
-      Entity rider = player.getPassengers().get(0);
-      if (rider instanceof BombEntity) {
-        rider.stopRiding();
-      }
-    }
-    // Pickup this bomb
-    this.startRiding(player, true);
-  }
-
-  private void dropFromPlayer(PlayerEntity player) {
-    this.stopRiding();
-    this.setDirectionAndMovement(player, player.rotationPitch, player.rotationYaw);
-  }
-
-  private void setDirectionAndMovement(Entity projectile, double x, double y) {
-    double speed = 0.45;
-    double dx = -Math.sin(y * Math.PI / 180) * Math.cos(x * Math.PI / 180);
-    double dy = -Math.sin(x * Math.PI / 180);
-    double dz = Math.cos(y * Math.PI / 180) * Math.cos(x * Math.PI / 180);
-    Vector3d motionVec = new Vector3d(dx, dy, dz).normalize().scale(speed);
-    this.setMotion(motionVec);
-    float horizMagnitude = MathHelper.sqrt(horizontalMag(motionVec));
-    this.rotationYaw = (float) (MathHelper.atan2(motionVec.x, motionVec.z) * 180 / Math.PI);
-    this.rotationPitch = (float) (MathHelper.atan2(motionVec.y, horizMagnitude) * 180 / Math.PI);
-    this.prevRotationYaw = this.rotationYaw;
-    this.prevRotationPitch = this.rotationPitch;
-    Vector3d vector3d = projectile.getMotion();
-    this.setMotion(this.getMotion().add(vector3d.x, projectile.isOnGround() ? 0 : vector3d.y, vector3d.z));
-  }
-
-  @Override
-  protected void registerData() {
-    this.dataManager.register(FUSE, 80);
-    this.dataManager.register(IS_PLANT, false);
   }
 
   @Override
   public void tick() {
     super.tick();
 
-    if (!this.hasNoGravity()) {
-      this.setMotion(this.getMotion().add(0, -0.04, 0));
-    }
-
-    this.move(MoverType.SELF, this.getMotion());
-    this.setMotion(this.getMotion().scale(0.98));
-    if (this.onGround) {
-      this.setMotion(this.getMotion().mul(0.7, -0.5, 0.7));
-    }
-
     --this.fuse;
     if (this.fuse <= 0) {
-      this.explode();
+      this.invulnerable = false;
+      this.die();
     } else {
       this.func_233566_aG_();
       if (this.world.isRemote) {
         this.world.addParticle(ParticleTypes.SMOKE, this.getPosX(), this.getPosY() + 1.25, this.getPosZ(), 0, 0, 0);
       }
     }
-
-    this.justSpawned = false;
   }
 
-  public void explode() {
-    if (this.justSpawned) {
+  @Override
+  public void die() {
+    if (this.invulnerable) {
       return;
     }
-    this.remove();
+    super.die();
 
     if (this.world.isRemote) {
       this.world.playSound(this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS,
@@ -249,18 +148,13 @@ public class BombEntity extends Entity {
             );
             return distance <= EXPLOSION_SIZE
                 && (DESTROYABLE_BLOCKS.contains(blockState.getBlock())
-                || AFFECTED_BLOCKS.contains(blockState.getBlock()));
+                || blockState.getBlock() instanceof ExplodableBlock);
           })
           .forEach(pos -> {
             BlockState blockState = this.world.getBlockState(pos);
             Block block = blockState.getBlock();
-            if (block == ModBlocks.BOMB_FLOWER) {
-              TileEntity te = this.world.getTileEntity(pos);
-              if (te instanceof BombFlowerTileEntity && ((BombFlowerTileEntity) te).hasBomb()) {
-                ((BombFlowerTileEntity) te).popBomb(null, this.world, 3); // Small delay to mimic in-game behavior
-              }
-            } else if (block == ModBlocks.SHOCK_SWITCH) {
-              ((ShockSwitchBlock) block).toggleState(blockState, this.world, pos);
+            if (block instanceof ExplodableBlock) {
+              ((ExplodableBlock) block).onBombExplosion(this.world, pos);
             } else {
               Block.spawnDrops(blockState, this.world, pos, this.world.getTileEntity(pos));
               this.world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
@@ -280,8 +174,8 @@ public class BombEntity extends Entity {
           return distance <= EXPLOSION_SIZE && entity.isAlive() && HURTABLE_ENTITIES.stream().anyMatch(c -> c.isAssignableFrom(entity.getClass()));
         })
         .forEach(entity -> {
-          if (entity instanceof BombEntity) {
-            ((BombEntity) entity).explode();
+          if (entity instanceof PickableEntity) {
+            ((PickableEntity) entity).die();
           } else {
             entity.attackEntityFrom(DamageSource.causeExplosionDamage((LivingEntity) null), EXPLOSION_DAMAGE);
           }
@@ -289,22 +183,26 @@ public class BombEntity extends Entity {
   }
 
   @Override
+  protected void registerData() {
+    super.registerData();
+    this.dataManager.register(FUSE, 80);
+    this.dataManager.register(IS_PLANT, false);
+  }
+
+  @Override
   protected void writeAdditional(CompoundNBT compound) {
+    super.writeAdditional(compound);
     compound.putShort(FUSE_KEY, (short) this.getFuse());
     compound.putBoolean(IS_PLANT_KEY, this.isPlant());
-    compound.putBoolean(JUST_SPAWNED_KEY, this.justSpawned);
+    compound.putBoolean(INVULNERABLE_KEY, this.invulnerable);
   }
 
   @Override
   protected void readAdditional(CompoundNBT compound) {
+    super.readAdditional(compound);
     this.setFuse(compound.getShort(FUSE_KEY));
     this.setPlant(compound.getBoolean(IS_PLANT_KEY));
-    this.setPlant(compound.getBoolean(JUST_SPAWNED_KEY));
-  }
-
-  @Override
-  protected float getEyeHeight(Pose pose, EntitySize size) {
-    return 0.15F;
+    this.setPlant(compound.getBoolean(INVULNERABLE_KEY));
   }
 
   public void setFuse(int fuse) {

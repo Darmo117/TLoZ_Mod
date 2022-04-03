@@ -1,6 +1,6 @@
 package net.darmo_creations.tloz_mod.blocks;
 
-import net.darmo_creations.tloz_mod.entities.BombEntity;
+import net.darmo_creations.tloz_mod.entities.PickableEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
@@ -22,7 +22,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-public class ShockSwitchBlock extends SwitchBlock {
+public class ShockSwitchBlock extends SwitchBlock implements ExplodableBlock {
   public ShockSwitchBlock() {
     super(Properties.create(Material.GLASS)
         .sound(SoundType.GLASS)
@@ -64,15 +64,26 @@ public class ShockSwitchBlock extends SwitchBlock {
     this.toggleState(state, world, pos);
   }
 
-  // Toggle when hit by bomb
+  // Toggle when hit by pickable object
+  @Override
+  public void onEntityWalk(World world, BlockPos pos, Entity entity) {
+    if (entity instanceof PickableEntity) {
+      if (!world.isRemote) {
+        this.toggleState(world.getBlockState(pos), world, pos);
+      }
+      ((PickableEntity) entity).die();
+    }
+  }
+
+  // Toggle when hit by pickable object
   @SuppressWarnings("deprecation")
   @Override
   public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-    if (entity instanceof BombEntity && entity.getMotion().length() > BombEntity.EXPLOSION_SPEED_THRESHOLD) {
+    if (entity instanceof PickableEntity) {
       if (!world.isRemote) {
         this.toggleState(state, world, pos);
       }
-      ((BombEntity) entity).explode();
+      ((PickableEntity) entity).die();
     }
   }
 
@@ -83,6 +94,11 @@ public class ShockSwitchBlock extends SwitchBlock {
     if (projectile instanceof AbstractArrowEntity) {
       this.toggleState(state, world, hit.getPos());
     }
+  }
+
+  @Override
+  public void onBombExplosion(World world, BlockPos pos) {
+    this.toggleState(world.getBlockState(pos), world, pos);
   }
 
   @Override
