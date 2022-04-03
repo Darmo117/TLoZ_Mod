@@ -29,4 +29,13 @@ public class ModEntities {
           .immuneToFire()
           .build("jar_entity")
   );
+  public static final RegistryObject<EntityType<TLoZArrowEntity>> ARROW = REGISTER.register(
+      "arrow_entity",
+      () -> EntityType.Builder.<TLoZArrowEntity>create(TLoZArrowEntity::new, EntityClassification.MISC)
+          .size(0.98f, 0.98f)
+          .trackingRange(10)
+          .updateInterval(10)
+          .immuneToFire()
+          .build("arrow_entity")
+  );
 }

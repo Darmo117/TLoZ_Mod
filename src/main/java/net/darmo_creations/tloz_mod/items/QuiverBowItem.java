@@ -2,12 +2,11 @@ package net.darmo_creations.tloz_mod.items;
 
 import net.darmo_creations.tloz_mod.TLoZ;
 import net.darmo_creations.tloz_mod.Utils;
+import net.darmo_creations.tloz_mod.entities.TLoZArrowEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.ArrowItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResult;
@@ -69,8 +68,7 @@ public class QuiverBowItem extends TLoZItem {
           float arrowVelocity = getArrowVelocity(charge);
           if (arrowVelocity >= 0.1) {
             if (!world.isRemote) {
-              ArrowItem arrowItem = (ArrowItem) (this.lightBow && arrowVelocity == 1 ? Items.SPECTRAL_ARROW : Items.ARROW);
-              AbstractArrowEntity arrowEntity = arrowItem.createArrow(world, new ItemStack(arrowItem), player);
+              AbstractArrowEntity arrowEntity = new TLoZArrowEntity(world, player, this.lightBow && arrowVelocity == 1);
               arrowEntity.setDirectionAndMovement(player, player.rotationPitch, player.rotationYaw, 0, arrowVelocity * 3, 1);
               if (arrowVelocity == 1) {
                 arrowEntity.setIsCritical(true);
