@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.TNTMinecartRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3f;
 
 /**
  * Renderer for {@link BombEntity}.
@@ -24,7 +23,6 @@ public class BombEntityRenderer extends EntityRenderer<BombEntity> {
   @Override
   public void render(BombEntity entity, float entityYaw, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int packedLight) {
     matrixStack.push();
-    matrixStack.translate(0, 0.4375, 0);
     // Swelling animation
     if ((float) entity.getFuse() - partialTicks + 1 < 20) {
       float f = 1 - (entity.getFuse() - partialTicks + 1) / 10f;
@@ -33,9 +31,8 @@ public class BombEntityRenderer extends EntityRenderer<BombEntity> {
       matrixStack.scale(scale, scale, scale);
     }
 
-    matrixStack.rotate(Vector3f.YP.rotationDegrees(-90));
-    matrixStack.translate(-0.5, -0.5, 0.5);
-    matrixStack.rotate(Vector3f.YP.rotationDegrees(90));
+    double yOffset = entity.isPassenger() ? 0.5 : 0;
+    matrixStack.translate(-0.5, yOffset - 0.0625, -0.5);
     Block block = entity.isPlant() ? ModBlocks.FLOWER_BOMB : ModBlocks.BOMB;
     boolean doFullBright = entity.getFuse() / 5 % 2 == 0;
     if (doFullBright) {

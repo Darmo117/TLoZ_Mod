@@ -24,7 +24,8 @@ public class JarEntityRenderer extends EntityRenderer<JarEntity> {
   @Override
   public void render(JarEntity entity, float entityYaw, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int packedLight) {
     matrixStack.push();
-    matrixStack.translate(-0.5, 0, -0.5);
+    double yOffset = entity.isPassenger() ? 0.5 : 0;
+    matrixStack.translate(-0.5, yOffset, -0.5);
     Minecraft.getInstance().getBlockRendererDispatcher().renderBlock(ModBlocks.JAR.getDefaultState(), matrixStack, buffer, packedLight, OverlayTexture.NO_OVERLAY, EmptyModelData.INSTANCE);
     matrixStack.pop();
     super.render(entity, entityYaw, partialTicks, matrixStack, buffer, packedLight);
