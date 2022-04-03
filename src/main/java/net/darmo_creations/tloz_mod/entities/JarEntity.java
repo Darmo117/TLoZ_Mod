@@ -52,8 +52,8 @@ public class JarEntity extends PickableEntity {
   }
 
   @Override
-  protected float getDamageAmount(Entity entity) {
-    return 2;
+  protected float getCollisionDamageAmount(Entity entity) {
+    return 2; // TODO find out actual amount per entity
   }
 
   @Override

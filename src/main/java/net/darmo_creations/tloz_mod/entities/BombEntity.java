@@ -130,7 +130,7 @@ public class BombEntity extends PickableEntity {
   }
 
   @Override
-  protected float getDamageAmount(Entity entity) {
+  protected float getCollisionDamageAmount(Entity entity) {
     return 0; // Do not directly deal damage when colliding
   }
 

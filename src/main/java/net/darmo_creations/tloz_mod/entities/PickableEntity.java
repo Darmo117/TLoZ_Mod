@@ -174,7 +174,7 @@ public abstract class PickableEntity extends Entity {
         if (entity instanceof PickableEntity) {
           ((PickableEntity) entity).die();
         } else {
-          entity.attackEntityFrom(DamageSource.GENERIC, this.getDamageAmount(entity));
+          entity.attackEntityFrom(DamageSource.GENERIC, this.getCollisionDamageAmount(entity));
         }
       });
       hitEntity = true;
@@ -202,7 +202,7 @@ public abstract class PickableEntity extends Entity {
    *
    * @param entity The entity to deal damage to. Guaranted to not be a {@link PickableEntity}.
    */
-  protected abstract float getDamageAmount(Entity entity);
+  protected abstract float getCollisionDamageAmount(Entity entity);
 
   /**
    * Kill this entity and drop its loot if any.
