@@ -137,7 +137,20 @@ public abstract class PickableEntity extends Entity {
 
   public void die() {
     this.remove();
+
+    if (!this.world.isRemote) {
+      List<ItemStack> drops = this.getDrops();
+      if (!drops.isEmpty()) {
+        drops.forEach(stack -> {
+          ItemEntity itemEntity = new ItemEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), stack);
+          itemEntity.setNoPickupDelay();
+          this.world.addEntity(itemEntity);
+        });
+      }
+    }
   }
+
+  protected abstract List<ItemStack> getDrops();
 
   @Override
   protected void registerData() {

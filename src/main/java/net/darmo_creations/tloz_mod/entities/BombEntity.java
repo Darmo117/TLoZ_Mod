@@ -13,6 +13,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.BatEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
@@ -28,6 +29,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -120,7 +122,6 @@ public class BombEntity extends PickableEntity {
     if (this.invulnerable) {
       return;
     }
-    super.die();
 
     if (this.world.isRemote) {
       this.world.playSound(this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS,
@@ -134,6 +135,8 @@ public class BombEntity extends PickableEntity {
       this.destroyAndUpdateBlocks(effectMaxArea);
       this.hurtEntities(effectMaxArea);
     }
+
+    super.die();
   }
 
   private void destroyAndUpdateBlocks(AxisAlignedBB effectMaxArea) {
@@ -180,6 +183,11 @@ public class BombEntity extends PickableEntity {
             entity.attackEntityFrom(DamageSource.causeExplosionDamage((LivingEntity) null), EXPLOSION_DAMAGE);
           }
         });
+  }
+
+  @Override
+  protected List<ItemStack> getDrops() {
+    return Collections.emptyList();
   }
 
   @Override

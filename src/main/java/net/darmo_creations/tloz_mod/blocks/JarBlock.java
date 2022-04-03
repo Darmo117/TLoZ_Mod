@@ -39,17 +39,17 @@ public class JarBlock extends PickableBlock<JarTileEntity> {
   protected InteractionResult onInteraction(JarTileEntity tileEntity, World world, BlockPos pos, Interaction interaction) {
     switch (interaction.interactionType) {
       case PLAYER_INTERACT:
-        return tileEntity.spawnJarEntity(interaction.player, world, false) ? InteractionResult.BREAK_BLOCK : InteractionResult.FAIL;
+        return tileEntity.spawnJarEntity(interaction.player, false) ? InteractionResult.BREAK_BLOCK : InteractionResult.FAIL;
       case ENTITY_COLLISION:
         if (interaction.entity instanceof PickableEntity) {
-          tileEntity.spawnJarEntity(null, world, true);
+          tileEntity.spawnJarEntity(null, true);
           return InteractionResult.BREAK_BLOCK;
         }
         break;
       case PLAYER_HIT:
       case PROJECTILE_COLLISION:
       case BOMB_EXPLOSION:
-        tileEntity.spawnJarEntity(null, world, true);
+        tileEntity.spawnJarEntity(null, true);
         return InteractionResult.BREAK_BLOCK;
     }
     return InteractionResult.FAIL;
