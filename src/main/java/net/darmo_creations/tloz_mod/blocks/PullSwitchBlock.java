@@ -14,6 +14,8 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 
 public class PullSwitchBlock extends SwitchBlock {
   public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -59,6 +61,18 @@ public class PullSwitchBlock extends SwitchBlock {
       return Blocks.AIR.getDefaultState();
     }
     return this.getDefaultState().with(HORIZONTAL_FACING, face);
+  }
+
+  @SuppressWarnings("deprecation")
+  @Override
+  public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+    return !stateIn.isValidPosition(world, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, world, currentPos, facingPos);
+  }
+
+  @SuppressWarnings("deprecation")
+  @Override
+  public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
+    return hasEnoughSolidSide(world, pos.offset(state.get(HORIZONTAL_FACING).getOpposite()), state.get(HORIZONTAL_FACING));
   }
 
   @Override

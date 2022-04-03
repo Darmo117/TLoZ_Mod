@@ -2,16 +2,14 @@ package net.darmo_creations.tloz_mod.blocks;
 
 import net.darmo_creations.tloz_mod.entities.BombEntity;
 import net.darmo_creations.tloz_mod.tile_entities.BombFlowerTileEntity;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ContainerBlock;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -19,6 +17,8 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -44,6 +44,18 @@ public class BombFlowerBlock extends ContainerBlock {
         .hardnessAndResistance(-1)
         .notSolid()
         .setAllowsSpawn((blockState, blockReader, pos, entityType) -> false));
+  }
+
+  @SuppressWarnings("deprecation")
+  public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+    return facing == Direction.DOWN && !state.isValidPosition(world, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
+  }
+
+  @Override
+  @SuppressWarnings("deprecation")
+  public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
+    BlockPos blockpos = pos.down();
+    return hasSolidSideOnTop(world, blockpos) || hasEnoughSolidSide(world, blockpos, Direction.UP);
   }
 
   @SuppressWarnings("deprecation")

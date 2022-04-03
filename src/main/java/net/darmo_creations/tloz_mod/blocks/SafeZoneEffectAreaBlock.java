@@ -1,10 +1,7 @@
 package net.darmo_creations.tloz_mod.blocks;
 
 import net.darmo_creations.tloz_mod.tile_entities.SafeZoneEffectAreaTileEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.Entity;
@@ -17,6 +14,7 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -33,6 +31,20 @@ public class SafeZoneEffectAreaBlock extends Block implements IModBlock, ITileEn
         .noDrops()
         .setAir()
         .setAllowsSpawn((blockState, blockReader, pos, entityType) -> false));
+  }
+
+  @SuppressWarnings("deprecation")
+  @Override
+  public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
+    Block block = world.getBlockState(pos.down()).getBlock();
+    return block == ModBlocks.SAFE_ZONE || block == ModBlocks.SAFE_ZONE_EFFECT_AREA;
+  }
+
+  @Override
+  public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+    if (!this.isValidPosition(state, world, pos)) {
+      world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+    }
   }
 
   @SuppressWarnings("deprecation")

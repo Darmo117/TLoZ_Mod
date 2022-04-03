@@ -3,17 +3,21 @@ package net.darmo_creations.tloz_mod.blocks;
 import net.darmo_creations.tloz_mod.entities.BombEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 import java.util.Collections;
@@ -29,6 +33,19 @@ public class JarBlock extends Block {
         .setOpaque((blockState, blockReader, pos) -> false)
         .setSuffocates((blockState, blockReader, pos) -> false)
         .setBlocksVision((blockState, blockReader, pos) -> false));
+  }
+
+  @SuppressWarnings("deprecation")
+  @Override
+  public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+    return facing == Direction.DOWN && !state.isValidPosition(world, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
+  }
+
+  @SuppressWarnings("deprecation")
+  @Override
+  public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
+    BlockPos blockpos = pos.down();
+    return hasSolidSideOnTop(world, blockpos) || hasEnoughSolidSide(world, blockpos, Direction.UP);
   }
 
   @SuppressWarnings("deprecation")

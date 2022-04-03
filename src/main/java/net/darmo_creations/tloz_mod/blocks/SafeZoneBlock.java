@@ -6,11 +6,13 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -35,6 +37,19 @@ public class SafeZoneBlock extends Block {
 
   @SuppressWarnings("deprecation")
   @Override
+  public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+    return facing == Direction.DOWN && !state.isValidPosition(world, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
+  }
+
+  @SuppressWarnings("deprecation")
+  @Override
+  public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
+    BlockPos blockpos = pos.down();
+    return hasSolidSideOnTop(world, blockpos) || hasEnoughSolidSide(world, blockpos, Direction.UP);
+  }
+
+  @SuppressWarnings("deprecation")
+  @Override
   public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
     return SHAPE;
   }
@@ -54,17 +69,6 @@ public class SafeZoneBlock extends Block {
         world.setBlockState(up, ModBlocks.SAFE_ZONE_EFFECT_AREA.getDefaultState(), 3);
       } else {
         break;
-      }
-    }
-  }
-
-  @Override
-  public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-    super.onBlockHarvested(world, pos, state, player);
-    for (int i = 1; i <= EFFECT_HEIGHT; i++) {
-      BlockPos up = pos.up(i);
-      if (world.getBlockState(up).getBlock() == ModBlocks.SAFE_ZONE_EFFECT_AREA) {
-        world.setBlockState(up, Blocks.AIR.getDefaultState(), 3);
       }
     }
   }
