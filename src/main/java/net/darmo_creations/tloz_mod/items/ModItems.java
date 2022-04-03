@@ -13,9 +13,6 @@ import java.util.*;
 @SuppressWarnings("unused")
 public final class ModItems {
   // Tools & weapons
-  // Placeholder item to allow players to break certain blocks before getting their first weapon.
-  public static final Item HAND = new TLoZItem(new Item.Properties().maxStackSize(1).group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("hand");
-  // TODO custom class that uses a quiver instead of arrow items
   public static final Item BOW = new QuiverBowItem(false).setRegistryName("bow");
   public static final Item BOW_OF_LIGHT = new QuiverBowItem(true).setRegistryName("bow_of_light");
   public static final Item SMALL_QUIVER = new QuiverItem(20).setRegistryName("quiver_small");
