@@ -6,12 +6,17 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
+
+import java.util.UUID;
 
 /**
  * An entity that can be picked up by the player.
@@ -20,16 +25,23 @@ import net.minecraftforge.fml.network.NetworkHooks;
  * @see PickableTileEntity
  */
 public abstract class PickableEntity extends Entity {
+  private static final String PICKER_KEY = "PickerPlayer";
+
+  private static final DataParameter<String> PICKER = EntityDataManager.createKey(PickableEntity.class, DataSerializers.STRING);
+
+  private PlayerEntity picker;
+
   public PickableEntity(EntityType<? extends PickableEntity> type, World world) {
     super(type, world);
   }
 
-  public PickableEntity(EntityType<? extends PickableEntity> entityType, World world, double x, double y, double z) {
+  public PickableEntity(EntityType<? extends PickableEntity> entityType, World world, double x, double y, double z, PlayerEntity picker) {
     this(entityType, world);
     this.setPosition(x, y, z);
     this.prevPosX = x;
     this.prevPosY = y;
     this.prevPosZ = z;
+    this.setPicker(picker);
   }
 
   @Override
@@ -44,7 +56,7 @@ public abstract class PickableEntity extends Entity {
     return true;
   }
 
-  // FIXME never called
+  // FIXME never called -> re-implement from tick() method?
   // Collided with another pickable entity -> break
   @Override
   public void applyEntityCollision(Entity entity) {
@@ -85,6 +97,7 @@ public abstract class PickableEntity extends Entity {
   private void dropFromPlayer(PlayerEntity player) {
     this.stopRiding();
     this.throwThis(player, player.rotationPitch, player.rotationYaw);
+    this.setPicker(null);
   }
 
   private void throwThis(Entity projectile, double x, double y) {
@@ -116,6 +129,10 @@ public abstract class PickableEntity extends Entity {
     if (this.onGround) {
       this.setMotion(this.getMotion().mul(0.7, -0.5, 0.7));
     }
+
+    if (!this.isPassenger() && this.picker != null) {
+      this.pickUpByPlayer(this.picker);
+    }
   }
 
   public void die() {
@@ -124,14 +141,39 @@ public abstract class PickableEntity extends Entity {
 
   @Override
   protected void registerData() {
+    this.dataManager.register(PICKER, "");
+  }
+
+  @Override
+  public void notifyDataManagerChange(DataParameter<?> key) {
+    super.notifyDataManagerChange(key);
+    if (PICKER.equals(key)) {
+      String s = this.dataManager.get(PICKER);
+      if (!"".equals(s)) {
+        this.picker = this.world.getPlayerByUuid(UUID.fromString(s));
+      }
+    }
+  }
+
+  private void setPicker(PlayerEntity player) {
+    this.picker = player;
+    this.dataManager.set(PICKER, player != null ? player.getGameProfile().getId().toString() : "");
   }
 
   @Override
   protected void writeAdditional(CompoundNBT compound) {
+    if (this.picker != null) {
+      compound.putUniqueId(PICKER_KEY, this.picker.getGameProfile().getId());
+    }
   }
 
   @Override
   protected void readAdditional(CompoundNBT compound) {
+    if (compound.hasUniqueId(PICKER_KEY)) {
+      this.picker = this.world.getPlayerByUuid(compound.getUniqueId(PICKER_KEY));
+    } else {
+      this.picker = null;
+    }
   }
 
   @Override

@@ -91,8 +91,8 @@ public class BombEntity extends PickableEntity {
     super(type, world);
   }
 
-  public BombEntity(World world, double x, double y, double z, int fuse, boolean isPlant, boolean invulnerable) {
-    super(ModEntities.BOMB.get(), world, x, y, z);
+  public BombEntity(World world, double x, double y, double z, int fuse, boolean isPlant, boolean invulnerable, PlayerEntity picker) {
+    super(ModEntities.BOMB.get(), world, x, y, z, picker);
     this.setFuse(fuse);
     this.setPlant(isPlant);
     this.invulnerable = invulnerable;
@@ -217,6 +217,7 @@ public class BombEntity extends PickableEntity {
 
   @Override
   public void notifyDataManagerChange(DataParameter<?> key) {
+    super.notifyDataManagerChange(key);
     if (FUSE.equals(key)) {
       this.fuse = this.dataManager.get(FUSE);
     } else if (IS_PLANT.equals(key)) {

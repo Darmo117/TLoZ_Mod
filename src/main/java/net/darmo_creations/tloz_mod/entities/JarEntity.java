@@ -3,6 +3,7 @@ package net.darmo_creations.tloz_mod.entities;
 import net.darmo_creations.tloz_mod.blocks.JarBlock;
 import net.darmo_creations.tloz_mod.tile_entities.JarTileEntity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
@@ -18,8 +19,8 @@ public class JarEntity extends PickableEntity {
     super(type, world);
   }
 
-  public JarEntity(World world, double x, double y, double z) {
-    super(ModEntities.JAR.get(), world, x, y, z);
+  public JarEntity(World world, double x, double y, double z, PlayerEntity picker) {
+    super(ModEntities.JAR.get(), world, x, y, z, picker);
   }
 
   // TODO break on block collision

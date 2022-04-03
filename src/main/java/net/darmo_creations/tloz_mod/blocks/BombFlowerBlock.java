@@ -8,6 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -74,23 +75,23 @@ public class BombFlowerBlock extends PickableBlock<BombFlowerTileEntity> {
   protected InteractionResult onInteraction(BombFlowerTileEntity tileEntity, World world, BlockPos pos, Interaction interaction) {
     switch (interaction.interactionType) {
       case PLAYER_INTERACT:
-        return this.spawnBomb(tileEntity, BombFlowerTileEntity.FUSE_DELAY, false);
+        return this.spawnBomb(interaction.player, tileEntity, BombFlowerTileEntity.FUSE_DELAY, false);
       case ENTITY_COLLISION:
         if (interaction.entity instanceof PickableEntity) {
-          return this.spawnBomb(tileEntity, 0, true);
+          return this.spawnBomb(null, tileEntity, 0, true);
         }
         break;
       case PLAYER_HIT:
       case PROJECTILE_COLLISION:
-        return this.spawnBomb(tileEntity, 0, false);
+        return this.spawnBomb(null, tileEntity, 0, false);
       case BOMB_EXPLOSION:
-        return this.spawnBomb(tileEntity, 3, true); // Small delay to mimic in-game behavior
+        return this.spawnBomb(null, tileEntity, 3, true); // Small delay to mimic in-game behavior
     }
     return InteractionResult.FAIL;
   }
 
-  private InteractionResult spawnBomb(BombFlowerTileEntity tileEntity, int fuse, boolean invulnerable) {
-    return tileEntity.popBomb(fuse, invulnerable) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
+  private InteractionResult spawnBomb(PlayerEntity player, BombFlowerTileEntity tileEntity, int fuse, boolean invulnerable) {
+    return tileEntity.popBomb(player, fuse, invulnerable) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
   }
 
   @SuppressWarnings("deprecation")
