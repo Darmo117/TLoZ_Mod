@@ -73,8 +73,6 @@ public class QuiverBowItem extends TLoZItem {
               if (arrowVelocity == 1) {
                 arrowEntity.setIsCritical(true);
               }
-              // Cannot pickup arrows
-              arrowEntity.pickupStatus = AbstractArrowEntity.PickupStatus.DISALLOWED;
               world.addEntity(arrowEntity);
             }
 

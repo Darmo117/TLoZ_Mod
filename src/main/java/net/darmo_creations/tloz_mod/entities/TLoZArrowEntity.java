@@ -27,6 +27,7 @@ public class TLoZArrowEntity extends AbstractArrowEntity {
   public TLoZArrowEntity(World world, LivingEntity shooter, boolean lightArrow) {
     super(ModEntities.ARROW.get(), shooter, world);
     this.setLightArrow(lightArrow);
+    this.pickupStatus = PickupStatus.DISALLOWED;
   }
 
   public boolean isLightArrow() {

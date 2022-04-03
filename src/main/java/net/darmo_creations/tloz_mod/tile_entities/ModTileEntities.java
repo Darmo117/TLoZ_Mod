@@ -22,6 +22,11 @@ public class ModTileEntities {
       () -> TileEntityType.Builder.create(JarTileEntity::new, ModBlocks.JAR).build(null)
   );
   @SuppressWarnings("ConstantConditions")
+  public static final RegistryObject<TileEntityType<BigRockTileEntity>> BIG_ROCK = REGISTER.register(
+      "big_rock_tile_entity",
+      () -> TileEntityType.Builder.create(BigRockTileEntity::new, ModBlocks.BIG_ROCK).build(null)
+  );
+  @SuppressWarnings("ConstantConditions")
   public static final RegistryObject<TileEntityType<BombBreakableBlockTileEntity>> BOMB_BREAKABLE_BLOCK = REGISTER.register(
       "bomb_breakable_block_tile_entity",
       () -> TileEntityType.Builder.create(BombBreakableBlockTileEntity::new, ModBlocks.BOMB_BREAKABLE_BLOCK).build(null)

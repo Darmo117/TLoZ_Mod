@@ -29,10 +29,19 @@ public class ModEntities {
           .immuneToFire()
           .build("jar_entity")
   );
+  public static final RegistryObject<EntityType<BigRockEntity>> BIG_ROCK = REGISTER.register(
+      "big_rock_entity",
+      () -> EntityType.Builder.<BigRockEntity>create(BigRockEntity::new, EntityClassification.MISC)
+          .size(0.98f, 0.98f) // TODO size
+          .trackingRange(10)
+          .updateInterval(10)
+          .immuneToFire()
+          .build("big_rock_entity")
+  );
   public static final RegistryObject<EntityType<TLoZArrowEntity>> ARROW = REGISTER.register(
       "arrow_entity",
       () -> EntityType.Builder.<TLoZArrowEntity>create(TLoZArrowEntity::new, EntityClassification.MISC)
-          .size(0.98f, 0.98f)
+          .size(0.5f, 0.5f)
           .trackingRange(10)
           .updateInterval(10)
           .immuneToFire()

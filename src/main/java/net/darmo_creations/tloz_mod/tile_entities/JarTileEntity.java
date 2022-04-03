@@ -1,7 +1,6 @@
 package net.darmo_creations.tloz_mod.tile_entities;
 
 import net.darmo_creations.tloz_mod.blocks.JarBlock;
-import net.darmo_creations.tloz_mod.entities.BombEntity;
 import net.darmo_creations.tloz_mod.entities.JarEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -10,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
  * Tile entity for the {@link JarBlock}.
  *
  * @see JarBlock
- * @see BombEntity
+ * @see JarEntity
  */
 public class JarTileEntity extends PickableTileEntity {
   public JarTileEntity() {

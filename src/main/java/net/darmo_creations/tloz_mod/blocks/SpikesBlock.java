@@ -17,6 +17,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
+// TODO make passable to phantoms
 public class SpikesBlock extends Block {
   protected static final VoxelShape SHAPE = makeCuboidShape(1, 0, 1, 15, 32, 15);
 

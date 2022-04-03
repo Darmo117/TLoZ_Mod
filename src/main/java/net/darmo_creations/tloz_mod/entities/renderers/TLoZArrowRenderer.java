@@ -2,7 +2,6 @@ package net.darmo_creations.tloz_mod.entities.renderers;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.darmo_creations.tloz_mod.entities.BombEntity;
 import net.darmo_creations.tloz_mod.entities.TLoZArrowEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
@@ -17,7 +16,7 @@ import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3f;
 
 /**
- * Renderer for {@link BombEntity}.
+ * Renderer for {@link TLoZArrowEntity}.
  */
 public class TLoZArrowRenderer extends EntityRenderer<TLoZArrowEntity> {
   public static final ResourceLocation ARROW_TEXTURE = new ResourceLocation("textures/entity/projectiles/arrow.png");
