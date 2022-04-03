@@ -1,0 +1,14 @@
+{
+  "variants": {
+    "powered=false": [
+      {
+        "model": "tloz:block/floor_switch_off"
+      }
+    ],
+    "powered=true": [
+      {
+        "model": "tloz:block/floor_switch_on"
+      }
+    ]
+  }
+}
