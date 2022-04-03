@@ -4,6 +4,7 @@ import net.darmo_creations.tloz_mod.blocks.PickableBlock;
 import net.darmo_creations.tloz_mod.tile_entities.PickableTileEntity;
 import net.minecraft.entity.*;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.passive.BatEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -12,12 +13,14 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +31,16 @@ import java.util.UUID;
  * @see PickableTileEntity
  */
 public abstract class PickableEntity extends Entity {
+  /**
+   * List of entity types that can be hurt by this entity.
+   */
+  protected static final List<Class<? extends Entity>> HURTABLE_ENTITIES = new ArrayList<>();
+
+  static {
+    HURTABLE_ENTITIES.add(PickableEntity.class);
+    HURTABLE_ENTITIES.add(BatEntity.class); // TODO custom bat entity?
+  }
+
   private static final String PICKER_KEY = "PickerPlayer";
   private static final String BREAK_ON_COLLISION_KEY = "BreakOnCollision";
 
@@ -68,17 +81,6 @@ public abstract class PickableEntity extends Entity {
   public boolean hitByEntity(Entity entity) {
     this.die();
     return true;
-  }
-
-  // FIXME never called -> re-implement from tick() method?
-  // Collided with another pickable entity -> break
-  @Override
-  public void applyEntityCollision(Entity entity) {
-    System.out.println(entity); // DEBUG
-    super.applyEntityCollision(entity);
-    if (entity instanceof PickableEntity) {
-      ((PickableEntity) entity).die();
-    }
   }
 
   @Override
@@ -152,6 +154,7 @@ public abstract class PickableEntity extends Entity {
     super.tick();
 
     boolean hitBlock = false;
+    boolean hitEntity = false;
 
     if (!this.hasNoGravity()) {
       this.setMotion(this.getMotion().add(0, -0.04, 0));
@@ -165,12 +168,41 @@ public abstract class PickableEntity extends Entity {
     }
     // TODO detect if hitting side of blocks
 
-    if (this.breakOnBlockCollision && hitBlock) {
+    List<Entity> entities = this.world.getEntitiesInAABBexcluding(this, this.getBoundingBox(), this::canCollideWith);
+    if (!entities.isEmpty()) {
+      entities.forEach(entity -> {
+        if (entity instanceof PickableEntity) {
+          ((PickableEntity) entity).die();
+        } else {
+          entity.attackEntityFrom(DamageSource.GENERIC, this.getDamageAmount(entity));
+        }
+      });
+      hitEntity = true;
+    }
+
+    if (hitEntity || this.breakOnBlockCollision && hitBlock) {
       this.die();
     } else if (!this.isPassenger() && this.picker != null) {
       this.pickUpByPlayer(this.picker);
     }
   }
+
+  /**
+   * Return whether this entity can collide with the given one.
+   *
+   * @param entity The entity this one’s colliding with.
+   * @return True if this entity can collide with the provided entity, false otherwise.
+   */
+  protected boolean canCollideWith(Entity entity) {
+    return HURTABLE_ENTITIES.stream().anyMatch(c -> c.isAssignableFrom(entity.getClass()));
+  }
+
+  /**
+   * Return the amount of damage to deal to the given entity upon collision.
+   *
+   * @param entity The entity to deal damage to. Guaranted to not be a {@link PickableEntity}.
+   */
+  protected abstract float getDamageAmount(Entity entity);
 
   /**
    * Kill this entity and drop its loot if any.

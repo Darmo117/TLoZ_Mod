@@ -11,7 +11,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.BatEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -50,10 +49,6 @@ public class BombEntity extends PickableEntity {
    * List of blocks that can be destroyed.
    */
   private static final List<Block> DESTROYABLE_BLOCKS = new ArrayList<>();
-  /**
-   * List of entity types that can be hurt by explosions.
-   */
-  private static final List<Class<? extends Entity>> HURTABLE_ENTITIES = new ArrayList<>();
 
   static {
     DESTROYABLE_BLOCKS.add(ModBlocks.BOMB_BREAKABLE_BLOCK);
@@ -63,10 +58,6 @@ public class BombEntity extends PickableEntity {
     DESTROYABLE_BLOCKS.add(Blocks.FERN);
     DESTROYABLE_BLOCKS.add(Blocks.LARGE_FERN);
     DESTROYABLE_BLOCKS.add(Blocks.DEAD_BUSH);
-
-    HURTABLE_ENTITIES.add(BombEntity.class);
-    HURTABLE_ENTITIES.add(PlayerEntity.class);
-    HURTABLE_ENTITIES.add(BatEntity.class);
   }
 
   private static final String FUSE_KEY = "Fuse";
@@ -139,6 +130,11 @@ public class BombEntity extends PickableEntity {
   }
 
   @Override
+  protected float getDamageAmount(Entity entity) {
+    return 0; // Do not directly deal damage when colliding
+  }
+
+  @Override
   protected void playBreakSoundAndAnimation() {
     this.world.playSound(this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS,
         4, (1 + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.2F) * 0.7F, false);
@@ -180,7 +176,7 @@ public class BombEntity extends PickableEntity {
                   + Math.pow(entity.getPosY() - this.getPosY(), 2)
                   + Math.pow(entity.getPosZ() - this.getPosZ(), 2)
           );
-          return distance <= EXPLOSION_SIZE && entity.isAlive() && HURTABLE_ENTITIES.stream().anyMatch(c -> c.isAssignableFrom(entity.getClass()));
+          return distance <= EXPLOSION_SIZE && entity.isAlive() && (this.canCollideWith(entity) || entity instanceof PlayerEntity);
         })
         .forEach(entity -> {
           if (entity instanceof PickableEntity) {

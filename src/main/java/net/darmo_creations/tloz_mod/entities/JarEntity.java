@@ -5,6 +5,7 @@ import net.darmo_creations.tloz_mod.blocks.ModBlocks;
 import net.darmo_creations.tloz_mod.items.ModItems;
 import net.darmo_creations.tloz_mod.tile_entities.JarTileEntity;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -48,6 +49,11 @@ public class JarEntity extends PickableEntity {
       return;
     }
     super.tick();
+  }
+
+  @Override
+  protected float getDamageAmount(Entity entity) {
+    return 2;
   }
 
   @Override
