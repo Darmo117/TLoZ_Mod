@@ -4,14 +4,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -22,7 +21,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-public class PullSwitchBlock extends SwitchBlock {
+public class EyeSwitchBlock extends SwitchBlock {
   public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 
   private static final VoxelShape NORTH_OFF = makeCuboidShape(2, 3, 8, 14, 13, 16);
@@ -34,8 +33,8 @@ public class PullSwitchBlock extends SwitchBlock {
   private static final VoxelShape WEST_OFF = makeCuboidShape(8, 3, 2, 16, 13, 14);
   private static final VoxelShape WEST_ON = makeCuboidShape(4, 3, 2, 16, 13, 14);
 
-  public PullSwitchBlock() {
-    super(Properties.create(Material.MISCELLANEOUS));
+  public EyeSwitchBlock() {
+    super(Properties.create(Material.IRON));
     this.setDefaultState(this.getStateContainer().getBaseState()
         .with(POWERED, false)
         .with(MANUAL_SWITCH_OFF, false)
@@ -80,11 +79,13 @@ public class PullSwitchBlock extends SwitchBlock {
     return hasEnoughSolidSide(world, pos.offset(state.get(HORIZONTAL_FACING).getOpposite()), state.get(HORIZONTAL_FACING));
   }
 
-  // Toggle state on right-click
+  // Toggle when hit by arrow
   @SuppressWarnings("deprecation")
   @Override
-  public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-    return this.toggleState(state, world, pos) ? ActionResultType.SUCCESS : ActionResultType.FAIL;
+  public void onProjectileCollision(World world, BlockState state, BlockRayTraceResult hit, ProjectileEntity projectile) {
+    if (projectile instanceof AbstractArrowEntity) {
+      this.toggleState(state, world, hit.getPos());
+    }
   }
 
   @Override

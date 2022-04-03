@@ -3,13 +3,14 @@ package net.darmo_creations.tloz_mod.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.*;
+import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
@@ -22,13 +23,6 @@ public abstract class SwitchBlock extends Block {
     this.setDefaultState(this.getStateContainer().getBaseState()
         .with(POWERED, false)
         .with(MANUAL_SWITCH_OFF, false));
-  }
-
-  // Toggle state on right-click
-  @SuppressWarnings("deprecation")
-  @Override
-  public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-    return this.toggleState(state, world, pos) ? ActionResultType.SUCCESS : ActionResultType.FAIL;
   }
 
   // Reset if a barrier block is above

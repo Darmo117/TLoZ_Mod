@@ -10,6 +10,8 @@ public final class ModBlocks {
   public static final Block SHOCK_SWITCH = new ShockSwitchBlock().setRegistryName("shock_switch");
   public static final Block PULL_SWITCH = new PullSwitchBlock().setRegistryName("pull_switch");
   public static final Block FLOOR_SWITCH = new FloorSwitchBlock().setRegistryName("floor_switch");
+  public static final Block EYE_SWITCH = new EyeSwitchBlock().setRegistryName("eye_switch");
+  public static final Block LIGHT_EYE_SWITCH = new LightEyeSwitchBlock().setRegistryName("light_eye_switch");
 
   public static final Block BOMB_FLOWER = new BombFlowerBlock().setRegistryName("bomb_flower");
   public static final Block FLOWER_BOMB = new DummyBombBlock().setRegistryName("flower_bomb");

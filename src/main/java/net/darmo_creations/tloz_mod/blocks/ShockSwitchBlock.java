@@ -8,8 +8,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -47,6 +50,13 @@ public class ShockSwitchBlock extends SwitchBlock {
     return makeCuboidShape(2, 0, 2, 14, 16, 14);
   }
 
+  // Toggle state on right-click
+  @SuppressWarnings("deprecation")
+  @Override
+  public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+    return this.toggleState(state, world, pos) ? ActionResultType.SUCCESS : ActionResultType.FAIL;
+  }
+
   // Toggle when hit by player
   @SuppressWarnings("deprecation")
   @Override
@@ -70,7 +80,9 @@ public class ShockSwitchBlock extends SwitchBlock {
   @SuppressWarnings("deprecation")
   @Override
   public void onProjectileCollision(World world, BlockState state, BlockRayTraceResult hit, ProjectileEntity projectile) {
-    this.toggleState(state, world, hit.getPos());
+    if (projectile instanceof AbstractArrowEntity) {
+      this.toggleState(state, world, hit.getPos());
+    }
   }
 
   @Override
