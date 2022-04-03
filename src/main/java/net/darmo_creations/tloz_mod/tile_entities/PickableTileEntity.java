@@ -1,6 +1,7 @@
 package net.darmo_creations.tloz_mod.tile_entities;
 
 import net.darmo_creations.tloz_mod.blocks.PickableBlock;
+import net.darmo_creations.tloz_mod.entities.PickableEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -13,6 +14,11 @@ import net.minecraft.util.math.BlockPos;
 
 /**
  * Tile entity for {@link PickableBlock}.
+ * <p>
+ * Handles spawning of associated {@link PickableEntity}.
+ *
+ * @see PickableBlock
+ * @see PickableEntity
  */
 public abstract class PickableTileEntity extends TileEntity implements ITickableTileEntity {
   public static final String GROWABLE_KEY = "Growable";

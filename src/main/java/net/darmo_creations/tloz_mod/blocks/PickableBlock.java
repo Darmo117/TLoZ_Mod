@@ -18,14 +18,16 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
+import java.util.Random;
 
 /**
- * A block that can be picked up by the player.
+ * A block that spawns an entity that can be picked up by the player.
  *
  * @param <T> Type of associated tile entity.
  */
@@ -68,7 +70,7 @@ public abstract class PickableBlock<T extends PickableTileEntity> extends Contai
       TileEntity te = world.getTileEntity(pos);
       if (te != null && this.tileEntityClass.isAssignableFrom(te.getClass())) {
         //noinspection unchecked
-        switch (this.onInteraction((T) te, world, pos, Interaction.playerInteraction(player))) {
+        switch (this.onInteraction((T) te, world, pos, InteractionContext.playerInteraction(player))) {
           case SUCCESS:
             return ActionResultType.SUCCESS;
           case FAIL:
@@ -88,13 +90,13 @@ public abstract class PickableBlock<T extends PickableTileEntity> extends Contai
   @SuppressWarnings("deprecation")
   @Override
   public void onBlockClicked(BlockState state, World world, BlockPos pos, PlayerEntity player) {
-    this.onInteraction(world, pos, Interaction.playerHit(player));
+    this.onInteraction(world, pos, InteractionContext.playerHit(player));
   }
 
   // Collision with pickable entity -> break
   @Override
   public void onEntityWalk(World world, BlockPos pos, Entity entity) {
-    this.onInteraction(world, pos, Interaction.entityCollision(entity));
+    this.onInteraction(world, pos, InteractionContext.entityCollision(entity));
     if (entity instanceof PickableEntity) {
       ((PickableEntity) entity).die();
     }
@@ -104,7 +106,7 @@ public abstract class PickableBlock<T extends PickableTileEntity> extends Contai
   @SuppressWarnings("deprecation")
   @Override
   public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-    this.onInteraction(world, pos, Interaction.entityCollision(entity));
+    this.onInteraction(world, pos, InteractionContext.entityCollision(entity));
     if (entity instanceof PickableEntity) {
       ((PickableEntity) entity).die();
     }
@@ -114,31 +116,49 @@ public abstract class PickableBlock<T extends PickableTileEntity> extends Contai
   @SuppressWarnings("deprecation")
   @Override
   public void onProjectileCollision(World world, BlockState state, BlockRayTraceResult hit, ProjectileEntity projectile) {
-    this.onInteraction(world, hit.getPos(), Interaction.projectileCollision(projectile));
+    this.onInteraction(world, hit.getPos(), InteractionContext.projectileCollision(projectile));
+    projectile.remove();
   }
 
   // Bomb exploded -> break
   @Override
   public void onBombExplosion(World world, BlockPos pos) {
-    this.onInteraction(world, pos, Interaction.bombExplosion());
+    this.onInteraction(world, pos, InteractionContext.bombExplosion());
   }
 
-  protected void onInteraction(World world, BlockPos pos, Interaction interaction) {
+  /**
+   * Called whenever any entity interacts with this block.
+   *
+   * @param world              World the block is in.
+   * @param pos                Position of the block.
+   * @param interactionContext An object that holds the interaction data.
+   */
+  protected void onInteraction(World world, BlockPos pos, InteractionContext interactionContext) {
     TileEntity te = world.getTileEntity(pos);
     if (!world.isRemote && te != null && this.tileEntityClass.isAssignableFrom(te.getClass())) {
       //noinspection unchecked
-      if (this.onInteraction((T) te, world, pos, interaction) == InteractionResult.BREAK_BLOCK) {
-        world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+      if (this.onInteraction((T) te, world, pos, interactionContext) == InteractionResult.BREAK_BLOCK) {
+        // Delay block destruction to allow sound to play correctly
+        world.getPendingBlockTicks().scheduleTick(pos, this, 1);
       }
     }
   }
 
   /**
-   * Called when a player, entity or projectile interacts with this block.
+   * Called when any entity interacts with this block.
    *
+   * @param world              World the block is in.
+   * @param pos                Position of the block.
+   * @param interactionContext An object that holds the interaction data.
    * @return The result of the action.
    */
-  protected abstract InteractionResult onInteraction(T tileEntity, World world, BlockPos pos, Interaction interaction);
+  protected abstract InteractionResult onInteraction(T tileEntity, World world, BlockPos pos, InteractionContext interactionContext);
+
+  @SuppressWarnings("deprecation")
+  @Override
+  public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
+    world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+  }
 
   @Override
   public TileEntity createNewTileEntity(IBlockReader world) {
@@ -193,37 +213,53 @@ public abstract class PickableBlock<T extends PickableTileEntity> extends Contai
     BREAK_BLOCK
   }
 
-  public static class Interaction {
+  /**
+   * A class that holds data related to an interaction event on a block.
+   */
+  public static class InteractionContext {
+    /**
+     * Type of block interaction.
+     */
     public final InteractionType interactionType;
+    /**
+     * Player that interacted with the block. Null if {@link #interactionType} is not {@link InteractionType#PLAYER_HIT}
+     * or {@link InteractionType#PLAYER_INTERACT}.
+     */
     public final PlayerEntity player;
+    /**
+     * Entity that collided with the block. Null if {@link #interactionType} is not {@link InteractionType#ENTITY_COLLISION}.
+     */
     public final Entity entity;
+    /**
+     * Projectile that hit the block. Null if {@link #interactionType} is not {@link InteractionType#PROJECTILE_COLLISION}.
+     */
     public final ProjectileEntity projectile;
 
-    private Interaction(final InteractionType interactionType, final PlayerEntity player, final Entity entity, final ProjectileEntity projectile) {
+    private InteractionContext(final InteractionType interactionType, final PlayerEntity player, final Entity entity, final ProjectileEntity projectile) {
       this.interactionType = Objects.requireNonNull(interactionType);
       this.player = player;
       this.entity = entity;
       this.projectile = projectile;
     }
 
-    public static Interaction playerInteraction(final PlayerEntity player) {
-      return new Interaction(InteractionType.PLAYER_INTERACT, player, null, null);
+    public static InteractionContext playerInteraction(final PlayerEntity player) {
+      return new InteractionContext(InteractionType.PLAYER_INTERACT, player, null, null);
     }
 
-    public static Interaction playerHit(final PlayerEntity player) {
-      return new Interaction(InteractionType.PLAYER_HIT, player, null, null);
+    public static InteractionContext playerHit(final PlayerEntity player) {
+      return new InteractionContext(InteractionType.PLAYER_HIT, player, null, null);
     }
 
-    public static Interaction entityCollision(final Entity entity) {
-      return new Interaction(InteractionType.ENTITY_COLLISION, null, entity, null);
+    public static InteractionContext entityCollision(final Entity entity) {
+      return new InteractionContext(InteractionType.ENTITY_COLLISION, null, entity, null);
     }
 
-    public static Interaction projectileCollision(final ProjectileEntity projectile) {
-      return new Interaction(InteractionType.ENTITY_COLLISION, null, null, projectile);
+    public static InteractionContext projectileCollision(final ProjectileEntity projectile) {
+      return new InteractionContext(InteractionType.PROJECTILE_COLLISION, null, null, projectile);
     }
 
-    public static Interaction bombExplosion() {
-      return new Interaction(InteractionType.BOMB_EXPLOSION, null, null, null);
+    public static InteractionContext bombExplosion() {
+      return new InteractionContext(InteractionType.BOMB_EXPLOSION, null, null, null);
     }
   }
 }

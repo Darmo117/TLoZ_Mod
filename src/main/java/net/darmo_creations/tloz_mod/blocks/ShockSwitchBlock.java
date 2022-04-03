@@ -93,6 +93,7 @@ public class ShockSwitchBlock extends SwitchBlock implements ExplodableBlock {
   public void onProjectileCollision(World world, BlockState state, BlockRayTraceResult hit, ProjectileEntity projectile) {
     if (projectile instanceof AbstractArrowEntity) {
       this.toggleState(state, world, hit.getPos());
+      projectile.remove();
     }
   }
 

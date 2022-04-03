@@ -3,7 +3,9 @@ package net.darmo_creations.tloz_mod.entities;
 import net.darmo_creations.tloz_mod.blocks.PickableBlock;
 import net.darmo_creations.tloz_mod.tile_entities.PickableTileEntity;
 import net.minecraft.entity.*;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
@@ -16,32 +18,44 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
- * An entity that can be picked up by the player.
+ * An entity that can be picked up and thrown by the player.
  *
  * @see PickableBlock
  * @see PickableTileEntity
  */
 public abstract class PickableEntity extends Entity {
   private static final String PICKER_KEY = "PickerPlayer";
+  private static final String BREAK_ON_COLLISION_KEY = "BreakOnCollision";
 
   private static final DataParameter<String> PICKER = EntityDataManager.createKey(PickableEntity.class, DataSerializers.STRING);
+  private static final DataParameter<Boolean> BREAK_ON_COLLISION = EntityDataManager.createKey(PickableEntity.class, DataSerializers.BOOLEAN);
 
-  private PlayerEntity picker;
+  protected PlayerEntity picker;
+  protected boolean breakOnBlockCollision;
 
   public PickableEntity(EntityType<? extends PickableEntity> type, World world) {
     super(type, world);
   }
 
-  public PickableEntity(EntityType<? extends PickableEntity> entityType, World world, double x, double y, double z, PlayerEntity picker) {
+  /**
+   * Create a pickable entity.
+   *
+   * @param breakOnBlockCollision Whether this entity should break/die upon hitting any block.
+   * @param picker                Player who should pick this entity. May be null.
+   */
+  public PickableEntity(EntityType<? extends PickableEntity> entityType, World world, double x, double y, double z,
+                        boolean breakOnBlockCollision, PlayerEntity picker) {
     this(entityType, world);
     this.setPosition(x, y, z);
     this.prevPosX = x;
     this.prevPosY = y;
     this.prevPosZ = z;
     this.setPicker(picker);
+    this.setBreakOnBlockCollision(breakOnBlockCollision);
   }
 
   @Override
@@ -82,6 +96,11 @@ public abstract class PickableEntity extends Entity {
     return ActionResultType.SUCCESS;
   }
 
+  /**
+   * Make the given player pick up the entity.
+   *
+   * @param player The player that should pick up this entity.
+   */
   public void pickUpByPlayer(PlayerEntity player) {
     // Drop currently help entity
     if (player.isBeingRidden()) {
@@ -94,17 +113,29 @@ public abstract class PickableEntity extends Entity {
     this.startRiding(player, true);
   }
 
+  /**
+   * Drop this entity from the player’s hands.
+   *
+   * @param player The player that should drop this entity.
+   */
   private void dropFromPlayer(PlayerEntity player) {
     this.stopRiding();
     this.throwThis(player, player.rotationPitch, player.rotationYaw);
     this.setPicker(null);
   }
 
-  private void throwThis(Entity projectile, double x, double y) {
+  /**
+   * Throw this entity in front of player.
+   *
+   * @param player The player throwing this entity.
+   * @param pitch  Player’s pitch angle.
+   * @param yaw    Player’s yaw angle.
+   */
+  private void throwThis(Entity player, double pitch, double yaw) {
     double speed = 0.45;
-    double dx = -Math.sin(y * Math.PI / 180) * Math.cos(x * Math.PI / 180);
-    double dy = -Math.sin(x * Math.PI / 180);
-    double dz = Math.cos(y * Math.PI / 180) * Math.cos(x * Math.PI / 180);
+    double dx = -Math.sin(yaw * Math.PI / 180) * Math.cos(pitch * Math.PI / 180);
+    double dy = -Math.sin(pitch * Math.PI / 180);
+    double dz = Math.cos(yaw * Math.PI / 180) * Math.cos(pitch * Math.PI / 180);
     Vector3d motionVec = new Vector3d(dx, dy, dz).normalize().scale(speed);
     this.setMotion(motionVec);
     float horizMagnitude = MathHelper.sqrt(horizontalMag(motionVec));
@@ -112,13 +143,15 @@ public abstract class PickableEntity extends Entity {
     this.rotationPitch = (float) (MathHelper.atan2(motionVec.y, horizMagnitude) * 180 / Math.PI);
     this.prevRotationYaw = this.rotationYaw;
     this.prevRotationPitch = this.rotationPitch;
-    Vector3d vector3d = projectile.getMotion();
-    this.setMotion(this.getMotion().add(vector3d.x, projectile.isOnGround() ? 0 : vector3d.y, vector3d.z));
+    Vector3d vector3d = player.getMotion();
+    this.setMotion(this.getMotion().add(vector3d.x, player.isOnGround() ? 0 : vector3d.y, vector3d.z));
   }
 
   @Override
   public void tick() {
     super.tick();
+
+    boolean hitBlock = false;
 
     if (!this.hasNoGravity()) {
       this.setMotion(this.getMotion().add(0, -0.04, 0));
@@ -128,17 +161,29 @@ public abstract class PickableEntity extends Entity {
     this.setMotion(this.getMotion().scale(0.98));
     if (this.onGround) {
       this.setMotion(this.getMotion().mul(0.7, -0.5, 0.7));
+      hitBlock = this.getMotion().length() != 0;
     }
+    // TODO detect if hitting side of blocks
 
-    if (!this.isPassenger() && this.picker != null) {
+    if (this.breakOnBlockCollision && hitBlock) {
+      this.die();
+    } else if (!this.isPassenger() && this.picker != null) {
       this.pickUpByPlayer(this.picker);
     }
   }
 
+  /**
+   * Kill this entity and drop its loot if any.
+   */
   public void die() {
+    if (!this.isAlive()) { // Prevent duplicate drops when thrown on bomb flower or similar
+      return;
+    }
     this.remove();
 
-    if (!this.world.isRemote) {
+    if (this.world.isRemote) {
+      this.playBreakSoundAndAnimation();
+    } else {
       List<ItemStack> drops = this.getDrops();
       if (!drops.isEmpty()) {
         drops.forEach(stack -> {
@@ -150,11 +195,17 @@ public abstract class PickableEntity extends Entity {
     }
   }
 
+  protected abstract void playBreakSoundAndAnimation();
+
+  /**
+   * Return a list of items that should be dropped when this entity dies.
+   */
   protected abstract List<ItemStack> getDrops();
 
   @Override
   protected void registerData() {
     this.dataManager.register(PICKER, "");
+    this.dataManager.register(BREAK_ON_COLLISION, false);
   }
 
   @Override
@@ -165,6 +216,8 @@ public abstract class PickableEntity extends Entity {
       if (!"".equals(s)) {
         this.picker = this.world.getPlayerByUuid(UUID.fromString(s));
       }
+    } else if (BREAK_ON_COLLISION.equals(key)) {
+      this.breakOnBlockCollision = this.dataManager.get(BREAK_ON_COLLISION);
     }
   }
 
@@ -173,11 +226,17 @@ public abstract class PickableEntity extends Entity {
     this.dataManager.set(PICKER, player != null ? player.getGameProfile().getId().toString() : "");
   }
 
+  private void setBreakOnBlockCollision(boolean breakOnBlockCollision) {
+    this.breakOnBlockCollision = breakOnBlockCollision;
+    this.dataManager.set(BREAK_ON_COLLISION, breakOnBlockCollision);
+  }
+
   @Override
   protected void writeAdditional(CompoundNBT compound) {
     if (this.picker != null) {
       compound.putUniqueId(PICKER_KEY, this.picker.getGameProfile().getId());
     }
+    compound.putBoolean(BREAK_ON_COLLISION_KEY, this.breakOnBlockCollision);
   }
 
   @Override
@@ -187,6 +246,7 @@ public abstract class PickableEntity extends Entity {
     } else {
       this.picker = null;
     }
+    this.setBreakOnBlockCollision(compound.getBoolean(BREAK_ON_COLLISION_KEY));
   }
 
   @Override

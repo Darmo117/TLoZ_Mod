@@ -94,7 +94,7 @@ public class BombEntity extends PickableEntity {
   }
 
   public BombEntity(World world, double x, double y, double z, int fuse, boolean isPlant, boolean invulnerable, PlayerEntity picker) {
-    super(ModEntities.BOMB.get(), world, x, y, z, picker);
+    super(ModEntities.BOMB.get(), world, x, y, z, false, picker);
     this.setFuse(fuse);
     this.setPlant(isPlant);
     this.invulnerable = invulnerable;
@@ -119,15 +119,16 @@ public class BombEntity extends PickableEntity {
 
   @Override
   public void die() {
+    if (!this.isAlive()) { // Prevent duplicate drops when thrown on bomb flower or similar
+      return;
+    }
     if (this.invulnerable) {
       return;
     }
 
-    if (this.world.isRemote) {
-      this.world.playSound(this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS,
-          4, (1 + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.2F) * 0.7F, false);
-      this.world.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.getPosX(), this.getPosY(), this.getPosZ(), 1, 0, 0);
-    } else {
+    super.die();
+
+    if (!this.world.isRemote) {
       final AxisAlignedBB effectMaxArea = new AxisAlignedBB(
           this.getPosX() - EXPLOSION_SIZE, this.getPosY() - EXPLOSION_SIZE, this.getPosZ() - EXPLOSION_SIZE,
           this.getPosX() + EXPLOSION_SIZE, this.getPosY() + EXPLOSION_SIZE, this.getPosZ() + EXPLOSION_SIZE
@@ -135,8 +136,13 @@ public class BombEntity extends PickableEntity {
       this.destroyAndUpdateBlocks(effectMaxArea);
       this.hurtEntities(effectMaxArea);
     }
+  }
 
-    super.die();
+  @Override
+  protected void playBreakSoundAndAnimation() {
+    this.world.playSound(this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS,
+        4, (1 + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.2F) * 0.7F, false);
+    this.world.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.getPosX(), this.getPosY(), this.getPosZ(), 1, 0, 0);
   }
 
   private void destroyAndUpdateBlocks(AxisAlignedBB effectMaxArea) {

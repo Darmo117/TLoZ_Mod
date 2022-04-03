@@ -86,6 +86,7 @@ public class EyeSwitchBlock extends SwitchBlock {
     if (projectile instanceof AbstractArrowEntity) {
       this.toggleState(state, world, hit.getPos());
     }
+    projectile.remove();
   }
 
   @Override

@@ -24,6 +24,8 @@ public final class ModBlocks {
   public static final Block SPIKES = new SpikesBlock().setRegistryName("spikes");
 
   public static final Block JAR = new JarBlock().setRegistryName("jar");
+  // TODO growable "acorns" that drop arrows
+  // TODO throwable stones
 
   public static final Block SAFE_ZONE = new SafeZoneBlock().setRegistryName("safe_zone");
   public static final Block SAFE_ZONE_EFFECT_AREA = new SafeZoneEffectAreaBlock().setRegistryName("safe_zone_effect_area");

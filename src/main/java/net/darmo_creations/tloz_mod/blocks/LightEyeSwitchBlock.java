@@ -43,5 +43,6 @@ public class LightEyeSwitchBlock extends EyeSwitchBlock {
     if (projectile instanceof SpectralArrowEntity) {
       this.toggleState(state, world, hit.getPos());
     }
+    projectile.remove();
   }
 }

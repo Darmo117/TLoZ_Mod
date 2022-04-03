@@ -63,7 +63,7 @@ public class BombFlowerBlock extends PickableBlock<BombFlowerTileEntity> {
 
   @Override
   public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-    this.onInteraction(world, pos, Interaction.entityCollision(entity));
+    this.onInteraction(world, pos, InteractionContext.entityCollision(entity));
     if (entity instanceof PickableEntity
         // Prevent bomb from this block to explode when spawning
         && (!(entity instanceof BombEntity) || entity.getMotion().length() > EXPLOSION_SPEED_THRESHOLD)) {
@@ -72,12 +72,12 @@ public class BombFlowerBlock extends PickableBlock<BombFlowerTileEntity> {
   }
 
   @Override
-  protected InteractionResult onInteraction(BombFlowerTileEntity tileEntity, World world, BlockPos pos, Interaction interaction) {
-    switch (interaction.interactionType) {
+  protected InteractionResult onInteraction(BombFlowerTileEntity tileEntity, World world, BlockPos pos, InteractionContext interactionContext) {
+    switch (interactionContext.interactionType) {
       case PLAYER_INTERACT:
-        return this.spawnBomb(interaction.player, tileEntity, BombFlowerTileEntity.FUSE_DELAY, false);
+        return this.spawnBomb(interactionContext.player, tileEntity, BombFlowerTileEntity.FUSE_DELAY, false);
       case ENTITY_COLLISION:
-        if (interaction.entity instanceof PickableEntity) {
+        if (interactionContext.entity instanceof PickableEntity) {
           return this.spawnBomb(null, tileEntity, 0, true);
         }
         break;
