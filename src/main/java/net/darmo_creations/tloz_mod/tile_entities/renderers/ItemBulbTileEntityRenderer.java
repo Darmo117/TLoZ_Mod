@@ -29,7 +29,7 @@ public class ItemBulbTileEntityRenderer extends TileEntityRenderer<ItemBulbFlowe
         matrixStack.translate(offset, 0, offset);
         matrixStack.scale(growthStage, growthStage, growthStage);
       }
-      Minecraft.getInstance().getBlockRendererDispatcher().renderBlock(ModBlocks.ITEM_BULB_FLOWER.getDefaultState(), matrixStack, buffer, combinedLight, OverlayTexture.NO_OVERLAY, EmptyModelData.INSTANCE);
+      Minecraft.getInstance().getBlockRendererDispatcher().renderBlock(ModBlocks.ITEM_BULB.getDefaultState(), matrixStack, buffer, combinedLight, OverlayTexture.NO_OVERLAY, EmptyModelData.INSTANCE);
       matrixStack.pop();
     }
   }

@@ -39,7 +39,7 @@ public class ItemBulbEntity extends BreakablePickableEntity {
   @Override
   protected void playBreakSoundAndAnimation() {
     this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS,
-        1, (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.2F * 0.7F);
+        1, (1 + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.2F) * 0.7F);
     Minecraft.getInstance().particles.addBlockDestroyEffects(this.getPosition(), ModBlocks.ITEM_BULB.getDefaultState());
   }
 
