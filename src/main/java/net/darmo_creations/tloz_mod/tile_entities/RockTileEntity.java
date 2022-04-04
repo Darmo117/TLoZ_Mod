@@ -1,19 +1,19 @@
 package net.darmo_creations.tloz_mod.tile_entities;
 
-import net.darmo_creations.tloz_mod.blocks.BigRockBlock;
-import net.darmo_creations.tloz_mod.entities.BigRockEntity;
+import net.darmo_creations.tloz_mod.blocks.RockBlock;
+import net.darmo_creations.tloz_mod.entities.RockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 /**
- * Tile entity for the {@link BigRockBlock}.
+ * Tile entity for the {@link RockBlock}.
  *
- * @see BigRockBlock
- * @see BigRockEntity
+ * @see RockBlock
+ * @see RockEntity
  */
-public class BigRockTileEntity extends PickableTileEntity {
-  public BigRockTileEntity() {
-    super(ModTileEntities.BIG_ROCK.get());
+public class RockTileEntity extends PickableTileEntity {
+  public RockTileEntity() {
+    super(ModTileEntities.ROCK.get());
   }
 
   /**
@@ -28,7 +28,7 @@ public class BigRockTileEntity extends PickableTileEntity {
       return false;
     }
     BlockPos pos = this.getPos();
-    BigRockEntity jar = new BigRockEntity(this.world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, breakInstantly, breakInstantly ? null : picker);
+    RockEntity jar = new RockEntity(this.world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, breakInstantly, breakInstantly ? null : picker);
     //noinspection ConstantConditions
     this.world.addEntity(jar);
     return true;

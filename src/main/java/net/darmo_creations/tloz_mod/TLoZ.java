@@ -3,7 +3,7 @@ package net.darmo_creations.tloz_mod;
 import net.darmo_creations.tloz_mod.blocks.IModBlock;
 import net.darmo_creations.tloz_mod.blocks.ModBlocks;
 import net.darmo_creations.tloz_mod.entities.ModEntities;
-import net.darmo_creations.tloz_mod.entities.renderers.BigRockEntityRenderer;
+import net.darmo_creations.tloz_mod.entities.renderers.RockEntityRenderer;
 import net.darmo_creations.tloz_mod.entities.renderers.BombEntityRenderer;
 import net.darmo_creations.tloz_mod.entities.renderers.JarEntityRenderer;
 import net.darmo_creations.tloz_mod.entities.renderers.TLoZArrowRenderer;
@@ -62,7 +62,7 @@ public class TLoZ {
   private void setup(final FMLCommonSetupEvent event) {
     RenderingRegistry.registerEntityRenderingHandler(ModEntities.BOMB.get(), BombEntityRenderer::new);
     RenderingRegistry.registerEntityRenderingHandler(ModEntities.JAR.get(), JarEntityRenderer::new);
-    RenderingRegistry.registerEntityRenderingHandler(ModEntities.BIG_ROCK.get(), BigRockEntityRenderer::new);
+    RenderingRegistry.registerEntityRenderingHandler(ModEntities.ROCK.get(), RockEntityRenderer::new);
     RenderingRegistry.registerEntityRenderingHandler(ModEntities.ARROW.get(), TLoZArrowRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.BOMB_FLOWER.get(), BombFlowerTileEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.BOMB_BREAKABLE_BLOCK.get(), BombBreakableBlockTileEntityRenderer::new);

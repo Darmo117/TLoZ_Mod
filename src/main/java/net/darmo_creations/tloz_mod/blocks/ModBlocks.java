@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public final class ModBlocks {
   public static final Block SHOCK_SWITCH = new ShockSwitchBlock().setRegistryName("shock_switch");
   public static final Block PULL_SWITCH = new PullSwitchBlock().setRegistryName("pull_switch");
@@ -24,7 +25,7 @@ public final class ModBlocks {
   public static final Block SPIKES = new SpikesBlock().setRegistryName("spikes");
 
   public static final Block JAR = new JarBlock().setRegistryName("jar");
-  public static final Block BIG_ROCK = new BigRockBlock().setRegistryName("big_rock");
+  public static final Block ROCK = new RockBlock().setRegistryName("rock");
   // TODO growable "acorns" that drop arrows
 
   public static final Block SAFE_ZONE = new SafeZoneBlock().setRegistryName("safe_zone");
