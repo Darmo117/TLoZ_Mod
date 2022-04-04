@@ -3,6 +3,18 @@
     "": [
       {
         "model": "tloz:block/bomb_flower"
+      },
+      {
+        "model": "tloz:block/bomb_flower",
+        "y": 90
+      },
+      {
+        "model": "tloz:block/bomb_flower",
+        "y": 180
+      },
+      {
+        "model": "tloz:block/bomb_flower",
+        "y": 270
       }
     ]
   }
