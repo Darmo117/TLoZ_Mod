@@ -12,6 +12,7 @@ import java.util.*;
  */
 @SuppressWarnings("unused")
 public final class ModItems {
+  // TODO rupees
   // Tools & weapons
   public static final Item BOW = new QuiverBowItem(false).setRegistryName("bow");
   public static final Item BOW_OF_LIGHT = new QuiverBowItem(true).setRegistryName("bow_of_light");

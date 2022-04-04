@@ -29,6 +29,15 @@ public class ModEntities {
           .immuneToFire()
           .build("jar_entity")
   );
+  public static final RegistryObject<EntityType<ItemBulbEntity>> ITEM_BULB = REGISTER.register(
+      "item_bulb_entity",
+      () -> EntityType.Builder.<ItemBulbEntity>create(ItemBulbEntity::new, EntityClassification.MISC)
+          .size(0.98f, 0.98f)
+          .trackingRange(10)
+          .updateInterval(10)
+          .immuneToFire()
+          .build("item_bulb_entity")
+  );
   public static final RegistryObject<EntityType<RockEntity>> ROCK = REGISTER.register(
       "rock_entity",
       () -> EntityType.Builder.<RockEntity>create(RockEntity::new, EntityClassification.MISC)

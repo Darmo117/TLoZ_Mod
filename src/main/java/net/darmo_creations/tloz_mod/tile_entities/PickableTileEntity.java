@@ -3,14 +3,17 @@ package net.darmo_creations.tloz_mod.tile_entities;
 import net.darmo_creations.tloz_mod.blocks.PickableBlock;
 import net.darmo_creations.tloz_mod.entities.PickableEntity;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+
+import java.util.List;
 
 /**
  * Tile entity for {@link PickableBlock}.
@@ -49,6 +52,7 @@ public abstract class PickableTileEntity extends TileEntity implements ITickable
     this.hasBlock = true;
   }
 
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   protected boolean resetGrowthTimer() {
     if (!this.hasBlock || this.world == null) {
       return false;
@@ -73,12 +77,14 @@ public abstract class PickableTileEntity extends TileEntity implements ITickable
       this.delay--;
     } else {
       if (this.growthStage < 1) {
-        PlayerEntity player = null;
-        if (this.world != null) {
-          BlockPos pos = this.getPos();
-          player = this.world.getClosestPlayer(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0.5, true);
-        }
-        if (player == null || this.growthStage > 0) {
+        BlockPos pos = this.getPos();
+        //noinspection ConstantConditions
+        List<Entity> entities = this.world.getEntitiesWithinAABB(
+            Entity.class,
+            new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(),
+                pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1)
+        );
+        if (entities.isEmpty() || this.growthStage > 0) {
           this.growthStage += GROWTH_STEP;
         }
       } else {
@@ -87,9 +93,8 @@ public abstract class PickableTileEntity extends TileEntity implements ITickable
       }
     }
     this.markDirty();
-    if (this.world != null) {
-      this.world.notifyBlockUpdate(this.pos, this.getBlockState(), this.getBlockState(), 2);
-    }
+    //noinspection ConstantConditions
+    this.world.notifyBlockUpdate(this.pos, this.getBlockState(), this.getBlockState(), 2);
   }
 
   @Override

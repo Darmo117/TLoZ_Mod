@@ -8,6 +8,7 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public final class ModBlocks {
+  // TODO blue flower teleporters
   public static final Block SHOCK_SWITCH = new ShockSwitchBlock().setRegistryName("shock_switch");
   public static final Block PULL_SWITCH = new PullSwitchBlock().setRegistryName("pull_switch");
   public static final Block FLOOR_SWITCH = new FloorSwitchBlock().setRegistryName("floor_switch");
@@ -25,6 +26,8 @@ public final class ModBlocks {
   public static final Block SPIKES = new SpikesBlock().setRegistryName("spikes");
   public static final Block SPIKES_EFFECT_AREA = new SpikesEffectAreaBlock().setRegistryName("spikes_effect_area");
 
+  public static final Block ITEM_BULB = new DummyItemBulbBlock().setRegistryName("item_bulb");
+  public static final Block ITEM_BULB_FLOWER = new ItemBulbFlowerBlock().setRegistryName("item_bulb_flower");
   public static final Block JAR = new JarBlock().setRegistryName("jar");
   public static final Block ROCK = new RockBlock().setRegistryName("rock");
   // TODO growable "acorns" that drop arrows

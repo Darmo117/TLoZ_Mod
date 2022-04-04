@@ -17,6 +17,11 @@ public class ModTileEntities {
       () -> TileEntityType.Builder.create(BombFlowerTileEntity::new, ModBlocks.BOMB_FLOWER).build(null)
   );
   @SuppressWarnings("ConstantConditions")
+  public static final RegistryObject<TileEntityType<ItemBulbFlowerTileEntity>> ITEM_BULB_FLOWER = REGISTER.register(
+      "item_bulb_flower_tile_entity",
+      () -> TileEntityType.Builder.create(ItemBulbFlowerTileEntity::new, ModBlocks.ITEM_BULB_FLOWER).build(null)
+  );
+  @SuppressWarnings("ConstantConditions")
   public static final RegistryObject<TileEntityType<JarTileEntity>> JAR = REGISTER.register(
       "jar_tile_entity",
       () -> TileEntityType.Builder.create(JarTileEntity::new, ModBlocks.JAR).build(null)

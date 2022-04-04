@@ -1,7 +1,7 @@
 package net.darmo_creations.tloz_mod.entities;
 
-import net.darmo_creations.tloz_mod.blocks.RockBlock;
 import net.darmo_creations.tloz_mod.blocks.ModBlocks;
+import net.darmo_creations.tloz_mod.blocks.RockBlock;
 import net.darmo_creations.tloz_mod.items.ModItems;
 import net.darmo_creations.tloz_mod.tile_entities.RockTileEntity;
 import net.minecraft.client.Minecraft;
@@ -38,8 +38,8 @@ public class RockEntity extends BreakablePickableEntity {
 
   @Override
   protected void playBreakSoundAndAnimation() {
-    this.world.playSound(this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.BLOCK_ANCIENT_DEBRIS_BREAK, SoundCategory.BLOCKS,
-        1, (1 + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.2F) * 0.7F, false);
+    this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.BLOCK_ANCIENT_DEBRIS_BREAK, SoundCategory.BLOCKS,
+        1, (1 + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.2F) * 0.7F);
     Minecraft.getInstance().particles.addBlockDestroyEffects(this.getPosition(), ModBlocks.ROCK.getDefaultState());
   }
 

@@ -21,17 +21,17 @@ public class BombFlowerTileEntity extends PickableTileEntity {
   /**
    * Pops the bomb from the bomb flower if it has any.
    *
-   * @param player       The optional player that picked the bomb.
+   * @param picker       The optional player that picked the bomb.
    * @param fuse         Number of ticks before the bomb will explode.
    * @param invulnerable If true, the bomb entity will not be killable.
    * @return True if the bomb entity could be spawned, false otherwise.
    */
-  public boolean popBomb(PlayerEntity player, final int fuse, final boolean invulnerable) {
+  public boolean popBomb(PlayerEntity picker, final int fuse, final boolean invulnerable) {
     if (!this.resetGrowthTimer()) {
       return false;
     }
     BlockPos pos = this.getPos();
-    BombEntity bomb = new BombEntity(this.world, pos.getX() + 0.5, pos.getY() + 0.0625, pos.getZ() + 0.5, fuse, true, invulnerable, player);
+    BombEntity bomb = new BombEntity(this.world, pos.getX() + 0.5, pos.getY() + 0.0625, pos.getZ() + 0.5, fuse, true, invulnerable, picker);
     //noinspection ConstantConditions
     this.world.addEntity(bomb);
     return true;

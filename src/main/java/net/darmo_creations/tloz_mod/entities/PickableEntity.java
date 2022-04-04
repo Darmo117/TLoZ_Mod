@@ -213,9 +213,9 @@ public abstract class PickableEntity extends Entity {
     }
     this.remove();
 
-    if (this.world.isRemote) {
-      this.playBreakSoundAndAnimation();
-    } else {
+    // Play on both client and server as entity may not yet be spawned client-side when dying
+    this.playBreakSoundAndAnimation();
+    if (!this.world.isRemote) {
       List<ItemStack> drops = this.getDrops();
       if (!drops.isEmpty()) {
         drops.forEach(stack -> {
