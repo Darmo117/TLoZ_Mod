@@ -3,9 +3,9 @@ package net.darmo_creations.tloz_mod;
 import net.darmo_creations.tloz_mod.blocks.IModBlock;
 import net.darmo_creations.tloz_mod.blocks.ModBlocks;
 import net.darmo_creations.tloz_mod.entities.ModEntities;
-import net.darmo_creations.tloz_mod.entities.renderers.RockEntityRenderer;
 import net.darmo_creations.tloz_mod.entities.renderers.BombEntityRenderer;
 import net.darmo_creations.tloz_mod.entities.renderers.JarEntityRenderer;
+import net.darmo_creations.tloz_mod.entities.renderers.RockEntityRenderer;
 import net.darmo_creations.tloz_mod.entities.renderers.TLoZArrowRenderer;
 import net.darmo_creations.tloz_mod.items.BombBagItem;
 import net.darmo_creations.tloz_mod.items.HeartItem;
@@ -15,6 +15,7 @@ import net.darmo_creations.tloz_mod.tile_entities.ModTileEntities;
 import net.darmo_creations.tloz_mod.tile_entities.renderers.BombBreakableBlockTileEntityRenderer;
 import net.darmo_creations.tloz_mod.tile_entities.renderers.BombFlowerTileEntityRenderer;
 import net.darmo_creations.tloz_mod.tile_entities.renderers.SafeZoneEffectAreaTileEntityRenderer;
+import net.darmo_creations.tloz_mod.tile_entities.renderers.SpikesEffectAreaTileEntityRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -67,6 +68,7 @@ public class TLoZ {
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.BOMB_FLOWER.get(), BombFlowerTileEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.BOMB_BREAKABLE_BLOCK.get(), BombBreakableBlockTileEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.SAFE_ZONE_EFFECT_AREA.get(), SafeZoneEffectAreaTileEntityRenderer::new);
+    ClientRegistry.bindTileEntityRenderer(ModTileEntities.SPIKES_EFFECT_AREA.get(), SpikesEffectAreaTileEntityRenderer::new);
     RenderTypeLookup.setRenderLayer(ModBlocks.BOMB_FLOWER, RenderType.getCutoutMipped());
   }
 

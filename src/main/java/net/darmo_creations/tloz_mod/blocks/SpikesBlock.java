@@ -7,25 +7,43 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.pathfinding.PathType;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-// TODO make passable to phantoms
 public class SpikesBlock extends Block {
-  protected static final VoxelShape SHAPE = makeCuboidShape(1, 0, 1, 15, 32, 15);
-
   public SpikesBlock() {
     super(Properties.create(Material.IRON)
         .notSolid()
         .setBlocksVision((blockState, blockReader, pos) -> false)
+        .setAllowsSpawn((blockState, blockReader, pos, entityType) -> false)
         .sound(SoundType.METAL));
+  }
+
+  @SuppressWarnings("deprecation")
+  @Override
+  public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean isMoving) {
+    if (world.isAirBlock(pos.up())) {
+      world.setBlockState(pos.up(), ModBlocks.SPIKES_EFFECT_AREA.getDefaultState(), 3);
+    }
+  }
+
+  @SuppressWarnings("deprecation")
+  @Override
+  public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+    return VoxelShapes.empty();
+  }
+
+  @SuppressWarnings("deprecation")
+  @Override
+  public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+    return VoxelShapes.fullCube();
   }
 
   @SuppressWarnings("deprecation")
@@ -43,25 +61,13 @@ public class SpikesBlock extends Block {
 
   @SuppressWarnings("deprecation")
   @Override
-  public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-    return SHAPE;
+  public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+    SpikesEffectAreaBlock.dealDamageAndKnockback(pos, entity);
   }
 
   @SuppressWarnings("deprecation")
   @Override
-  public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-    return SHAPE;
-  }
-
-  @SuppressWarnings("deprecation")
-  @Override
-  public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
-    entityIn.attackEntityFrom(DamageSource.CACTUS, 1);
-  }
-
-  @SuppressWarnings("deprecation")
-  @Override
-  public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
-    return false;
+  public boolean allowsMovement(BlockState state, IBlockReader world, BlockPos pos, PathType type) {
+    return true;
   }
 }

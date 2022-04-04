@@ -36,4 +36,9 @@ public class ModTileEntities {
       "safe_zone_effect_area_tile_entity",
       () -> TileEntityType.Builder.create(SafeZoneEffectAreaTileEntity::new, ModBlocks.SAFE_ZONE_EFFECT_AREA).build(null)
   );
+  @SuppressWarnings("ConstantConditions")
+  public static final RegistryObject<TileEntityType<SpikesEffectAreaTileEntity>> SPIKES_EFFECT_AREA = REGISTER.register(
+      "spikes_effect_area_tile_entity",
+      () -> TileEntityType.Builder.create(SpikesEffectAreaTileEntity::new, ModBlocks.SPIKES_EFFECT_AREA).build(null)
+  );
 }

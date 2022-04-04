@@ -23,6 +23,7 @@ public final class ModBlocks {
 
   public static final Block SPIKES_BASE = new SpikesBaseBlock().setRegistryName("spikes_base");
   public static final Block SPIKES = new SpikesBlock().setRegistryName("spikes");
+  public static final Block SPIKES_EFFECT_AREA = new SpikesEffectAreaBlock().setRegistryName("spikes_effect_area");
 
   public static final Block JAR = new JarBlock().setRegistryName("jar");
   public static final Block ROCK = new RockBlock().setRegistryName("rock");
