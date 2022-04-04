@@ -1,6 +1,6 @@
 package net.darmo_creations.tloz_mod;
 
-import net.darmo_creations.tloz_mod.blocks.ModBlocks;
+import net.darmo_creations.tloz_mod.items.ModItems;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 
@@ -14,6 +14,6 @@ public class CreativeTab extends ItemGroup {
 
   @Override
   public ItemStack createIcon() {
-    return new ItemStack(ModBlocks.SHOCK_SWITCH);
+    return new ItemStack(ModItems.BIG_GREEN_RUPEE);
   }
 }
