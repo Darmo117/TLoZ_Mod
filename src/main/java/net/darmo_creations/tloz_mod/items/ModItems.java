@@ -12,7 +12,6 @@ import java.util.*;
  */
 @SuppressWarnings("unused")
 public final class ModItems {
-  // TODO rupees
   // Tools & weapons
   public static final Item BOW = new QuiverBowItem(false).setRegistryName("bow");
   public static final Item BOW_OF_LIGHT = new QuiverBowItem(true).setRegistryName("bow_of_light");
@@ -24,7 +23,7 @@ public final class ModItems {
   public static final Item SMALL_BOMB_BAG = new BombBagItem(10).setRegistryName("bomb_bag_small");
   public static final Item MEDIUM_BOMB_BAG = new BombBagItem(20).setRegistryName("bomb_bag_medium");
   public static final Item BIG_BOMB_BAG = new BombBagItem(30).setRegistryName("bomb_bag_big");
-  public static final Item BOMB_AMMO = new TLoZItem(new Item.Properties().maxStackSize(1).group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("bomb_ammo");
+  public static final Item BOMB_AMMO = new BombItem().setRegistryName("bomb_ammo");
 
   // Health-related
   public static final Item RED_POTION = new HealthPotionItem(6).setRegistryName("potion.red");
@@ -49,6 +48,15 @@ public final class ModItems {
   public static final Item ANCIENT_GOLD_PIECE = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("ancient_gold_piece");
   public static final Item ALCHEMY_STONE = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("alchemy_stone");
   public static final Item REGAL_RING = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("regal_ring");
+
+  // Rupees
+  public static final Item RUPEE_BAG = new RupeeBagItem().setRegistryName("rupee_bag");
+  public static final Item GREEN_RUPEE = new RupeeItem(1).setRegistryName("rupee_green");
+  public static final Item BLUE_RUPEE = new RupeeItem(5).setRegistryName("rupee_blue");
+  public static final Item RED_RUPEE = new RupeeItem(20).setRegistryName("rupee_red");
+  public static final Item BIG_GREEN_RUPEE = new RupeeItem(100).setRegistryName("rupee_big_green");
+  public static final Item BIG_RED_RUPEE = new RupeeItem(200).setRegistryName("rupee_big_red");
+  public static final Item BIG_GOLD_RUPEE = new RupeeItem(300).setRegistryName("rupee_big_gold");
 
   /**
    * The list of all explicitly declared items for this mod.

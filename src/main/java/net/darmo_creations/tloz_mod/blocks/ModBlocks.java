@@ -9,6 +9,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public final class ModBlocks {
   // TODO blue flower teleporters
+  // TODO leaves patch
   public static final Block SHOCK_SWITCH = new ShockSwitchBlock().setRegistryName("shock_switch");
   public static final Block PULL_SWITCH = new PullSwitchBlock().setRegistryName("pull_switch");
   public static final Block FLOOR_SWITCH = new FloorSwitchBlock().setRegistryName("floor_switch");

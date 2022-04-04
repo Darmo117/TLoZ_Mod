@@ -73,26 +73,4 @@ public class BombBagItem extends TLoZItem {
     }
     return new ActionResult<>(ActionResultType.FAIL, item);
   }
-
-  /**
-   * Refill player’s bomb bag when they pickup a bomb ammo item.
-   */
-  @SubscribeEvent
-  public static void onEntityItemPickup(EntityItemPickupEvent event) {
-    ItemEntity itemEntity = event.getItem();
-    ItemStack bombsStack = itemEntity.getItem();
-    if (bombsStack.getItem() == ModItems.BOMB_AMMO) {
-      PlayerEntity player = event.getPlayer();
-      int bombBagIndex = Utils.getBombBagInventorySlot(player);
-      if (bombBagIndex >= 0) {
-        ItemStack bombBag = player.inventory.getStackInSlot(bombBagIndex);
-        if (bombBag.isDamaged()) {
-          bombBag.setDamage(bombBag.getDamage() - bombsStack.getCount());
-        }
-      }
-      Utils.playItemPickupSound(player);
-      itemEntity.remove();
-      event.setCanceled(true);
-    }
-  }
 }

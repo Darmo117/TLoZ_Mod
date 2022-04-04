@@ -4,10 +4,7 @@ import net.darmo_creations.tloz_mod.blocks.IModBlock;
 import net.darmo_creations.tloz_mod.blocks.ModBlocks;
 import net.darmo_creations.tloz_mod.entities.ModEntities;
 import net.darmo_creations.tloz_mod.entities.renderers.*;
-import net.darmo_creations.tloz_mod.items.BombBagItem;
-import net.darmo_creations.tloz_mod.items.HeartItem;
-import net.darmo_creations.tloz_mod.items.ModItems;
-import net.darmo_creations.tloz_mod.items.QuiverItem;
+import net.darmo_creations.tloz_mod.items.*;
 import net.darmo_creations.tloz_mod.tile_entities.ModTileEntities;
 import net.darmo_creations.tloz_mod.tile_entities.renderers.*;
 import net.minecraft.block.Block;
@@ -49,9 +46,8 @@ public class TLoZ {
     ModTileEntities.REGISTER.register(modEventBus);
     ModEntities.REGISTER.register(modEventBus);
     MinecraftForge.EVENT_BUS.register(this);
-    MinecraftForge.EVENT_BUS.register(BombBagItem.class);
     MinecraftForge.EVENT_BUS.register(QuiverItem.class);
-    MinecraftForge.EVENT_BUS.register(HeartItem.class);
+    MinecraftForge.EVENT_BUS.register(SpecialPickableItem.class);
   }
 
   private void setup(final FMLCommonSetupEvent event) {
