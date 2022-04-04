@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class SpikesEffectAreaBlock extends Block implements ITileEntityProvider {
+public class SpikesEffectAreaBlock extends Block implements ITileEntityProvider, IModBlock {
   public static final List<Class<? extends Entity>> IMMUNE_ENTITIES = new ArrayList<>();
 
   static {
@@ -116,5 +116,10 @@ public class SpikesEffectAreaBlock extends Block implements ITileEntityProvider 
   @Override
   public BlockRenderType getRenderType(BlockState state) {
     return BlockRenderType.ENTITYBLOCK_ANIMATED;
+  }
+
+  @Override
+  public boolean hasGeneratedItemBlock() {
+    return false;
   }
 }
