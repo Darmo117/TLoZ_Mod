@@ -61,6 +61,7 @@ public class TLoZ {
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.ITEM_BULB_FLOWER.get(), ItemBulbTileEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.SAFE_ZONE_EFFECT_AREA.get(), SafeZoneEffectAreaTileEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.SPIKES_EFFECT_AREA.get(), SpikesEffectAreaTileEntityRenderer::new);
+    ClientRegistry.bindTileEntityRenderer(ModTileEntities.SPAWNPOINT_SETTER.get(), SpawnPointSetterTileEntityRenderer::new);
     RenderTypeLookup.setRenderLayer(ModBlocks.BOMB_FLOWER, RenderType.getCutoutMipped());
     RenderTypeLookup.setRenderLayer(ModBlocks.ITEM_BULB_FLOWER, RenderType.getCutoutMipped());
   }

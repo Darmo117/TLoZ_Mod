@@ -46,4 +46,9 @@ public class ModTileEntities {
       "spikes_effect_area_tile_entity",
       () -> TileEntityType.Builder.create(SpikesEffectAreaTileEntity::new, ModBlocks.SPIKES_EFFECT_AREA).build(null)
   );
+  @SuppressWarnings("ConstantConditions")
+  public static final RegistryObject<TileEntityType<SpawnpointSetterTileEntity>> SPAWNPOINT_SETTER = REGISTER.register(
+      "spawnpoint_setter_tile_entity",
+      () -> TileEntityType.Builder.create(SpawnpointSetterTileEntity::new, ModBlocks.SPAWNPOINT_SETTER).build(null)
+  );
 }

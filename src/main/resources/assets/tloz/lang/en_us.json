@@ -58,5 +58,6 @@
   "block.tloz.jar": "Jar",
   "block.tloz.big_rock": "Big Rock",
   "block.tloz.safe_zone": "Safe Zone",
-  "block.tloz.locked_door": "Locked Door"
+  "block.tloz.locked_door": "Locked Door",
+  "block.tloz.spawnpoint_setter": "Spawnpoint Setter"
 }

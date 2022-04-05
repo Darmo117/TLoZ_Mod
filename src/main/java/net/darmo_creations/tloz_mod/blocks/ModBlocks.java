@@ -12,7 +12,8 @@ public final class ModBlocks {
   // TODO leaves patch
   // TODO small and big chests that pop an item above themselves instead of opening when interacted with
   // TODO locked boss "door" blocks
-  // TODO invisible block to set player’s spawnpoint
+
+  public static final Block SPAWNPOINT_SETTER = new SpawnpointSetterBlock().setRegistryName("spawnpoint_setter");
 
   public static final Block SHOCK_SWITCH = new ShockSwitchBlock().setRegistryName("shock_switch");
   public static final Block PULL_SWITCH = new PullSwitchBlock().setRegistryName("pull_switch");
