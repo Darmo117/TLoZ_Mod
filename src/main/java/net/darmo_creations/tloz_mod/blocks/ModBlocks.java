@@ -10,15 +10,17 @@ import java.util.List;
 public final class ModBlocks {
   // TODO blue flower teleporters
   // TODO leaves patch
-  // TODO small and big chests that pop an item above themselves instead of opening when interacted with
   // TODO locked boss "door" blocks
+  // TODO mailbox (only if worth it)
 
   public static final Block SPAWNPOINT_SETTER = new SpawnpointSetterBlock().setRegistryName("spawnpoint_setter");
 
   public static final Block SHOCK_SWITCH = new ShockSwitchBlock().setRegistryName("shock_switch");
   public static final Block PULL_SWITCH = new PullSwitchBlock().setRegistryName("pull_switch");
   public static final Block FLOOR_SWITCH = new FloorSwitchBlock().setRegistryName("floor_switch");
+  // TODO models
   public static final Block EYE_SWITCH = new EyeSwitchBlock().setRegistryName("eye_switch");
+  // TODO models
   public static final Block LIGHT_EYE_SWITCH = new LightEyeSwitchBlock().setRegistryName("light_eye_switch");
   // TODO wind switch
   // TODO torchlight
@@ -43,6 +45,10 @@ public final class ModBlocks {
 
   public static final Block SAFE_ZONE = new SafeZoneBlock().setRegistryName("safe_zone");
   public static final Block SAFE_ZONE_EFFECT_AREA = new SafeZoneEffectAreaBlock().setRegistryName("safe_zone_effect_area");
+
+  public static final Block TREASURE_CHEST = new TreasureChestBlock(TreasureChestBlock.Type.SIMPLE).setRegistryName("treasure_chest");
+  public static final Block DOUBLE_TREASURE_CHEST = new TreasureChestBlock(TreasureChestBlock.Type.DOUBLE).setRegistryName("double_treasure_chest");
+  public static final Block MIMIC_CHEST = new TreasureChestBlock(TreasureChestBlock.Type.MIMIC).setRegistryName("mimic_chest");
 
   /**
    * The list of all declared blocks for this mod.

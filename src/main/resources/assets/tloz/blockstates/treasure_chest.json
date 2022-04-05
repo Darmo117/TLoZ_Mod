@@ -1,0 +1,50 @@
+{
+  "variants": {
+    "facing=north,open=false": [
+      {
+        "model": "tloz:block/treasure_chest"
+      }
+    ],
+    "facing=east,open=false": [
+      {
+        "model": "tloz:block/treasure_chest",
+        "y": 90
+      }
+    ],
+    "facing=south,open=false": [
+      {
+        "model": "tloz:block/treasure_chest",
+        "y": 180
+      }
+    ],
+    "facing=west,open=false": [
+      {
+        "model": "tloz:block/treasure_chest",
+        "y": 270
+      }
+    ],
+    "facing=north,open=true": [
+      {
+        "model": "tloz:block/treasure_chest_open"
+      }
+    ],
+    "facing=east,open=true": [
+      {
+        "model": "tloz:block/treasure_chest_open",
+        "y": 90
+      }
+    ],
+    "facing=south,open=true": [
+      {
+        "model": "tloz:block/treasure_chest_open",
+        "y": 180
+      }
+    ],
+    "facing=west,open=true": [
+      {
+        "model": "tloz:block/treasure_chest_open",
+        "y": 270
+      }
+    ]
+  }
+}

@@ -51,4 +51,10 @@ public class ModTileEntities {
       "spawnpoint_setter_tile_entity",
       () -> TileEntityType.Builder.create(SpawnpointSetterTileEntity::new, ModBlocks.SPAWNPOINT_SETTER).build(null)
   );
+  @SuppressWarnings("ConstantConditions")
+  public static final RegistryObject<TileEntityType<TreasureChestTileEntity>> TREASURE_CHEST = REGISTER.register(
+      "treasure_chest_tile_entity",
+      () -> TileEntityType.Builder.create(TreasureChestTileEntity::new, ModBlocks.TREASURE_CHEST, ModBlocks.DOUBLE_TREASURE_CHEST, ModBlocks.MIMIC_CHEST)
+          .build(null)
+  );
 }

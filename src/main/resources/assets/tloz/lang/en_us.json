@@ -59,5 +59,8 @@
   "block.tloz.big_rock": "Big Rock",
   "block.tloz.safe_zone": "Safe Zone",
   "block.tloz.locked_door": "Locked Door",
-  "block.tloz.spawnpoint_setter": "Spawnpoint Setter"
+  "block.tloz.spawnpoint_setter": "Spawnpoint Setter",
+  "block.tloz.treasure_chest": "Treasure Chest",
+  "block.tloz.double_treasure_chest": "Double Treasure Chest",
+  "block.tloz.mimic_chest": "Mimic Chest"
 }

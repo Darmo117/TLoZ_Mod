@@ -4,7 +4,9 @@ import net.darmo_creations.tloz_mod.blocks.IModBlock;
 import net.darmo_creations.tloz_mod.blocks.ModBlocks;
 import net.darmo_creations.tloz_mod.entities.ModEntities;
 import net.darmo_creations.tloz_mod.entities.renderers.*;
-import net.darmo_creations.tloz_mod.items.*;
+import net.darmo_creations.tloz_mod.items.ModItems;
+import net.darmo_creations.tloz_mod.items.QuiverItem;
+import net.darmo_creations.tloz_mod.items.SpecialPickableItem;
 import net.darmo_creations.tloz_mod.tile_entities.ModTileEntities;
 import net.darmo_creations.tloz_mod.tile_entities.renderers.*;
 import net.minecraft.block.Block;
@@ -62,6 +64,7 @@ public class TLoZ {
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.SAFE_ZONE_EFFECT_AREA.get(), SafeZoneEffectAreaTileEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.SPIKES_EFFECT_AREA.get(), SpikesEffectAreaTileEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.SPAWNPOINT_SETTER.get(), SpawnPointSetterTileEntityRenderer::new);
+    ClientRegistry.bindTileEntityRenderer(ModTileEntities.TREASURE_CHEST.get(), TreasureChestTileEntityRenderer::new);
     RenderTypeLookup.setRenderLayer(ModBlocks.BOMB_FLOWER, RenderType.getCutoutMipped());
     RenderTypeLookup.setRenderLayer(ModBlocks.ITEM_BULB_FLOWER, RenderType.getCutoutMipped());
   }
