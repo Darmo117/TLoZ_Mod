@@ -117,7 +117,11 @@ public class LockedDoor extends Block {
   @Override
   public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
     ItemStack heldItem = player.getHeldItem(hand);
-    if (heldItem.getItem() != ModItems.SMALL_KEY || state.get(OPEN)) {
+    boolean isOpen = state.get(OPEN);
+    if (heldItem.getItem() != ModItems.SMALL_KEY || isOpen) {
+      if (!isOpen) {
+        world.playSound(null, pos, SoundEvents.BLOCK_CHEST_LOCKED, SoundCategory.BLOCKS, 1, 1);
+      }
       return ActionResultType.PASS;
     }
     world.setBlockState(pos, state.with(OPEN, true), 10);
@@ -127,7 +131,7 @@ public class LockedDoor extends Block {
     world.playSound(null, pos, SoundEvents.BLOCK_WOODEN_DOOR_OPEN, SoundCategory.BLOCKS, 1, 1);
     Optional<BlockPos> neighborPos = this.getNeighborDoor(state, world, pos);
     neighborPos.ifPresent(p -> world.setBlockState(p, world.getBlockState(p).with(OPEN, true), 10));
-    return ActionResultType.func_233537_a_(world.isRemote);
+    return ActionResultType.SUCCESS;
   }
 
   private Optional<BlockPos> getNeighborDoor(BlockState thisState, World world, BlockPos thisPos) {
