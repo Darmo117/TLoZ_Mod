@@ -1,0 +1,23 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "tloz:block/locked_door_face_lower",
+		"1": "tloz:block/locked_door_side",
+		"2": "tloz:block/locked_door_top",
+		"particle": "tloz:block/locked_door_face_lower"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 13],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"east": {"uv": [0, 0, 3, 16], "texture": "#1"},
+				"south": {"uv": [16, 0, 0, 16], "texture": "#0"},
+				"west": {"uv": [4, 0, 7, 16], "texture": "#1"},
+				"up": {"uv": [16, 9, 0, 12], "texture": "#2"},
+				"down": {"uv": [0, 13, 16, 16], "texture": "#2"}
+			}
+		}
+	]
+}

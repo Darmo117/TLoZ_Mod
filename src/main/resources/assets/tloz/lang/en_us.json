@@ -26,6 +26,8 @@
   "item.tloz.potion.tooltip.amount": "Heals %d hearts",
   "item.tloz.potion.tooltip.all": "Heals all hearts",
   "item.tloz.heart": "Heart",
+  "item.tloz.small_key": "Small Key",
+  "item.tloz.boss_key": "Boss Key",
   "item.tloz.demon_fossil": "Demon Fossil",
   "item.tloz.stalfos_skull": "Stalfos Skull",
   "item.tloz.star_fragment": "Star Fragment",
@@ -55,5 +57,6 @@
   "block.tloz.item_bulb_flower": "Item Bulb Flower",
   "block.tloz.jar": "Jar",
   "block.tloz.big_rock": "Big Rock",
-  "block.tloz.safe_zone": "Safe Zone"
+  "block.tloz.safe_zone": "Safe Zone",
+  "block.tloz.locked_door": "Locked Door"
 }

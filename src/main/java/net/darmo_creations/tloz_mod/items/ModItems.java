@@ -58,6 +58,10 @@ public final class ModItems {
   public static final Item BIG_RED_RUPEE = new RupeeItem(200).setRegistryName("rupee_big_red");
   public static final Item BIG_GOLD_RUPEE = new RupeeItem(300).setRegistryName("rupee_big_gold");
 
+  // Keys
+  public static final Item SMALL_KEY = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("small_key");
+  public static final Item BOSS_KEY = new TLoZItem(new Item.Properties().maxStackSize(1).group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("boss_key");
+
   /**
    * The list of all explicitly declared items for this mod.
    */
