@@ -37,15 +37,16 @@ public class TreasureChestBlock extends ContainerBlock implements ExplodableBloc
   public static final BooleanProperty MAIN = BooleanProperty.create("main");
   public static final BooleanProperty MIMIC = BooleanProperty.create("mimic");
 
-  protected static final VoxelShape SHAPE_NORTH = Block.makeCuboidShape(1, 0, 0, 15, 15, 15);
-  protected static final VoxelShape SHAPE_SOUTH = Block.makeCuboidShape(1, 0, 1, 15, 15, 16);
-  protected static final VoxelShape SHAPE_WEST = Block.makeCuboidShape(0, 0, 1, 15, 15, 15);
-  protected static final VoxelShape SHAPE_EAST = Block.makeCuboidShape(1, 0, 1, 16, 15, 15);
+  protected static final VoxelShape SHAPE_NORTH = Block.makeCuboidShape(1, 0, 0, 15, 15, 10);
+  protected static final VoxelShape SHAPE_SOUTH = Block.makeCuboidShape(1, 0, 6, 15, 15, 16);
+  protected static final VoxelShape SHAPE_WEST = Block.makeCuboidShape(0, 0, 1, 10, 15, 15);
+  protected static final VoxelShape SHAPE_EAST = Block.makeCuboidShape(6, 0, 1, 16, 15, 15);
+  protected static final VoxelShape SHAPE_NORTH_OPEN = Block.makeCuboidShape(1, 0, 0, 15, 9, 10);
+  protected static final VoxelShape SHAPE_SOUTH_OPEN = Block.makeCuboidShape(1, 0, 6, 15, 9, 16);
+  protected static final VoxelShape SHAPE_WEST_OPEN = Block.makeCuboidShape(0, 0, 1, 10, 9, 15);
+  protected static final VoxelShape SHAPE_EAST_OPEN = Block.makeCuboidShape(6, 0, 1, 16, 9, 15);
+
   protected static final VoxelShape SHAPE_SINGLE = Block.makeCuboidShape(1, 0, 1, 15, 15, 15);
-  protected static final VoxelShape SHAPE_NORTH_OPEN = Block.makeCuboidShape(1, 0, 0, 15, 9, 15);
-  protected static final VoxelShape SHAPE_SOUTH_OPEN = Block.makeCuboidShape(1, 0, 1, 15, 9, 16);
-  protected static final VoxelShape SHAPE_WEST_OPEN = Block.makeCuboidShape(0, 0, 1, 15, 9, 15);
-  protected static final VoxelShape SHAPE_EAST_OPEN = Block.makeCuboidShape(1, 0, 1, 16, 9, 15);
   protected static final VoxelShape SHAPE_SINGLE_OPEN = Block.makeCuboidShape(1, 0, 1, 15, 9, 15);
 
   private final boolean isDouble;
@@ -269,7 +270,7 @@ public class TreasureChestBlock extends ContainerBlock implements ExplodableBloc
   @SuppressWarnings("deprecation")
   @Override
   public BlockRenderType getRenderType(BlockState state) {
-    return state.get(MAIN) ? BlockRenderType.MODEL : BlockRenderType.INVISIBLE;
+    return BlockRenderType.MODEL;
   }
 
   public enum Type {

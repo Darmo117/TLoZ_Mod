@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "facing=north,main=false,open=false": {
+      "model": "tloz:block/double_treasure_chest_right"
+    },
+    "facing=north,main=true,open=false": {
+      "model": "tloz:block/double_treasure_chest_left"
+    },
+    "facing=north,main=false,open=true": {
+      "model": "tloz:block/double_treasure_chest_right_open"
+    },
+    "facing=north,main=true,open=true": {
+      "model": "tloz:block/double_treasure_chest_left_open"
+    },
+    "facing=east,main=false,open=false": {
+      "model": "tloz:block/double_treasure_chest_right",
+      "y": 90
+    },
+    "facing=east,main=true,open=false": {
+      "model": "tloz:block/double_treasure_chest_left",
+      "y": 90
+    },
+    "facing=east,main=false,open=true": {
+      "model": "tloz:block/double_treasure_chest_right_open",
+      "y": 90
+    },
+    "facing=east,main=true,open=true": {
+      "model": "tloz:block/double_treasure_chest_left_open",
+      "y": 90
+    },
+    "facing=south,main=false,open=false": {
+      "model": "tloz:block/double_treasure_chest_right",
+      "y": 180
+    },
+    "facing=south,main=true,open=false": {
+      "model": "tloz:block/double_treasure_chest_left",
+      "y": 180
+    },
+    "facing=south,main=false,open=true": {
+      "model": "tloz:block/double_treasure_chest_right_open",
+      "y": 180
+    },
+    "facing=south,main=true,open=true": {
+      "model": "tloz:block/double_treasure_chest_left_open",
+      "y": 180
+    },
+    "facing=west,main=false,open=false": {
+      "model": "tloz:block/double_treasure_chest_right",
+      "y": 270
+    },
+    "facing=west,main=true,open=false": {
+      "model": "tloz:block/double_treasure_chest_left",
+      "y": 270
+    },
+    "facing=west,main=false,open=true": {
+      "model": "tloz:block/double_treasure_chest_right_open",
+      "y": 270
+    },
+    "facing=west,main=true,open=true": {
+      "model": "tloz:block/double_treasure_chest_left_open",
+      "y": 270
+    }
+  }
+}
