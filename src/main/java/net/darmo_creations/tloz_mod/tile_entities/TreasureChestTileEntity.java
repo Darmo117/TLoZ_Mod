@@ -7,8 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -18,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.Optional;
 
-public class TreasureChestTileEntity extends TileEntity implements ITickableTileEntity {
+public class TreasureChestTileEntity extends SynchronizedTileEntity implements ITickableTileEntity {
   public static final String LOOT_KEY = "Loot";
   public static final String LINKED_INVENTORY_POS_KEY = "LinkedInventoryPos";
 
@@ -106,20 +104,5 @@ public class TreasureChestTileEntity extends TileEntity implements ITickableTile
     } else {
       this.linkedInventoryPos = null;
     }
-  }
-
-  @Override
-  public SUpdateTileEntityPacket getUpdatePacket() {
-    return new SUpdateTileEntityPacket(this.pos, -1, this.write(new CompoundNBT()));
-  }
-
-  @Override
-  public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-    this.read(this.getBlockState(), pkt.getNbtCompound());
-  }
-
-  @Override
-  public CompoundNBT getUpdateTag() {
-    return this.write(new CompoundNBT());
   }
 }
