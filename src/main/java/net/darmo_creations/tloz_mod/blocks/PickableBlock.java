@@ -1,5 +1,6 @@
 package net.darmo_creations.tloz_mod.blocks;
 
+import net.darmo_creations.tloz_mod.UpdateFlags;
 import net.darmo_creations.tloz_mod.entities.PickableEntity;
 import net.darmo_creations.tloz_mod.tile_entities.PickableTileEntity;
 import net.minecraft.block.BlockState;
@@ -76,7 +77,7 @@ public abstract class PickableBlock<T extends PickableTileEntity> extends Contai
           case FAIL:
             return ActionResultType.FAIL;
           case BREAK_BLOCK:
-            world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+            world.setBlockState(pos, Blocks.AIR.getDefaultState(), UpdateFlags.UPDATE_BLOCK | UpdateFlags.SEND_TO_CLIENT);
             return ActionResultType.SUCCESS;
         }
       }
@@ -157,7 +158,7 @@ public abstract class PickableBlock<T extends PickableTileEntity> extends Contai
   @SuppressWarnings("deprecation")
   @Override
   public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
-    world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+    world.setBlockState(pos, Blocks.AIR.getDefaultState(), UpdateFlags.UPDATE_BLOCK | UpdateFlags.SEND_TO_CLIENT);
   }
 
   @Override

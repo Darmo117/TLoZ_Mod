@@ -1,5 +1,6 @@
 package net.darmo_creations.tloz_mod.blocks;
 
+import net.darmo_creations.tloz_mod.UpdateFlags;
 import net.darmo_creations.tloz_mod.tile_entities.SafeZoneEffectAreaTileEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -43,7 +44,7 @@ public class SafeZoneEffectAreaBlock extends Block implements IModBlock, ITileEn
   @Override
   public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
     if (!this.isValidPosition(state, world, pos)) {
-      world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+      world.setBlockState(pos, Blocks.AIR.getDefaultState(), UpdateFlags.UPDATE_BLOCK | UpdateFlags.SEND_TO_CLIENT);
     }
   }
 

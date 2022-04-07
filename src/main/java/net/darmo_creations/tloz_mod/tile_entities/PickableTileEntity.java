@@ -1,12 +1,11 @@
 package net.darmo_creations.tloz_mod.tile_entities;
 
+import net.darmo_creations.tloz_mod.UpdateFlags;
 import net.darmo_creations.tloz_mod.blocks.PickableBlock;
 import net.darmo_creations.tloz_mod.entities.PickableEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -61,7 +60,7 @@ public abstract class PickableTileEntity extends SynchronizedTileEntity implemen
     this.delay = this.maxGrowthDelay;
     this.growthStage = 0;
     this.markDirty();
-    this.world.notifyBlockUpdate(this.getPos(), this.getBlockState(), this.getBlockState(), 2);
+    this.world.notifyBlockUpdate(this.getPos(), this.getBlockState(), this.getBlockState(), UpdateFlags.SEND_TO_CLIENT);
 
     return true;
   }
@@ -93,7 +92,7 @@ public abstract class PickableTileEntity extends SynchronizedTileEntity implemen
     }
     this.markDirty();
     //noinspection ConstantConditions
-    this.world.notifyBlockUpdate(this.pos, this.getBlockState(), this.getBlockState(), 2);
+    this.world.notifyBlockUpdate(this.pos, this.getBlockState(), this.getBlockState(), UpdateFlags.SEND_TO_CLIENT);
   }
 
   @Override

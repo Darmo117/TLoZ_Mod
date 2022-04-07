@@ -1,5 +1,6 @@
 package net.darmo_creations.tloz_mod.tile_entities;
 
+import net.darmo_creations.tloz_mod.UpdateFlags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
@@ -26,7 +27,7 @@ public class BombBreakableBlockTileEntity extends SynchronizedTileEntity {
     this.block = block;
     this.markDirty();
     //noinspection ConstantConditions
-    this.world.notifyBlockUpdate(this.pos, this.getBlockState(), this.getBlockState(), 2);
+    this.world.notifyBlockUpdate(this.pos, this.getBlockState(), this.getBlockState(), UpdateFlags.SEND_TO_CLIENT);
   }
 
   @Override

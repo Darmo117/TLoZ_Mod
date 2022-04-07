@@ -1,5 +1,6 @@
 package net.darmo_creations.tloz_mod.tile_entities;
 
+import net.darmo_creations.tloz_mod.UpdateFlags;
 import net.darmo_creations.tloz_mod.blocks.TreasureChestBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -51,14 +52,14 @@ public class TreasureChestTileEntity extends SynchronizedTileEntity implements I
     }
     this.markDirty();
     //noinspection ConstantConditions
-    this.world.notifyBlockUpdate(this.getPos(), this.getBlockState(), this.getBlockState(), 2);
+    this.world.notifyBlockUpdate(this.getPos(), this.getBlockState(), this.getBlockState(), UpdateFlags.SEND_TO_CLIENT);
   }
 
   public void setLinkedInventoryPos(BlockPos linkedInventoryPos) {
     this.linkedInventoryPos = linkedInventoryPos;
     this.markDirty();
     //noinspection ConstantConditions
-    this.world.notifyBlockUpdate(this.getPos(), this.getBlockState(), this.getBlockState(), 2);
+    this.world.notifyBlockUpdate(this.getPos(), this.getBlockState(), this.getBlockState(), UpdateFlags.SEND_TO_CLIENT);
   }
 
   private boolean useOwnInventory() {

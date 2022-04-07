@@ -1,5 +1,6 @@
 package net.darmo_creations.tloz_mod.entities;
 
+import net.darmo_creations.tloz_mod.UpdateFlags;
 import net.darmo_creations.tloz_mod.blocks.BombFlowerBlock;
 import net.darmo_creations.tloz_mod.blocks.ExplodableBlock;
 import net.darmo_creations.tloz_mod.blocks.ModBlocks;
@@ -162,7 +163,7 @@ public class BombEntity extends PickableEntity {
               ((ExplodableBlock) block).onBombExplosion(this.world, pos);
             } else {
               Block.spawnDrops(blockState, this.world, pos, this.world.getTileEntity(pos));
-              this.world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+              this.world.setBlockState(pos, Blocks.AIR.getDefaultState(), UpdateFlags.UPDATE_BLOCK | UpdateFlags.SEND_TO_CLIENT);
             }
           });
     }

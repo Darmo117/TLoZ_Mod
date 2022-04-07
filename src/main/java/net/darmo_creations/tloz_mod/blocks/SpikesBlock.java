@@ -1,5 +1,6 @@
 package net.darmo_creations.tloz_mod.blocks;
 
+import net.darmo_creations.tloz_mod.UpdateFlags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -30,7 +31,7 @@ public class SpikesBlock extends Block {
   @Override
   public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean isMoving) {
     if (world.isAirBlock(pos.up())) {
-      world.setBlockState(pos.up(), ModBlocks.SPIKES_EFFECT_AREA.getDefaultState(), 3);
+      world.setBlockState(pos.up(), ModBlocks.SPIKES_EFFECT_AREA.getDefaultState(), UpdateFlags.UPDATE_BLOCK | UpdateFlags.SEND_TO_CLIENT);
     }
   }
 

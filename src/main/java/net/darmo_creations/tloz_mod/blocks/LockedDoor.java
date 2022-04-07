@@ -1,5 +1,6 @@
 package net.darmo_creations.tloz_mod.blocks;
 
+import net.darmo_creations.tloz_mod.UpdateFlags;
 import net.darmo_creations.tloz_mod.items.ModItems;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -87,7 +88,7 @@ public class LockedDoor extends Block {
 
   @Override
   public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-    world.setBlockState(pos.up(), state.with(HALF, DoubleBlockHalf.UPPER), 3);
+    world.setBlockState(pos.up(), state.with(HALF, DoubleBlockHalf.UPPER), UpdateFlags.UPDATE_BLOCK | UpdateFlags.SEND_TO_CLIENT);
   }
 
   @SuppressWarnings("deprecation")
@@ -124,13 +125,14 @@ public class LockedDoor extends Block {
       }
       return ActionResultType.PASS;
     }
-    world.setBlockState(pos, state.with(OPEN, true), 10);
+    world.setBlockState(pos, state.with(OPEN, true), UpdateFlags.SEND_TO_CLIENT | UpdateFlags.RERENDER_ON_MAIN_THREAD);
     if (!player.isCreative()) {
       heldItem.setCount(heldItem.getCount() - 1);
     }
     world.playSound(null, pos, SoundEvents.BLOCK_WOODEN_DOOR_OPEN, SoundCategory.BLOCKS, 1, 1);
     Optional<BlockPos> neighborPos = this.getNeighborDoor(state, world, pos);
-    neighborPos.ifPresent(p -> world.setBlockState(p, world.getBlockState(p).with(OPEN, true), 10));
+    neighborPos.ifPresent(p -> world.setBlockState(p, world.getBlockState(p).with(OPEN, true),
+        UpdateFlags.SEND_TO_CLIENT | UpdateFlags.RERENDER_ON_MAIN_THREAD));
     return ActionResultType.SUCCESS;
   }
 
@@ -267,7 +269,8 @@ public class LockedDoor extends Block {
       BlockPos blockpos = pos.down();
       BlockState blockstate = world.getBlockState(blockpos);
       if (blockstate.getBlock() == state.getBlock() && blockstate.get(HALF) == DoubleBlockHalf.LOWER) {
-        world.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 35);
+        world.setBlockState(blockpos, Blocks.AIR.getDefaultState(),
+            UpdateFlags.UPDATE_BLOCK | UpdateFlags.SEND_TO_CLIENT | UpdateFlags.PREVENT_NEIGHBOR_DROPS);
         world.playEvent(player, 2001, blockpos, Block.getStateId(blockstate));
       }
     }

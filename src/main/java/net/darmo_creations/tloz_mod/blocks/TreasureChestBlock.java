@@ -1,5 +1,6 @@
 package net.darmo_creations.tloz_mod.blocks;
 
+import net.darmo_creations.tloz_mod.UpdateFlags;
 import net.darmo_creations.tloz_mod.entities.PickableEntity;
 import net.darmo_creations.tloz_mod.tile_entities.TreasureChestTileEntity;
 import net.minecraft.block.*;
@@ -93,7 +94,7 @@ public class TreasureChestBlock extends ContainerBlock implements ExplodableBloc
   public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
     if (!world.isRemote && this.isDouble) {
       BlockPos blockpos = pos.offset(this.getDirectionToAttached(state));
-      world.setBlockState(blockpos, state.with(MAIN, false), 3);
+      world.setBlockState(blockpos, state.with(MAIN, false), UpdateFlags.UPDATE_BLOCK | UpdateFlags.SEND_TO_CLIENT);
     }
   }
 
@@ -197,10 +198,12 @@ public class TreasureChestBlock extends ContainerBlock implements ExplodableBloc
             }
           }
           if (!setLoot) {
-            world.setBlockState(pos, state.with(OPEN, true), 3);
+            world.setBlockState(pos, state.with(OPEN, true),
+                UpdateFlags.SEND_TO_CLIENT | UpdateFlags.RERENDER_ON_MAIN_THREAD);
             if (this.isDouble) { // Set adjacent half to open
               BlockPos offset = pos.offset(this.getDirectionToAttached(state));
-              world.setBlockState(offset, world.getBlockState(offset).with(OPEN, true), 3);
+              world.setBlockState(offset, world.getBlockState(offset).with(OPEN, true),
+                  UpdateFlags.SEND_TO_CLIENT | UpdateFlags.RERENDER_ON_MAIN_THREAD);
             }
           }
         }
@@ -247,7 +250,7 @@ public class TreasureChestBlock extends ContainerBlock implements ExplodableBloc
   private void spawnEntity(World world, BlockPos pos) {
     if (!world.isRemote) {
       // TODO spawn entity
-      world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+      world.setBlockState(pos, Blocks.AIR.getDefaultState(), UpdateFlags.UPDATE_BLOCK | UpdateFlags.SEND_TO_CLIENT);
       world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.BLOCKS, 1, 1);
     }
   }

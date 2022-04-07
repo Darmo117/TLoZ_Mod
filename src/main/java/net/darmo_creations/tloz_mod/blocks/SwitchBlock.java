@@ -1,5 +1,6 @@
 package net.darmo_creations.tloz_mod.blocks;
 
+import net.darmo_creations.tloz_mod.UpdateFlags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -62,7 +63,7 @@ public abstract class SwitchBlock extends Block {
     SoundEvent sound = powered ? SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON : SoundEvents.BLOCK_STONE_BUTTON_CLICK_OFF;
     float pitch = powered ? 0.6F : 0.5F;
     world.playSound(null, pos, sound, SoundCategory.BLOCKS, 0.3F, pitch);
-    world.setBlockState(pos, state.with(POWERED, powered), 3);
+    world.setBlockState(pos, state.with(POWERED, powered), UpdateFlags.UPDATE_BLOCK | UpdateFlags.SEND_TO_CLIENT);
     this.updateNeighbors(world, pos, state);
     return true;
   }

@@ -1,5 +1,6 @@
 package net.darmo_creations.tloz_mod.blocks;
 
+import net.darmo_creations.tloz_mod.UpdateFlags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -94,13 +95,13 @@ public class SpikesBaseBlock extends Block {
   private void updatePowerState(World world, BlockPos pos, BlockState state) {
     boolean powered = this.isPowered(world, pos);
     if (powered != state.get(POWERED)) {
-      world.setBlockState(pos, state.with(POWERED, powered), 3);
+      world.setBlockState(pos, state.with(POWERED, powered), UpdateFlags.UPDATE_BLOCK | UpdateFlags.SEND_TO_CLIENT);
       BlockPos up = pos.up();
       if (powered && world.isAirBlock(up)) {
-        world.setBlockState(up, ModBlocks.SPIKES.getDefaultState(), 3);
+        world.setBlockState(up, ModBlocks.SPIKES.getDefaultState(), UpdateFlags.UPDATE_BLOCK | UpdateFlags.SEND_TO_CLIENT);
         world.playSound(null, up, SoundEvents.BLOCK_PISTON_EXTEND, SoundCategory.BLOCKS, 1, 1);
       } else if (!powered && world.getBlockState(up).getBlock() == ModBlocks.SPIKES) {
-        world.setBlockState(up, Blocks.AIR.getDefaultState(), 3);
+        world.setBlockState(up, Blocks.AIR.getDefaultState(), UpdateFlags.UPDATE_BLOCK | UpdateFlags.SEND_TO_CLIENT);
         world.playSound(null, up, SoundEvents.BLOCK_PISTON_CONTRACT, SoundCategory.BLOCKS, 1, 1);
       }
     }

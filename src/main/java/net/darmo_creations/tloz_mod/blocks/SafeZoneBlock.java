@@ -1,5 +1,6 @@
 package net.darmo_creations.tloz_mod.blocks;
 
+import net.darmo_creations.tloz_mod.UpdateFlags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -66,7 +67,7 @@ public class SafeZoneBlock extends Block {
     for (int i = 1; i <= EFFECT_HEIGHT; i++) {
       BlockPos up = pos.up(i);
       if (world.getBlockState(up).getBlock() == Blocks.AIR) {
-        world.setBlockState(up, ModBlocks.SAFE_ZONE_EFFECT_AREA.getDefaultState(), 3);
+        world.setBlockState(up, ModBlocks.SAFE_ZONE_EFFECT_AREA.getDefaultState(), UpdateFlags.UPDATE_BLOCK | UpdateFlags.SEND_TO_CLIENT);
       } else {
         break;
       }
