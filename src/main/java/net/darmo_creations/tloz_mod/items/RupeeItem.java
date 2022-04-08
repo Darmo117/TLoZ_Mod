@@ -22,7 +22,7 @@ public class RupeeItem extends SpecialPickableItem {
 
   @Override
   protected void onPickup(PlayerEntity player, ItemStack itemStack) {
-    int rupeeBagIndex = Utils.getBombBagInventorySlot(player);
+    int rupeeBagIndex = Utils.getRupeeBagInventorySlot(player);
     if (rupeeBagIndex >= 0) {
       ItemStack rupeeBag = player.inventory.getStackInSlot(rupeeBagIndex);
       if (rupeeBag.isDamaged()) {
