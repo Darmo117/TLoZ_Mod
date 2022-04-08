@@ -4,7 +4,6 @@ import net.darmo_creations.tloz_mod.blocks.BlueLightTeleporter;
 import net.darmo_creations.tloz_mod.blocks.IModBlock;
 import net.darmo_creations.tloz_mod.blocks.ModBlocks;
 import net.darmo_creations.tloz_mod.commands.SetMaxHealthCommand;
-import net.darmo_creations.tloz_mod.entities.AdditionalDataParameters;
 import net.darmo_creations.tloz_mod.entities.ModEntities;
 import net.darmo_creations.tloz_mod.entities.PickableEntity;
 import net.darmo_creations.tloz_mod.entities.renderers.*;
@@ -19,8 +18,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemModelsProperties;
@@ -31,8 +28,6 @@ import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -42,9 +37,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.Optional;
-import java.util.OptionalInt;
 
 /**
  * Mod’s main class.
@@ -97,23 +89,6 @@ public class TLoZ {
 
   @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
   public static class ModEvents {
-    @SubscribeEvent
-    public static void onEntityConstructing(EntityEvent.EntityConstructing event) {
-      // Inject additional data parameters into players
-      Entity entity = event.getEntity();
-      if (entity instanceof PlayerEntity) {
-        PlayerEntity player = (PlayerEntity) entity;
-        player.getDataManager().register(AdditionalDataParameters.PLAYER_TELEPORTER_DELAY, OptionalInt.empty());
-        player.getDataManager().register(AdditionalDataParameters.PLAYER_TELEPORTER_TARGET_POS, Optional.empty());
-      }
-    }
-
-    @SubscribeEvent
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-      // Prevent food level to decrease.
-      event.player.getFoodStats().addStats(1, 1);
-    }
-
     @SubscribeEvent
     public static void onCommandsRegistry(final RegisterCommandsEvent event) {
       SetMaxHealthCommand.register(event.getDispatcher());
