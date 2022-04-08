@@ -19,6 +19,9 @@ public final class ModItems {
   public static final Item MEDIUM_QUIVER = new QuiverItem(30).setRegistryName("quiver_medium");
   public static final Item BIG_QUIVER = new QuiverItem(50).setRegistryName("quiver_big");
 
+  // Creative tools
+  public static final Item BLUE_TELEPORTER_SETUP_STICK = new BlueLightTeleporterSetupStickItem().setRegistryName("blue_teleporter_setup_stick");
+
   // Bomb-related
   public static final Item SMALL_BOMB_BAG = new BombBagItem(10).setRegistryName("bomb_bag_small");
   public static final Item MEDIUM_BOMB_BAG = new BombBagItem(20).setRegistryName("bomb_bag_medium");
@@ -30,6 +33,7 @@ public final class ModItems {
   public static final Item YELLOW_POTION = new HealthPotionItem(8).setRegistryName("potion.yellow");
   public static final Item PURPLE_POTION = new HealthPotionItem(100).setRegistryName("potion.purple");
   public static final Item HEART = new HeartItem().setRegistryName("heart");
+  public static final Item HEART_CONTAINER = new HeartContainerItem().setRegistryName("heart_container");
 
   // Treasures
   public static final Item DEMON_FOSSIL = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("demon_fossil");
@@ -60,7 +64,6 @@ public final class ModItems {
 
   // Keys
   public static final Item SMALL_KEY = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("small_key");
-  public static final Item BOSS_KEY = new TLoZItem(new Item.Properties().maxStackSize(1).group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("boss_key");
 
   /**
    * The list of all explicitly declared items for this mod.
