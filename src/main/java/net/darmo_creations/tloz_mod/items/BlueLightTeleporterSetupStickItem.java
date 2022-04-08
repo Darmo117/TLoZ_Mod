@@ -32,7 +32,8 @@ public class BlueLightTeleporterSetupStickItem extends TLoZItem {
     if (te instanceof BlueLightTeleporterTileEntity) {
       stack.setTag(NBTUtil.writeBlockPos(clickedPos));
       player.sendStatusMessage(new TranslationTextComponent(
-          "item.tloz.blue_teleporter_setup_stick.teleporter_selected", clickedPos
+          "item.tloz.blue_teleporter_setup_stick.teleporter_selected",
+          clickedPos.getX(), clickedPos.getY(), clickedPos.getZ()
       ), true);
       return ActionResultType.SUCCESS;
     } else if (stack.getTag() != null) {
@@ -41,7 +42,8 @@ public class BlueLightTeleporterSetupStickItem extends TLoZItem {
       if (t instanceof BlueLightTeleporterTileEntity) {
         ((BlueLightTeleporterTileEntity) t).setTargetPos(clickedPos);
         player.sendStatusMessage(new TranslationTextComponent(
-            "item.tloz.blue_teleporter_setup_stick.destination_selected", clickedPos
+            "item.tloz.blue_teleporter_setup_stick.destination_selected",
+            clickedPos.getX(), clickedPos.getY(), clickedPos.getZ()
         ), true);
         return ActionResultType.SUCCESS;
       }
