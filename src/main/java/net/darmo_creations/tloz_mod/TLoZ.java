@@ -7,6 +7,8 @@ import net.darmo_creations.tloz_mod.commands.SetMaxHealthCommand;
 import net.darmo_creations.tloz_mod.entities.ModEntities;
 import net.darmo_creations.tloz_mod.entities.PickableEntity;
 import net.darmo_creations.tloz_mod.entities.renderers.*;
+import net.darmo_creations.tloz_mod.gui.HUD;
+import net.darmo_creations.tloz_mod.gui.TeleporterEffectGUI;
 import net.darmo_creations.tloz_mod.items.ModItems;
 import net.darmo_creations.tloz_mod.items.QuiverItem;
 import net.darmo_creations.tloz_mod.items.SpecialPickableItem;
@@ -24,6 +26,8 @@ import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.particles.ParticleType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -51,6 +55,11 @@ public class TLoZ {
    * Mod’s creative mode tab.
    */
   public static final CreativeTab CREATIVE_MODE_TAB = new CreativeTab();
+
+  @OnlyIn(Dist.CLIENT)
+  public static final HUD MAIN_HUD = new HUD(Minecraft.getInstance());
+  @OnlyIn(Dist.CLIENT)
+  public static final TeleporterEffectGUI TELEPORTER_EFFECT_GUI = new TeleporterEffectGUI(Minecraft.getInstance());
 
   public TLoZ() {
     IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
