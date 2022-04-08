@@ -11,6 +11,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -18,6 +19,7 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -63,6 +65,9 @@ public class BlueLightTeleporter extends ContainerBlock {
   @SubscribeEvent
   public static void onPlayerTickEvent(TickEvent.PlayerTickEvent event) {
     PlayerEntity player = event.player;
+    if (player.world.isRemote) {
+      return;
+    }
     EntityDataManager dataManager = player.getDataManager();
     OptionalInt optDelay = dataManager.get(AdditionalDataParameters.PLAYER_TELEPORTER_DELAY);
     Optional<BlockPos> optPos = dataManager.get(AdditionalDataParameters.PLAYER_TELEPORTER_TARGET_POS);
@@ -70,8 +75,9 @@ public class BlueLightTeleporter extends ContainerBlock {
       int delay = optDelay.getAsInt();
       BlockPos targetPos = optPos.get();
       if (delay == 0) {
-        player.setLocationAndAngles(targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5,
-            player.rotationYaw, player.rotationPitch);
+        MinecraftServer server = ((ServerWorld) player.world).getServer();
+        server.getCommandManager().handleCommand(server.getCommandSource().withFeedbackDisabled(),
+            String.format("tp %s %d %d %d", player.getGameProfile().getName(), targetPos.getX(), targetPos.getY(), targetPos.getZ()));
         dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_DELAY, OptionalInt.empty());
         dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_TARGET_POS, Optional.empty());
       } else {
