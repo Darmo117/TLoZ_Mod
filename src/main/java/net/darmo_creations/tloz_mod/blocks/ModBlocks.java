@@ -8,11 +8,11 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public final class ModBlocks {
-  // TODO blue flower teleporters
   // TODO leaves patch
   // TODO locked boss "door" blocks
   // TODO mailbox (only if worth it)
 
+  public static final Block BLUE_LIGHT_TELEPORTER = new BlueLightTeleporter().setRegistryName("blue_light_teleporter");
   public static final Block SPAWNPOINT_SETTER = new SpawnpointSetterBlock().setRegistryName("spawnpoint_setter");
 
   public static final Block SHOCK_SWITCH = new ShockSwitchBlock().setRegistryName("shock_switch");
@@ -26,6 +26,10 @@ public final class ModBlocks {
   // TODO torchlight
 
   public static final Block LOCKED_DOOR = new LockedDoor().setRegistryName("locked_door");
+  // TODO model
+  public static final Block BOSS_DOOR = new BossDoorBlock().setRegistryName("boss_door");
+  // TODO model
+  public static final Block BOSS_KEY = new BossKeyBlock().setRegistryName("boss_key");
 
   public static final Block BOMB_FLOWER = new BombFlowerBlock().setRegistryName("bomb_flower");
   public static final Block FLOWER_BOMB = new DummyBombBlock().setRegistryName("flower_bomb");
