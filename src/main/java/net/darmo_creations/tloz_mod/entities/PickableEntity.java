@@ -18,9 +18,12 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -91,7 +94,7 @@ public abstract class PickableEntity extends Entity {
   @Override
   public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
     if (this.getRidingEntity() == player) {
-      this.dropFromPlayer(player);
+      this.dropFromPlayer(player, true);
     } else {
       this.pickUpByPlayer(player);
     }
@@ -119,10 +122,13 @@ public abstract class PickableEntity extends Entity {
    * Drop this entity from the player’s hands.
    *
    * @param player The player that should drop this entity.
+   * @param yeet   Whether to throw this entity in front of player.
    */
-  private void dropFromPlayer(PlayerEntity player) {
+  private void dropFromPlayer(PlayerEntity player, final boolean yeet) {
     this.stopRiding();
-    this.throwThis(player, player.rotationPitch, player.rotationYaw);
+    if (yeet) {
+      this.throwThis(player, player.rotationPitch, player.rotationYaw);
+    }
     this.setPicker(null);
   }
 
@@ -202,7 +208,9 @@ public abstract class PickableEntity extends Entity {
    *
    * @param entity The entity to deal damage to. Guaranted to not be a {@link PickableEntity}.
    */
-  protected abstract float getCollisionDamageAmount(Entity entity);
+  protected float getCollisionDamageAmount(Entity entity) {
+    return 0;
+  }
 
   /**
    * Kill this entity and drop its loot if any.
@@ -227,12 +235,15 @@ public abstract class PickableEntity extends Entity {
     }
   }
 
-  protected abstract void playBreakSoundAndAnimation();
+  protected void playBreakSoundAndAnimation() {
+  }
 
   /**
    * Return a list of items that should be dropped when this entity dies.
    */
-  protected abstract List<ItemStack> getDrops();
+  protected List<ItemStack> getDrops() {
+    return Collections.emptyList();
+  }
 
   @Override
   protected void registerData() {
@@ -289,5 +300,18 @@ public abstract class PickableEntity extends Entity {
   @Override
   public IPacket<?> createSpawnPacket() {
     return NetworkHooks.getEntitySpawningPacket(this);
+  }
+
+  // Drop any pickable entity upon being hurt
+  @SubscribeEvent
+  public static void onLivingHurt(LivingHurtEvent event) {
+    if (event.getEntityLiving() instanceof PlayerEntity) {
+      // FIXME sync to client
+      PlayerEntity player = (PlayerEntity) event.getEntityLiving();
+      player.getPassengers().stream()
+          .filter(e -> e instanceof PickableEntity)
+          .map(e -> (PickableEntity) e)
+          .forEach(e -> e.dropFromPlayer(player, false));
+    }
   }
 }

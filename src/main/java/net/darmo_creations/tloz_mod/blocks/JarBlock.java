@@ -18,7 +18,6 @@ public class JarBlock extends PickableBlock<JarTileEntity> {
   public JarBlock() {
     super(Properties.create(Material.MISCELLANEOUS, DyeColor.LIGHT_BLUE)
             .sound(SoundType.GLASS)
-            .zeroHardnessAndResistance()
             .setBlocksVision((blockState, blockReader, pos) -> false),
         JarTileEntity.class);
   }

@@ -9,11 +9,9 @@ import net.darmo_creations.tloz_mod.tile_entities.BombFlowerTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
@@ -29,7 +27,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -131,11 +128,6 @@ public class BombEntity extends PickableEntity {
   }
 
   @Override
-  protected float getCollisionDamageAmount(Entity entity) {
-    return 0; // Do not directly deal damage when colliding
-  }
-
-  @Override
   protected void playBreakSoundAndAnimation() {
     this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS,
         4, (1 + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.2F) * 0.7F);
@@ -186,11 +178,6 @@ public class BombEntity extends PickableEntity {
             entity.attackEntityFrom(DamageSource.causeExplosionDamage((LivingEntity) null), EXPLOSION_DAMAGE);
           }
         });
-  }
-
-  @Override
-  protected List<ItemStack> getDrops() {
-    return Collections.emptyList();
   }
 
   @Override

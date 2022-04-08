@@ -28,9 +28,9 @@ public class RockTileEntity extends PickableTileEntity {
       return false;
     }
     BlockPos pos = this.getPos();
-    RockEntity jar = new RockEntity(this.world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, breakInstantly, breakInstantly ? null : picker);
+    RockEntity rock = new RockEntity(this.world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, breakInstantly, breakInstantly ? null : picker);
     //noinspection ConstantConditions
-    this.world.addEntity(jar);
+    this.world.addEntity(rock);
     return true;
   }
 }
