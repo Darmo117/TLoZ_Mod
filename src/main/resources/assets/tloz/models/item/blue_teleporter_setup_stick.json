@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "tloz:item/blue_teleporter_setup_stick"
+  }
+}
