@@ -16,8 +16,6 @@ import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /**
  * A custom HUD that displays the amount of rupees, bombs and arrows of the player.
@@ -27,7 +25,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public class HUD extends AbstractGui {
   public static final ResourceLocation TEXTURE = new ResourceLocation(TLoZ.MODID, "textures/gui/hud.png");
 
-  private static final int HEALTH_BAR_OFFSET = 7;
+  private static final int HEALTH_BAR_OFFSET = 6;
 
   private final Minecraft minecraft;
 
@@ -37,7 +35,7 @@ public class HUD extends AbstractGui {
 
   public void render(MatrixStack matrixStack) {
     PlayerEntity player = Minecraft.getInstance().player;
-    if (player == null || player.isCreative()) {
+    if (player == null || player.isCreative() || player.isSpectator()) {
       return;
     }
 
@@ -47,16 +45,16 @@ public class HUD extends AbstractGui {
     int rupeeBagIndex = Utils.getRupeeBagInventorySlot(player);
     if (rupeeBagIndex != -1) {
       ItemStack rupeeBag = player.inventory.mainInventory.get(rupeeBagIndex);
-      this.displayAmount(matrixStack, ModItems.BIG_GREEN_RUPEE, this.getAmount(rupeeBag), 0, 2, 2);
+      this.displayAmount(matrixStack, ModItems.BIG_GREEN_RUPEE, this.getAmount(rupeeBag), 0, 2, 2, false);
     }
 
     if (selectedItem instanceof BombBagItem) {
-      this.displayAmount(matrixStack, ModItems.BOMB_AMMO, this.getAmount(selectedStack), selectedStack.getMaxDamage(), 2, 28);
+      this.displayAmount(matrixStack, ModItems.BOMB_AMMO, this.getAmount(selectedStack), selectedStack.getMaxDamage(), 2, 28, true);
     } else if (selectedItem instanceof QuiverBowItem) {
       int quiverIndex = Utils.getQuiverInventorySlot(player);
       if (quiverIndex != -1) {
         ItemStack quiver = player.inventory.mainInventory.get(quiverIndex);
-        this.displayAmount(matrixStack, Items.ARROW, this.getAmount(quiver), quiver.getMaxDamage(), 2, 28);
+        this.displayAmount(matrixStack, Items.ARROW, this.getAmount(quiver), quiver.getMaxDamage(), 2, 28, true);
       }
     }
 
@@ -64,9 +62,11 @@ public class HUD extends AbstractGui {
     RenderSystem.defaultBlendFunc();
   }
 
-  private void displayAmount(MatrixStack matrixStack, Item icon, int amount, int maxAmount, int x, int y) {
-    this.minecraft.getTextureManager().bindTexture(TEXTURE);
-    blit(matrixStack, x, y, 0, 0, 24, 24, 64, 64);
+  private void displayAmount(MatrixStack matrixStack, Item icon, int amount, int maxAmount, int x, int y, boolean renderBackground) {
+    if (renderBackground) {
+      this.minecraft.getTextureManager().bindTexture(TEXTURE);
+      blit(matrixStack, x, y, 0, 0, 24, 24, 64, 64);
+    }
     x += 4;
     y += 4;
     this.minecraft.getItemRenderer().renderItemIntoGUI(new ItemStack(icon), x, y);
@@ -87,7 +87,6 @@ public class HUD extends AbstractGui {
 
   @SuppressWarnings("deprecation")
   public static void offsetHealthBarPost() {
-    RenderSystem.translatef(0, -HEALTH_BAR_OFFSET, 0);
     RenderSystem.popMatrix();
   }
 }
