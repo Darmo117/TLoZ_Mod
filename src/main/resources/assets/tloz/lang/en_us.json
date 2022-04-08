@@ -27,7 +27,9 @@
   "item.tloz.potion.tooltip.all": "Heals all hearts",
   "item.tloz.heart": "Heart",
   "item.tloz.small_key": "Small Key",
-  "item.tloz.boss_key": "Boss Key",
+  "item.tloz.blue_teleporter_setup_stick": "Teleporter Setup Stick",
+  "item.tloz.blue_teleporter_setup_stick.teleporter_selected": "Selected teleporter at %s",
+  "item.tloz.blue_teleporter_setup_stick.destination_selected": "Set destination to %s",
   "item.tloz.demon_fossil": "Demon Fossil",
   "item.tloz.stalfos_skull": "Stalfos Skull",
   "item.tloz.star_fragment": "Star Fragment",
@@ -56,11 +58,14 @@
   "block.tloz.spikes": "Spikes",
   "block.tloz.item_bulb_flower": "Item Bulb Flower",
   "block.tloz.jar": "Jar",
-  "block.tloz.big_rock": "Big Rock",
+  "block.tloz.rock": "Rock",
   "block.tloz.safe_zone": "Safe Zone",
   "block.tloz.locked_door": "Locked Door",
   "block.tloz.spawnpoint_setter": "Spawnpoint Setter",
   "block.tloz.treasure_chest": "Treasure Chest",
   "block.tloz.double_treasure_chest": "Double Treasure Chest",
-  "block.tloz.mimic_chest": "Mimic Chest"
+  "block.tloz.mimic_chest": "Mimic Chest",
+  "block.tloz.blue_light_teleporter": "Blue Light Teleporter",
+  "block.tloz.boss_key": "Boss Key",
+  "tloz.subtitle.teleporter.teleport": "Teleportation sound"
 }

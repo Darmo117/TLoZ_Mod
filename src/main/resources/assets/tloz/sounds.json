@@ -1,0 +1,9 @@
+{
+  "teleporter.teleport": {
+    "subtitle": "tloz.subtitle.teleporter.teleport",
+    "sounds": ["tloz:teleporter.teleport"]
+  },
+  "teleporter.hum": {
+    "sounds": ["tloz:teleporter.hum"]
+  }
+}
