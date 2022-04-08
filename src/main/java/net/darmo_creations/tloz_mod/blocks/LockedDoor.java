@@ -24,6 +24,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
@@ -122,6 +123,7 @@ public class LockedDoor extends Block {
     if (heldItem.getItem() != ModItems.SMALL_KEY || isOpen) {
       if (!isOpen) {
         world.playSound(null, pos, SoundEvents.BLOCK_CHEST_LOCKED, SoundCategory.BLOCKS, 1, 1);
+        player.sendStatusMessage(new TranslationTextComponent("block.tloz.locked_door.locked_message"), true);
       }
       return ActionResultType.PASS;
     }
