@@ -10,6 +10,10 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Defines various utility functions.
  */
@@ -71,6 +75,33 @@ public final class Utils {
     player.world.playSound(null, player.getPosX(), player.getPosY() + 0.5, player.getPosZ(),
         SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F,
         ((player.world.rand.nextFloat() - player.world.rand.nextFloat()) * 0.7F + 1) * 2);
+  }
+
+  /**
+   * Gathers into a list the values of all static fields from the given class
+   * whose types are assignable to the other given class.
+   *
+   * @param entriesClass Class to gather
+   * @param entryClass   Class that fields should be assignable to.
+   * @param <T>          Type of each entry.
+   * @return A list containing the values of all gathered fields.
+   */
+  public static <T> List<T> gatherEntries(final Class<?> entriesClass, final Class<T> entryClass) {
+    List<T> entries = new LinkedList<>();
+    Arrays.stream(entriesClass.getDeclaredFields())
+        .filter(field -> entryClass.isAssignableFrom(field.getType()))
+        .map(field -> {
+          T item;
+          try {
+            //noinspection unchecked
+            item = (T) field.get(null);
+          } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+          }
+          return item;
+        })
+        .forEach(entries::add);
+    return entries;
   }
 
   private Utils() {

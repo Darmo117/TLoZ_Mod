@@ -124,7 +124,7 @@ public class TLoZ {
   public static class RegistryEvents {
     @SubscribeEvent
     public static void onSoundEventRegistry(final RegistryEvent.Register<SoundEvent> event) {
-      event.getRegistry().register(ModSoundEvents.TELEPORT);
+      event.getRegistry().registerAll(ModSoundEvents.SOUND_EVENTS.toArray(new SoundEvent[0]));
     }
 
     @SubscribeEvent
@@ -134,7 +134,7 @@ public class TLoZ {
 
     @SubscribeEvent
     public static void onParticleRegistry(final RegistryEvent.Register<ParticleType<?>> event) {
-      event.getRegistry().register(ModParticles.BLUE_TELEPORTER);
+      event.getRegistry().registerAll(ModParticles.PARTICLE_TYPES.toArray(new ParticleType[0]));
     }
 
     @SubscribeEvent
