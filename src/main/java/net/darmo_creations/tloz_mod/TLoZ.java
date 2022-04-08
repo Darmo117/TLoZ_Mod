@@ -1,32 +1,50 @@
 package net.darmo_creations.tloz_mod;
 
+import net.darmo_creations.tloz_mod.blocks.BlueLightTeleporter;
 import net.darmo_creations.tloz_mod.blocks.IModBlock;
 import net.darmo_creations.tloz_mod.blocks.ModBlocks;
+import net.darmo_creations.tloz_mod.commands.SetMaxHealthCommand;
+import net.darmo_creations.tloz_mod.entities.AdditionalDataParameters;
 import net.darmo_creations.tloz_mod.entities.ModEntities;
+import net.darmo_creations.tloz_mod.entities.PickableEntity;
 import net.darmo_creations.tloz_mod.entities.renderers.*;
 import net.darmo_creations.tloz_mod.items.ModItems;
 import net.darmo_creations.tloz_mod.items.QuiverItem;
 import net.darmo_creations.tloz_mod.items.SpecialPickableItem;
+import net.darmo_creations.tloz_mod.particles.BlueTeleporterParticle;
+import net.darmo_creations.tloz_mod.particles.ModParticles;
 import net.darmo_creations.tloz_mod.tile_entities.ModTileEntities;
 import net.darmo_creations.tloz_mod.tile_entities.renderers.*;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemModelsProperties;
+import net.minecraft.particles.ParticleType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Optional;
+import java.util.OptionalInt;
 
 /**
  * Mod’s main class.
@@ -44,33 +62,81 @@ public class TLoZ {
 
   public TLoZ() {
     IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-    modEventBus.addListener(this::setup);
+    modEventBus.addListener(this::setupClient);
     ModTileEntities.REGISTER.register(modEventBus);
     ModEntities.REGISTER.register(modEventBus);
     MinecraftForge.EVENT_BUS.register(this);
     MinecraftForge.EVENT_BUS.register(QuiverItem.class);
     MinecraftForge.EVENT_BUS.register(SpecialPickableItem.class);
+    MinecraftForge.EVENT_BUS.register(PickableEntity.class);
+    MinecraftForge.EVENT_BUS.register(BlueLightTeleporter.class);
   }
 
-  private void setup(final FMLCommonSetupEvent event) {
+  private void setupClient(final FMLClientSetupEvent event) {
+    // Entity renderers
     RenderingRegistry.registerEntityRenderingHandler(ModEntities.BOMB.get(), BombEntityRenderer::new);
     RenderingRegistry.registerEntityRenderingHandler(ModEntities.ITEM_BULB.get(), ItemBulbEntityRenderer::new);
     RenderingRegistry.registerEntityRenderingHandler(ModEntities.JAR.get(), JarEntityRenderer::new);
     RenderingRegistry.registerEntityRenderingHandler(ModEntities.ROCK.get(), RockEntityRenderer::new);
+    RenderingRegistry.registerEntityRenderingHandler(ModEntities.BOSS_KEY.get(), BossKeyEntityRenderer::new);
     RenderingRegistry.registerEntityRenderingHandler(ModEntities.ARROW.get(), TLoZArrowRenderer::new);
-    ClientRegistry.bindTileEntityRenderer(ModTileEntities.BOMB_FLOWER.get(), BombFlowerTileEntityRenderer::new);
+    // Tile entity renderers
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.BOMB_BREAKABLE_BLOCK.get(), BombBreakableBlockTileEntityRenderer::new);
+    ClientRegistry.bindTileEntityRenderer(ModTileEntities.BOMB_FLOWER.get(), BombFlowerTileEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.ITEM_BULB_FLOWER.get(), ItemBulbTileEntityRenderer::new);
+    ClientRegistry.bindTileEntityRenderer(ModTileEntities.BOSS_KEY.get(), BossKeyTileEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.SAFE_ZONE_EFFECT_AREA.get(), SafeZoneEffectAreaTileEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.SPIKES_EFFECT_AREA.get(), SpikesEffectAreaTileEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.SPAWNPOINT_SETTER.get(), SpawnPointSetterTileEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.TREASURE_CHEST.get(), TreasureChestTileEntityRenderer::new);
+    ClientRegistry.bindTileEntityRenderer(ModTileEntities.BLUE_LIGHT_TELEPORTER.get(), BlueLightTeleporterTileEntityRenderer::new);
+    // Transparent block textures
     RenderTypeLookup.setRenderLayer(ModBlocks.BOMB_FLOWER, RenderType.getCutoutMipped());
     RenderTypeLookup.setRenderLayer(ModBlocks.ITEM_BULB_FLOWER, RenderType.getCutoutMipped());
   }
 
+  @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
+  public static class ModEvents {
+    @SubscribeEvent
+    public static void onEntityConstructing(EntityEvent.EntityConstructing event) {
+      // Inject additional data parameters into players
+      Entity entity = event.getEntity();
+      if (entity instanceof PlayerEntity) {
+        PlayerEntity player = (PlayerEntity) entity;
+        player.getDataManager().register(AdditionalDataParameters.PLAYER_TELEPORTER_DELAY, OptionalInt.empty());
+        player.getDataManager().register(AdditionalDataParameters.PLAYER_TELEPORTER_TARGET_POS, Optional.empty());
+      }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+      // Prevent food level to decrease.
+      event.player.getFoodStats().addStats(1, 1);
+    }
+
+    @SubscribeEvent
+    public static void onCommandsRegistry(final RegisterCommandsEvent event) {
+      SetMaxHealthCommand.register(event.getDispatcher());
+    }
+  }
+
   @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
   public static class RegistryEvents {
+    @SubscribeEvent
+    public static void onSoundEventRegistry(final RegistryEvent.Register<SoundEvent> event) {
+      event.getRegistry().register(ModSoundEvents.TELEPORT);
+    }
+
+    @SubscribeEvent
+    public static void onParticleFactoryRegistry(final ParticleFactoryRegisterEvent event) {
+      Minecraft.getInstance().particles.registerFactory(ModParticles.BLUE_TELEPORTER, BlueTeleporterParticle.Factory::new);
+    }
+
+    @SubscribeEvent
+    public static void onParticleRegistry(final RegistryEvent.Register<ParticleType<?>> event) {
+      event.getRegistry().register(ModParticles.BLUE_TELEPORTER);
+    }
+
     @SubscribeEvent
     public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
       blockRegistryEvent.getRegistry().registerAll(ModBlocks.BLOCKS.toArray(new Block[0]));

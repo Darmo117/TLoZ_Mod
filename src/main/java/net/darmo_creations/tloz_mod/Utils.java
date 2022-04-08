@@ -69,7 +69,8 @@ public final class Utils {
    */
   public static void playItemPickupSound(final PlayerEntity player) {
     player.world.playSound(null, player.getPosX(), player.getPosY() + 0.5, player.getPosZ(),
-        SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((player.world.rand.nextFloat() - player.world.rand.nextFloat()) * 0.7F + 1) * 2);
+        SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F,
+        ((player.world.rand.nextFloat() - player.world.rand.nextFloat()) * 0.7F + 1) * 2);
   }
 
   private Utils() {
