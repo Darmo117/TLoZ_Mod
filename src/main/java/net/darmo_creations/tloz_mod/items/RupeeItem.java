@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 /**
  * Item representing a single rupee.
  */
-public class RupeeItem extends SpecialPickableItem<RupeeItem> {
+public class RupeeItem extends SpecialPickableItem {
   private final int value;
 
   public RupeeItem(final int value) {
@@ -21,12 +21,12 @@ public class RupeeItem extends SpecialPickableItem<RupeeItem> {
   }
 
   @Override
-  protected void onPickup(PlayerEntity player, ItemStack itemStack, RupeeItem item) {
+  protected void onPickup(PlayerEntity player, ItemStack itemStack) {
     int rupeeBagIndex = Utils.getBombBagInventorySlot(player);
     if (rupeeBagIndex >= 0) {
       ItemStack rupeeBag = player.inventory.getStackInSlot(rupeeBagIndex);
       if (rupeeBag.isDamaged()) {
-        rupeeBag.setDamage(rupeeBag.getDamage() - itemStack.getCount() * item.getValue());
+        rupeeBag.setDamage(rupeeBag.getDamage() - itemStack.getCount() * this.getValue());
       }
     }
   }

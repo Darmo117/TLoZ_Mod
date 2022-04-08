@@ -7,13 +7,13 @@ import net.minecraft.item.ItemStack;
 /**
  * An item that restores 1 heart to the player that picks it up.
  */
-public class HeartItem extends SpecialPickableItem<HeartItem> {
+public class HeartItem extends SpecialPickableItem {
   public HeartItem() {
     super(new Properties().maxStackSize(1).group(TLoZ.CREATIVE_MODE_TAB));
   }
 
   @Override
-  protected void onPickup(PlayerEntity player, ItemStack itemStack, HeartItem item) {
+  protected void onPickup(PlayerEntity player, ItemStack itemStack) {
     player.heal(2 * itemStack.getCount());
   }
 }

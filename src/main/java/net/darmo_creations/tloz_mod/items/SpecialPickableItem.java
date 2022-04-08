@@ -10,10 +10,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /**
  * Items that extend this class have a special behavior when picked up.
- * Upon being picked up, the {@link #onPickup(PlayerEntity, ItemStack, T)} method
+ * Upon being picked up, the {@link #onPickup(PlayerEntity, ItemStack)} method
  * is called and the item entity is removed.
  */
-public abstract class SpecialPickableItem<T extends SpecialPickableItem<T>> extends TLoZItem {
+public abstract class SpecialPickableItem extends TLoZItem {
   public SpecialPickableItem(Properties properties) {
     super(properties);
   }
@@ -23,16 +23,18 @@ public abstract class SpecialPickableItem<T extends SpecialPickableItem<T>> exte
    *
    * @param player    The player that picked up this item.
    * @param itemStack The picked up item stack.
-   * @param item      The item that was picked up.
    */
-  protected abstract void onPickup(PlayerEntity player, ItemStack itemStack, T item);
+  protected abstract void onPickup(PlayerEntity player, ItemStack itemStack);
 
   /**
-   * Wrapper method for {@link #onPickup(PlayerEntity, ItemStack, SpecialPickableItem)} to avoid generic types issues.
+   * Play a sound when this item is picked up.
+   *
+   * @param player    The player that picked up this item.
+   * @param itemStack The picked up item stack.
    */
-  private void onPickup(PlayerEntity player, ItemStack itemStack, Item item) {
-    //noinspection unchecked
-    this.onPickup(player, itemStack, (T) item);
+  @SuppressWarnings("unused")
+  protected void playPickupSound(PlayerEntity player, ItemStack itemStack) {
+    Utils.playItemPickupSound(player);
   }
 
   @SubscribeEvent
@@ -42,9 +44,9 @@ public abstract class SpecialPickableItem<T extends SpecialPickableItem<T>> exte
     Item item = stack.getItem();
     if (item instanceof SpecialPickableItem) {
       PlayerEntity player = event.getPlayer();
-      SpecialPickableItem<?> i = (SpecialPickableItem<?>) item;
-      i.onPickup(player, stack, i);
-      Utils.playItemPickupSound(player);
+      SpecialPickableItem i = (SpecialPickableItem) item;
+      i.onPickup(player, stack);
+      i.playPickupSound(player, stack);
       itemEntity.remove();
       event.setCanceled(true);
     }
