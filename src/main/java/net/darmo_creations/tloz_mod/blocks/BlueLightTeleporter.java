@@ -27,7 +27,7 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 public class BlueLightTeleporter extends ContainerBlock {
-  public static final int DELAY = 100;
+  public static final int DELAY = 100; // 5s
 
   private static final VoxelShape SHAPE = makeCuboidShape(0, 0, 0, 16, 1, 16);
 
@@ -49,7 +49,8 @@ public class BlueLightTeleporter extends ContainerBlock {
   @SuppressWarnings("deprecation")
   public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
     TileEntity te = world.getTileEntity(pos);
-    if (te instanceof BlueLightTeleporterTileEntity && entity instanceof PlayerEntity && !world.isRemote) {
+    if (!world.isRemote && te instanceof BlueLightTeleporterTileEntity
+        && entity instanceof PlayerEntity && entity.getPosition().equals(pos)) {
       ((BlueLightTeleporterTileEntity) te).getTargetPos().ifPresent(targetPos -> {
         PlayerEntity player = (PlayerEntity) entity;
         EntityDataManager dataManager = player.getDataManager();
@@ -62,6 +63,10 @@ public class BlueLightTeleporter extends ContainerBlock {
     }
   }
 
+  /**
+   * Updates the teleportation logic of any player that stepped into a teleporter.
+   * Teleportation is cancelled if the player steps out of the teleporter.
+   */
   @SubscribeEvent
   public static void onPlayerTickEvent(TickEvent.PlayerTickEvent event) {
     PlayerEntity player = event.player;
@@ -74,16 +79,22 @@ public class BlueLightTeleporter extends ContainerBlock {
     if (optDelay.isPresent() && optPos.isPresent()) {
       int delay = optDelay.getAsInt();
       BlockPos targetPos = optPos.get();
-      if (delay == 0) {
+      if (!(player.world.getBlockState(player.getPosition()).getBlock() instanceof BlueLightTeleporter)) {
+        resetTeleportation(dataManager);
+      } else if (delay == 0) {
         MinecraftServer server = ((ServerWorld) player.world).getServer();
         server.getCommandManager().handleCommand(server.getCommandSource().withFeedbackDisabled(),
             String.format("tp %s %d %d %d", player.getGameProfile().getName(), targetPos.getX(), targetPos.getY(), targetPos.getZ()));
-        dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_DELAY, OptionalInt.empty());
-        dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_TARGET_POS, Optional.empty());
+        resetTeleportation(dataManager);
       } else {
         dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_DELAY, OptionalInt.of(delay - 1));
       }
     }
+  }
+
+  private static void resetTeleportation(EntityDataManager dataManager) {
+    dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_DELAY, OptionalInt.empty());
+    dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_TARGET_POS, Optional.empty());
   }
 
   @SuppressWarnings("deprecation")
