@@ -116,7 +116,7 @@ public class SpikesEffectAreaBlock extends Block implements ITileEntityProvider,
 
   @Override
   public BlockRenderType getRenderType(BlockState state) {
-    return BlockRenderType.ENTITYBLOCK_ANIMATED;
+    return BlockRenderType.INVISIBLE;
   }
 
   @Override

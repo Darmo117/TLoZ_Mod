@@ -77,7 +77,7 @@ public class SafeZoneEffectAreaBlock extends Block implements IModBlock, ITileEn
   @SuppressWarnings("deprecation")
   @Override
   public BlockRenderType getRenderType(BlockState state) {
-    return BlockRenderType.ENTITYBLOCK_ANIMATED;
+    return BlockRenderType.INVISIBLE;
   }
 
   @Override

@@ -31,7 +31,6 @@ public class SafeZoneBlock extends Block {
   public SafeZoneBlock() {
     super(Properties.create(Material.GLASS)
         .sound(SoundType.GLASS)
-        .notSolid()
         .doesNotBlockMovement()
         .setAllowsSpawn((blockState, blockReader, pos, entityType) -> false));
   }
