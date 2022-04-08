@@ -62,4 +62,9 @@ public class ModTileEntities {
       () -> TileEntityType.Builder.create(TreasureChestTileEntity::new, ModBlocks.TREASURE_CHEST, ModBlocks.DOUBLE_TREASURE_CHEST, ModBlocks.MIMIC_CHEST)
           .build(null)
   );
+  @SuppressWarnings("ConstantConditions")
+  public static final RegistryObject<TileEntityType<BlueLightTeleporterTileEntity>> BLUE_LIGHT_TELEPORTER = REGISTER.register(
+      "blue_light_teleporter",
+      () -> TileEntityType.Builder.create(BlueLightTeleporterTileEntity::new, ModBlocks.BLUE_LIGHT_TELEPORTER).build(null)
+  );
 }
