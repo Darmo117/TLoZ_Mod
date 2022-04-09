@@ -32,7 +32,7 @@ public class LeavesPatchBlock extends Block {
   public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
     if (entity instanceof WhirlwindEntity) {
       if (!world.isRemote) {
-        world.destroyBlock(pos, false);
+        world.destroyBlock(pos, true);
       }
     }
   }

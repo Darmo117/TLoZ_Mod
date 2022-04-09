@@ -55,7 +55,6 @@ public class BombEntity extends PickableEntity {
     DESTROYABLE_BLOCKS.add(Blocks.TALL_GRASS);
     DESTROYABLE_BLOCKS.add(Blocks.FERN);
     DESTROYABLE_BLOCKS.add(Blocks.LARGE_FERN);
-    DESTROYABLE_BLOCKS.add(Blocks.DEAD_BUSH);
   }
 
   private static final String FUSE_KEY = "Fuse";
