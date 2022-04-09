@@ -2,12 +2,12 @@ package net.darmo_creations.tloz_mod.blocks;
 
 import net.darmo_creations.tloz_mod.entities.BombEntity;
 import net.darmo_creations.tloz_mod.entities.PickableEntity;
+import net.darmo_creations.tloz_mod.entities.WhirlwindEntity;
 import net.darmo_creations.tloz_mod.tile_entities.BombFlowerTileEntity;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -31,14 +31,9 @@ import net.minecraft.world.World;
  * @see BombFlowerTileEntity
  * @see BombEntity
  */
-public class BombFlowerBlock extends PickableBlock<BombFlowerTileEntity> {
-  /**
-   * Speed above which a bomb should explode when hitting this block.
-   */
-  public static final float EXPLOSION_SPEED_THRESHOLD = 0.05f;
-
+public class BombFlowerBlock extends PickableBlock<BombFlowerTileEntity, BombEntity> {
   public BombFlowerBlock() {
-    super(Properties.create(Material.PLANTS).sound(SoundType.PLANT), BombFlowerTileEntity.class);
+    super(Properties.create(Material.PLANTS).sound(SoundType.PLANT), BombFlowerTileEntity.class, BombEntity.class);
   }
 
   @SuppressWarnings("deprecation")
@@ -62,16 +57,6 @@ public class BombFlowerBlock extends PickableBlock<BombFlowerTileEntity> {
   }
 
   @Override
-  public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-    this.onInteraction(world, pos, InteractionContext.entityCollision(entity));
-    if (entity instanceof PickableEntity
-        // Prevent bomb from this block from exploding when spawning
-        && (!(entity instanceof BombEntity) || entity.getMotion().length() > EXPLOSION_SPEED_THRESHOLD)) {
-      ((PickableEntity) entity).die();
-    }
-  }
-
-  @Override
   protected InteractionResult onInteraction(BombFlowerTileEntity tileEntity, World world, BlockPos pos, InteractionContext interactionContext) {
     switch (interactionContext.interactionType) {
       case PLAYER_INTERACT:
@@ -79,6 +64,8 @@ public class BombFlowerBlock extends PickableBlock<BombFlowerTileEntity> {
       case ENTITY_COLLISION:
         if (interactionContext.entity instanceof PickableEntity) {
           return this.spawnBomb(null, tileEntity, 0, true);
+        } else if (interactionContext.entity instanceof WhirlwindEntity) {
+          return this.spawnBomb(null, tileEntity, BombFlowerTileEntity.FUSE_DELAY, false);
         }
         break;
       case PLAYER_HIT:

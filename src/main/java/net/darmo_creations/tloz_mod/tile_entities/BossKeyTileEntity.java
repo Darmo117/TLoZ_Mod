@@ -1,6 +1,6 @@
 package net.darmo_creations.tloz_mod.tile_entities;
 
-import net.darmo_creations.tloz_mod.items.BossKeyEntity;
+import net.darmo_creations.tloz_mod.entities.BossKeyEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 

@@ -1,7 +1,6 @@
 package net.darmo_creations.tloz_mod.entities;
 
 import net.darmo_creations.tloz_mod.TLoZ;
-import net.darmo_creations.tloz_mod.items.BossKeyEntity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraftforge.fml.RegistryObject;
@@ -42,7 +41,7 @@ public class ModEntities {
   public static final RegistryObject<EntityType<RockEntity>> ROCK = REGISTER.register(
       "rock",
       () -> EntityType.Builder.<RockEntity>create(RockEntity::new, EntityClassification.MISC)
-          .size(0.98f, 0.98f) // TODO size
+          .size(0.98f, 0.98f)
           .trackingRange(10)
           .updateInterval(10)
           .immuneToFire()
@@ -65,5 +64,14 @@ public class ModEntities {
           .updateInterval(10)
           .immuneToFire()
           .build("arrow")
+  );
+  public static final RegistryObject<EntityType<WhirlwindEntity>> WHIRLWIND = REGISTER.register(
+      "whirlwind",
+      () -> EntityType.Builder.<WhirlwindEntity>create(WhirlwindEntity::new, EntityClassification.MISC)
+          .size(0.98f, 0.98f)
+          .trackingRange(10)
+          .updateInterval(10)
+          .immuneToFire()
+          .build("whirlwind")
   );
 }

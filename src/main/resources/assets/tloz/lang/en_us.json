@@ -1,6 +1,6 @@
 {
   "itemGroup.tloz": "TLoZ",
-  "item.tloz.hand": "Hand",
+  "item.tloz.whirlwind": "Whirlwind",
   "item.tloz.bow": "Bow",
   "item.tloz.bow_of_light": "Bow of Light",
   "item.tloz.quiver_small": "Small Quiver",
@@ -82,6 +82,7 @@
   "block.tloz.item_bulb_flower": "Item Bulb Flower",
   "block.tloz.jar": "Jar",
   "block.tloz.rock": "Rock",
+  "block.tloz.leaves_patch": "Leaves Patch",
   "block.tloz.safe_zone": "Safe Zone",
   "block.tloz.locked_door": "Locked Door",
   "block.tloz.locked_door.locked_message": "You need a key to open this door!",

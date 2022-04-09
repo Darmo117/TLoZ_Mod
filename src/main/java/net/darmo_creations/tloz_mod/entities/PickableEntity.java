@@ -158,7 +158,7 @@ public abstract class PickableEntity extends Entity {
   @Override
   public void tick() {
     super.tick();
-
+    System.out.println(this.getPosition()); // DEBUG
     boolean hitBlock = false;
     boolean hitEntity = false;
 
@@ -170,7 +170,7 @@ public abstract class PickableEntity extends Entity {
     this.setMotion(this.getMotion().scale(0.98));
     if (this.onGround) {
       this.setMotion(this.getMotion().mul(0.7, -0.5, 0.7));
-      hitBlock = this.getMotion().length() != 0;
+      hitBlock = this.prevPosX != this.getPosX() || this.prevPosY != this.getPosY() || this.prevPosZ != this.getPosZ();
     }
     // TODO detect if hitting side of blocks
 

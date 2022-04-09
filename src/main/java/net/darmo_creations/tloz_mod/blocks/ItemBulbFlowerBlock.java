@@ -2,12 +2,12 @@ package net.darmo_creations.tloz_mod.blocks;
 
 import net.darmo_creations.tloz_mod.entities.ItemBulbEntity;
 import net.darmo_creations.tloz_mod.entities.PickableEntity;
+import net.darmo_creations.tloz_mod.entities.WhirlwindEntity;
 import net.darmo_creations.tloz_mod.tile_entities.ItemBulbFlowerTileEntity;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -23,14 +23,9 @@ import net.minecraft.world.World;
  * @see ItemBulbFlowerTileEntity
  * @see ItemBulbEntity
  */
-public class ItemBulbFlowerBlock extends PickableBlock<ItemBulbFlowerTileEntity> {
-  /**
-   * Speed above which a bulb should break when hitting this block.
-   */
-  public static final float BREAKING_SPEED_THRESHOLD = 0.05f;
-
+public class ItemBulbFlowerBlock extends PickableBlock<ItemBulbFlowerTileEntity, ItemBulbEntity> {
   public ItemBulbFlowerBlock() {
-    super(Properties.create(Material.PLANTS).sound(SoundType.PLANT), ItemBulbFlowerTileEntity.class);
+    super(Properties.create(Material.PLANTS).sound(SoundType.PLANT), ItemBulbFlowerTileEntity.class, ItemBulbEntity.class);
   }
 
   @SuppressWarnings("deprecation")
@@ -54,16 +49,6 @@ public class ItemBulbFlowerBlock extends PickableBlock<ItemBulbFlowerTileEntity>
   }
 
   @Override
-  public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-    this.onInteraction(world, pos, InteractionContext.entityCollision(entity));
-    if (entity instanceof PickableEntity
-        // Prevent bulb from this block from breaking when spawning
-        && (!(entity instanceof ItemBulbEntity) || entity.getMotion().length() > BREAKING_SPEED_THRESHOLD)) {
-      ((PickableEntity) entity).die();
-    }
-  }
-
-  @Override
   protected InteractionResult onInteraction(ItemBulbFlowerTileEntity tileEntity, World world, BlockPos pos, InteractionContext interactionContext) {
     switch (interactionContext.interactionType) {
       case PLAYER_INTERACT:
@@ -71,6 +56,8 @@ public class ItemBulbFlowerBlock extends PickableBlock<ItemBulbFlowerTileEntity>
       case ENTITY_COLLISION:
         if (interactionContext.entity instanceof PickableEntity) {
           return this.spawnBulb(null, tileEntity, true);
+        } else if (interactionContext.entity instanceof WhirlwindEntity) {
+          return this.spawnBulb(null, tileEntity, false);
         }
         break;
       case PLAYER_HIT:

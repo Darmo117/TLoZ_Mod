@@ -7,8 +7,6 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public final class ModBlocks {
-  // TODO leaves patch
-  // TODO locked boss "door" blocks
   // TODO mailbox (only if worth it)
 
   public static final Block BLUE_LIGHT_TELEPORTER = new BlueLightTeleporter().setRegistryName("blue_light_teleporter");
@@ -45,6 +43,8 @@ public final class ModBlocks {
   public static final Block ITEM_BULB_FLOWER = new ItemBulbFlowerBlock().setRegistryName("item_bulb_flower");
   public static final Block JAR = new JarBlock().setRegistryName("jar");
   public static final Block ROCK = new RockBlock().setRegistryName("rock");
+
+  public static final Block LEAVES_PATCH = new LeavesPatchBlock().setRegistryName("leaves_patch");
 
   public static final Block SAFE_ZONE = new SafeZoneBlock().setRegistryName("safe_zone");
   public static final Block SAFE_ZONE_EFFECT_AREA = new SafeZoneEffectAreaBlock().setRegistryName("safe_zone_effect_area");

@@ -21,6 +21,7 @@ public final class ModItems {
   public static final SimpleContainerItem SMALL_QUIVER = (SimpleContainerItem) new QuiverItem(20).setRegistryName("quiver_small");
   public static final SimpleContainerItem MEDIUM_QUIVER = (SimpleContainerItem) new QuiverItem(30).setRegistryName("quiver_medium");
   public static final SimpleContainerItem BIG_QUIVER = (SimpleContainerItem) new QuiverItem(50).setRegistryName("quiver_big");
+  public static final Item WHIRLWIND = new WhirlwindItem().setRegistryName("whirlwind");
 
   // Creative tools
   public static final Item BLUE_TELEPORTER_SETUP_STICK = new BlueLightTeleporterSetupStickItem().setRegistryName("blue_teleporter_setup_stick");

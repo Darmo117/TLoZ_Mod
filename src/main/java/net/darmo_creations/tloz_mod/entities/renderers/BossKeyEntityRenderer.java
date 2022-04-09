@@ -2,7 +2,7 @@ package net.darmo_creations.tloz_mod.entities.renderers;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.darmo_creations.tloz_mod.blocks.ModBlocks;
-import net.darmo_creations.tloz_mod.items.BossKeyEntity;
+import net.darmo_creations.tloz_mod.entities.BossKeyEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;

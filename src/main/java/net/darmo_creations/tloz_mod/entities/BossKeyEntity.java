@@ -1,7 +1,5 @@
-package net.darmo_creations.tloz_mod.items;
+package net.darmo_creations.tloz_mod.entities;
 
-import net.darmo_creations.tloz_mod.entities.ModEntities;
-import net.darmo_creations.tloz_mod.entities.PickableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;

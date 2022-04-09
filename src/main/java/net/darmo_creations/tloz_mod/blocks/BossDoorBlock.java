@@ -1,7 +1,7 @@
 package net.darmo_creations.tloz_mod.blocks;
 
 import net.darmo_creations.tloz_mod.UpdateFlags;
-import net.darmo_creations.tloz_mod.items.BossKeyEntity;
+import net.darmo_creations.tloz_mod.entities.BossKeyEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;

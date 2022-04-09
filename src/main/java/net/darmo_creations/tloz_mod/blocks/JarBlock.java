@@ -1,6 +1,8 @@
 package net.darmo_creations.tloz_mod.blocks;
 
+import net.darmo_creations.tloz_mod.entities.JarEntity;
 import net.darmo_creations.tloz_mod.entities.PickableEntity;
+import net.darmo_creations.tloz_mod.entities.WhirlwindEntity;
 import net.darmo_creations.tloz_mod.tile_entities.JarTileEntity;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -14,12 +16,12 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class JarBlock extends PickableBlock<JarTileEntity> {
+public class JarBlock extends PickableBlock<JarTileEntity, JarEntity> {
   public JarBlock() {
     super(Properties.create(Material.MISCELLANEOUS, DyeColor.LIGHT_BLUE)
             .sound(SoundType.GLASS)
             .setBlocksVision((blockState, blockReader, pos) -> false),
-        JarTileEntity.class);
+        JarTileEntity.class, JarEntity.class);
   }
 
   @SuppressWarnings("deprecation")
@@ -41,15 +43,15 @@ public class JarBlock extends PickableBlock<JarTileEntity> {
         return tileEntity.spawnJarEntity(interactionContext.player, false) ? InteractionResult.BREAK_BLOCK : InteractionResult.FAIL;
       case ENTITY_COLLISION:
         if (interactionContext.entity instanceof PickableEntity) {
-          tileEntity.spawnJarEntity(null, true);
-          return InteractionResult.BREAK_BLOCK;
+          return tileEntity.spawnJarEntity(null, true) ? InteractionResult.BREAK_BLOCK : InteractionResult.FAIL;
+        } else if (interactionContext.entity instanceof WhirlwindEntity) {
+          return tileEntity.spawnJarEntity(null, false) ? InteractionResult.BREAK_BLOCK : InteractionResult.FAIL;
         }
         break;
       case PLAYER_HIT:
       case PROJECTILE_COLLISION:
       case BOMB_EXPLOSION:
-        tileEntity.spawnJarEntity(null, true);
-        return InteractionResult.BREAK_BLOCK;
+        return tileEntity.spawnJarEntity(null, true) ? InteractionResult.BREAK_BLOCK : InteractionResult.FAIL;
     }
     return InteractionResult.FAIL;
   }

@@ -1,7 +1,7 @@
 package net.darmo_creations.tloz_mod.blocks;
 
-import net.darmo_creations.tloz_mod.entities.RockEntity;
 import net.darmo_creations.tloz_mod.entities.BombEntity;
+import net.darmo_creations.tloz_mod.entities.RockEntity;
 import net.darmo_creations.tloz_mod.tile_entities.RockTileEntity;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -15,13 +15,13 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class RockBlock extends PickableBlock<RockTileEntity> {
+public class RockBlock extends PickableBlock<RockTileEntity, RockEntity> {
   public RockBlock() {
     super(Properties.create(Material.ROCK, DyeColor.GRAY)
             .sound(SoundType.ANCIENT_DEBRIS)
             .hardnessAndResistance(-1)
             .setBlocksVision((blockState, blockReader, pos) -> false),
-        RockTileEntity.class);
+        RockTileEntity.class, RockEntity.class);
   }
 
   @SuppressWarnings("deprecation")
