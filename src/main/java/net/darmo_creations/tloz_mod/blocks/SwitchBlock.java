@@ -36,10 +36,6 @@ public abstract class SwitchBlock extends Block {
     }
   }
 
-  public boolean toggleState(BlockState state, World world, final BlockPos pos) {
-    return this.toggleState(state, world, pos, false);
-  }
-
   @SuppressWarnings("deprecation")
   @Override
   public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
@@ -52,6 +48,10 @@ public abstract class SwitchBlock extends Block {
     }
   }
 
+  public boolean toggleState(BlockState state, World world, final BlockPos pos) {
+    return this.toggleState(state, world, pos, false);
+  }
+
   public boolean toggleState(BlockState state, World world, final BlockPos pos, final boolean force) {
     boolean powered = state.get(POWERED);
     boolean manualSwitchOff = state.get(MANUAL_SWITCH_OFF);
@@ -60,12 +60,22 @@ public abstract class SwitchBlock extends Block {
     }
 
     powered = !powered;
-    SoundEvent sound = powered ? SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON : SoundEvents.BLOCK_STONE_BUTTON_CLICK_OFF;
-    float pitch = powered ? 0.6F : 0.5F;
-    world.playSound(null, pos, sound, SoundCategory.BLOCKS, 0.3F, pitch);
+    SoundEvent sound = powered ? this.getSwitchOnSound() : this.getSwitchOffSound();
+    if (sound != null) {
+      float pitch = powered ? 0.6F : 0.5F;
+      world.playSound(null, pos, sound, SoundCategory.BLOCKS, 0.3F, pitch);
+    }
     world.setBlockState(pos, state.with(POWERED, powered), UpdateFlags.UPDATE_BLOCK | UpdateFlags.SEND_TO_CLIENT);
     this.updateNeighbors(world, pos, state);
     return true;
+  }
+
+  protected SoundEvent getSwitchOnSound() {
+    return SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON;
+  }
+
+  protected SoundEvent getSwitchOffSound() {
+    return SoundEvents.BLOCK_STONE_BUTTON_CLICK_OFF;
   }
 
   private void updateNeighbors(World world, BlockPos pos, BlockState state) {

@@ -1,5 +1,6 @@
 package net.darmo_creations.tloz_mod.entities;
 
+import net.darmo_creations.tloz_mod.blocks.WindSwitchBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -18,6 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WhirlwindEntity extends Entity {
+  /**
+   * Default duration.
+   */
+  public static final int WHIRLWIND_DEFAULT_DURATION = 20; // 1s
+
   /**
    * List of entity types that can be hurt by this entity.
    */
@@ -75,7 +81,7 @@ public class WhirlwindEntity extends Entity {
 
   @Override
   protected void onInsideBlock(BlockState state) {
-    if (state.isSolid()) {
+    if (state.isSolid() || state.getBlock() instanceof WindSwitchBlock) {
       this.remove();
     }
   }
@@ -102,7 +108,7 @@ public class WhirlwindEntity extends Entity {
 
   @Override
   protected void registerData() {
-    this.dataManager.register(MAX_AGE, 20);
+    this.dataManager.register(MAX_AGE, WHIRLWIND_DEFAULT_DURATION);
     this.dataManager.register(AGE, 0);
   }
 

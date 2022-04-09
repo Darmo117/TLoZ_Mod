@@ -19,7 +19,8 @@ public final class ModBlocks {
   public static final Block EYE_SWITCH = new EyeSwitchBlock().setRegistryName("eye_switch");
   // TODO models
   public static final Block LIGHT_EYE_SWITCH = new LightEyeSwitchBlock().setRegistryName("light_eye_switch");
-  // TODO wind switch
+  // TODO models
+  public static final Block WIND_SWITCH = new WindSwitchBlock().setRegistryName("wind_switch");
   // TODO torchlight
 
   public static final Block LOCKED_DOOR = new LockedDoor().setRegistryName("locked_door");
