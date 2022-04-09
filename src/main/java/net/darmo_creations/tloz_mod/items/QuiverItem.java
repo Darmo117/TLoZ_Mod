@@ -1,57 +1,44 @@
 package net.darmo_creations.tloz_mod.items;
 
-import net.darmo_creations.tloz_mod.TLoZ;
 import net.darmo_creations.tloz_mod.Utils;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-
-import java.util.List;
 
 /**
  * An item used as an ammo source for {@link QuiverBowItem}s.
  */
-public class QuiverItem extends TLoZItem {
+public class QuiverItem extends SimpleBagItem {
   /**
    * Create a quiver.
    *
    * @param capacity Number of arrows this quiver can hold.
    */
   public QuiverItem(final int capacity) {
-    super(new Properties()
-        .maxDamage(capacity)
-        .group(TLoZ.CREATIVE_MODE_TAB));
+    super(capacity);
   }
 
   @Override
-  @OnlyIn(Dist.CLIENT)
-  public void addInformation(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
-    int maxDamage = stack.getMaxDamage();
-    int damage = stack.getDamage();
-    Style style = Style.EMPTY;
-    float proportion = (maxDamage - damage) / (float) maxDamage;
+  protected String getUnlocalizedTooltipName() {
+    return "quiver";
+  }
+
+  @Override
+  protected Style getStyleForProportion(float proportion, Style baseStyle) {
     if (proportion == 1) {
-      style = style.setFormatting(TextFormatting.GREEN);
+      return baseStyle.setFormatting(TextFormatting.GREEN);
     } else if (proportion == 0) {
-      style = style.setFormatting(TextFormatting.RED);
+      return baseStyle.setFormatting(TextFormatting.RED);
     } else if (proportion <= 0.5) {
-      style = style.setFormatting(TextFormatting.GOLD);
+      return baseStyle.setFormatting(TextFormatting.GOLD);
     } else {
-      style = style.setFormatting(TextFormatting.YELLOW);
+      return baseStyle.setFormatting(TextFormatting.YELLOW);
     }
-    tooltip.add(new TranslationTextComponent("item.tloz.quiver.tooltip.count",
-        maxDamage - damage, maxDamage).setStyle(style));
   }
 
   /**
@@ -66,9 +53,7 @@ public class QuiverItem extends TLoZItem {
       int quiverIndex = Utils.getQuiverInventorySlot(player);
       if (quiverIndex >= 0) {
         ItemStack quiver = player.inventory.getStackInSlot(quiverIndex);
-        if (quiver.isDamaged()) {
-          quiver.setDamage(quiver.getDamage() - arrowsStack.getCount());
-        }
+        ((QuiverItem) quiver.getItem()).add(quiver, arrowsStack.getCount());
       }
       Utils.playItemPickupSound(player);
       itemEntity.remove();

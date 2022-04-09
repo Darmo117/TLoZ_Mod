@@ -39,7 +39,7 @@ public class QuiverBowItem extends TLoZItem {
   public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
     ItemStack itemstack = player.getHeldItem(hand);
     Optional<ItemStack> quiver = findAmmo(player);
-    if (!player.abilities.isCreativeMode && (!quiver.isPresent() || quiver.get().getDamage() == quiver.get().getMaxDamage())) {
+    if (!player.abilities.isCreativeMode && (!quiver.isPresent() || ((QuiverItem) quiver.get().getItem()).isEmpty(quiver.get()))) {
       return ActionResult.resultFail(itemstack);
     } else {
       player.setActiveHand(hand);
@@ -52,19 +52,20 @@ public class QuiverBowItem extends TLoZItem {
     if (entityLiving instanceof PlayerEntity) {
       PlayerEntity player = (PlayerEntity) entityLiving;
       boolean isCreative = player.abilities.isCreativeMode;
-      Optional<ItemStack> itemstack = findAmmo(player);
+      Optional<ItemStack> optStack = findAmmo(player);
 
       int charge = this.getUseDuration(stack) - timeLeft;
 
-      if (itemstack.isPresent() || isCreative) {
-        ItemStack quiver;
+      if (optStack.isPresent() || isCreative) {
+        ItemStack quiverStack;
         if (isCreative) {
-          quiver = new ItemStack(ModItems.BIG_QUIVER);
+          quiverStack = new ItemStack(ModItems.BIG_QUIVER);
         } else {
-          quiver = itemstack.get();
+          quiverStack = optStack.get();
         }
+        QuiverItem quiver = (QuiverItem) quiverStack.getItem();
 
-        if (quiver.getDamage() != quiver.getMaxDamage()) {
+        if (!quiver.isEmpty(stack)) {
           float arrowVelocity = getArrowVelocity(charge);
           if (arrowVelocity >= 0.1) {
             if (!world.isRemote) {
@@ -78,7 +79,7 @@ public class QuiverBowItem extends TLoZItem {
 
             world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_ARROW_SHOOT,
                 SoundCategory.PLAYERS, 1, 1 / (random.nextFloat() * 0.4F + 1.2F) + arrowVelocity * 0.5F);
-            quiver.setDamage(quiver.getDamage() + 1);
+            quiver.remove(quiverStack, 1);
 
             player.addStat(Stats.ITEM_USED.get(this));
           }

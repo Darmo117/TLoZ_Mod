@@ -25,9 +25,7 @@ public class RupeeItem extends SpecialPickableItem {
     int rupeeBagIndex = Utils.getRupeeBagInventorySlot(player);
     if (rupeeBagIndex >= 0) {
       ItemStack rupeeBag = player.inventory.getStackInSlot(rupeeBagIndex);
-      if (rupeeBag.isDamaged()) {
-        rupeeBag.setDamage(rupeeBag.getDamage() - itemStack.getCount() * this.getValue());
-      }
+      ModItems.RUPEE_BAG.add(rupeeBag, itemStack.getCount() * this.getValue());
     }
   }
 }

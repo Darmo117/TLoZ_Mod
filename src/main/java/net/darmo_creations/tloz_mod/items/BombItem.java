@@ -18,9 +18,7 @@ public class BombItem extends SpecialPickableItem {
     int bombBagIndex = Utils.getBombBagInventorySlot(player);
     if (bombBagIndex >= 0) {
       ItemStack bombBag = player.inventory.getStackInSlot(bombBagIndex);
-      if (bombBag.isDamaged()) {
-        bombBag.setDamage(bombBag.getDamage() - itemStack.getCount());
-      }
+      ((BombBagItem) bombBag.getItem()).add(bombBag, itemStack.getCount());
     }
   }
 }
