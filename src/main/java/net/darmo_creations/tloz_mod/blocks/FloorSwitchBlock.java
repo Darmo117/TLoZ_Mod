@@ -34,6 +34,7 @@ public class FloorSwitchBlock extends SwitchBlock {
 
   public FloorSwitchBlock() {
     super(Properties.create(Material.ROCK));
+    this.setDefaultState(this.getDefaultState().with(MANUAL_SWITCH_OFF, true));
   }
 
   @SuppressWarnings("deprecation")
@@ -47,8 +48,8 @@ public class FloorSwitchBlock extends SwitchBlock {
     return false;
   }
 
-  @Override
   @SuppressWarnings("deprecation")
+  @Override
   public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
     if (!world.isRemote && state.get(POWERED)) {
       if (!this.shouldBePressed(world, pos)) {
@@ -62,22 +63,15 @@ public class FloorSwitchBlock extends SwitchBlock {
   @SuppressWarnings("deprecation")
   @Override
   public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-    if (!world.isRemote && !state.get(POWERED)) {
-      if (this.shouldBePressed(world, pos)) {
-        this.updateState(world, pos, state);
-      }
+    if (!world.isRemote && !state.get(POWERED) && this.shouldBePressed(world, pos)) {
+      this.updateState(world, pos, state);
     }
   }
 
   private boolean shouldBePressed(World world, BlockPos pos) {
     AxisAlignedBB axisalignedbb = PRESSURE_AABB.offset(pos);
     List<? extends Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, axisalignedbb);
-    for (Entity e : list) {
-      if (ALLOWED_ENTITIES.stream().anyMatch(c -> c.isAssignableFrom(e.getClass()))) {
-        return true;
-      }
-    }
-    return false;
+    return list.stream().anyMatch(e -> ALLOWED_ENTITIES.stream().anyMatch(c -> c.isAssignableFrom(e.getClass())));
   }
 
   protected void updateState(World world, BlockPos pos, BlockState state) {
