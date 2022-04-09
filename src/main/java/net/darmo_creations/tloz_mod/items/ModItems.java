@@ -39,7 +39,6 @@ public final class ModItems {
   public static final Item HEART_CONTAINER = new HeartContainerItem().setRegistryName("heart_container");
 
   // Treasures
-  // TODO texture
   public static final TreasureBagItem TREASURE_BAG = (TreasureBagItem) new TreasureBagItem().setRegistryName("treasure_bag");
   public static final Item DEMON_FOSSIL = new TreasureItem(50).setRegistryName("demon_fossil");
   public static final Item STALFOS_SKULL = new TreasureItem(50).setRegistryName("stalfos_skull");
