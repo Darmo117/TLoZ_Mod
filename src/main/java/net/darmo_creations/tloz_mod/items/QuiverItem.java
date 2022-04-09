@@ -13,7 +13,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 /**
  * An item used as an ammo source for {@link QuiverBowItem}s.
  */
-public class QuiverItem extends SimpleBagItem {
+public class QuiverItem extends SimpleContainerItem {
   /**
    * Create a quiver.
    *

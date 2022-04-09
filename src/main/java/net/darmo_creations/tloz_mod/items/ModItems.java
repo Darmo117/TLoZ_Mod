@@ -18,17 +18,17 @@ public final class ModItems {
   // Tools & weapons
   public static final Item BOW = new QuiverBowItem(false).setRegistryName("bow");
   public static final Item BOW_OF_LIGHT = new QuiverBowItem(true).setRegistryName("bow_of_light");
-  public static final SimpleBagItem SMALL_QUIVER = (SimpleBagItem) new QuiverItem(20).setRegistryName("quiver_small");
-  public static final SimpleBagItem MEDIUM_QUIVER = (SimpleBagItem) new QuiverItem(30).setRegistryName("quiver_medium");
-  public static final SimpleBagItem BIG_QUIVER = (SimpleBagItem) new QuiverItem(50).setRegistryName("quiver_big");
+  public static final SimpleContainerItem SMALL_QUIVER = (SimpleContainerItem) new QuiverItem(20).setRegistryName("quiver_small");
+  public static final SimpleContainerItem MEDIUM_QUIVER = (SimpleContainerItem) new QuiverItem(30).setRegistryName("quiver_medium");
+  public static final SimpleContainerItem BIG_QUIVER = (SimpleContainerItem) new QuiverItem(50).setRegistryName("quiver_big");
 
   // Creative tools
   public static final Item BLUE_TELEPORTER_SETUP_STICK = new BlueLightTeleporterSetupStickItem().setRegistryName("blue_teleporter_setup_stick");
 
   // Bomb-related
-  public static final SimpleBagItem SMALL_BOMB_BAG = (SimpleBagItem) new BombBagItem(10).setRegistryName("bomb_bag_small");
-  public static final SimpleBagItem MEDIUM_BOMB_BAG = (SimpleBagItem) new BombBagItem(20).setRegistryName("bomb_bag_medium");
-  public static final SimpleBagItem BIG_BOMB_BAG = (SimpleBagItem) new BombBagItem(30).setRegistryName("bomb_bag_big");
+  public static final SimpleContainerItem SMALL_BOMB_BAG = (SimpleContainerItem) new BombBagItem(10).setRegistryName("bomb_bag_small");
+  public static final SimpleContainerItem MEDIUM_BOMB_BAG = (SimpleContainerItem) new BombBagItem(20).setRegistryName("bomb_bag_medium");
+  public static final SimpleContainerItem BIG_BOMB_BAG = (SimpleContainerItem) new BombBagItem(30).setRegistryName("bomb_bag_big");
   public static final Item BOMB_AMMO = new BombItem().setRegistryName("bomb_ammo");
 
   // Health-related
@@ -59,7 +59,7 @@ public final class ModItems {
   public static final Item REGAL_RING = new TreasureItem(2500).setRegistryName("regal_ring");
 
   // Rupees
-  public static final SimpleBagItem RUPEE_BAG = (SimpleBagItem) new RupeeBagItem().setRegistryName("rupee_bag");
+  public static final SimpleContainerItem RUPEE_BAG = (SimpleContainerItem) new RupeeBagItem().setRegistryName("rupee_bag");
   public static final Item GREEN_RUPEE = new RupeeItem(1).setRegistryName("rupee_green");
   public static final Item BLUE_RUPEE = new RupeeItem(5).setRegistryName("rupee_blue");
   public static final Item RED_RUPEE = new RupeeItem(20).setRegistryName("rupee_red");

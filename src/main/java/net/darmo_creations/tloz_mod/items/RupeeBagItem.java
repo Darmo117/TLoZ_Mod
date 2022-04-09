@@ -6,7 +6,7 @@ import net.minecraft.util.text.TextFormatting;
 /**
  * A bag that can hold up to 9999 rupees.
  */
-public class RupeeBagItem extends SimpleBagItem {
+public class RupeeBagItem extends SimpleContainerItem {
   public RupeeBagItem() {
     super(9999);
   }

@@ -13,15 +13,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.List;
 
 /**
- * Represents a bag that can hold up to a certain amount of things.
+ * Represents a container that can hold up to a certain amount of things.
  */
-public abstract class SimpleBagItem extends TLoZItem {
+public abstract class SimpleContainerItem extends TLoZItem {
   /**
-   * Create a bag with the given capacity.
+   * Create a container item with the given capacity.
    *
-   * @param capacity The bag’s capacity.
+   * @param capacity The container’s capacity.
    */
-  public SimpleBagItem(final int capacity) {
+  public SimpleContainerItem(final int capacity) {
     super(new Properties().maxDamage(capacity).group(TLoZ.CREATIVE_MODE_TAB));
   }
 
@@ -41,9 +41,9 @@ public abstract class SimpleBagItem extends TLoZItem {
   protected abstract String getUnlocalizedTooltipName();
 
   /**
-   * Apply a style for the given fullness.
+   * Apply a style for the given fill level.
    *
-   * @param proportion Proportion of bag that is full.
+   * @param proportion Proportion of container that is filled.
    * @param baseStyle  A style to modify depending on the proportion.
    * @return A new style.
    */
@@ -63,7 +63,7 @@ public abstract class SimpleBagItem extends TLoZItem {
   }
 
   /**
-   * Remove the given amount to the given stack.
+   * Remove the given amount from the given stack.
    *
    * @param stack  The stack to modify.
    * @param amount The amount to remove.
@@ -75,38 +75,33 @@ public abstract class SimpleBagItem extends TLoZItem {
   }
 
   /**
-   * Indicate whether the bag represented by the given stack is empty.
+   * Indicate whether the container represented by the given stack is empty.
    *
    * @param stack The stack to check.
-   * @return True if the bag is empty, false otherwise or if the stack’s item is not a {@link SimpleBagItem}..
+   * @return True if the container is empty, false otherwise
+   * or if the stack’s item is not a {@link SimpleContainerItem}.
    */
   public boolean isEmpty(final ItemStack stack) {
     return this.getAmount(stack) <= 0;
   }
 
   /**
-   * Return the quantity of stuff present in the given bag.
+   * Return the quantity of stuff present in the given container.
    *
    * @param stack The stack to check.
-   * @return The quantity or -1 if the stack’s item is not a {@link SimpleBagItem}.
+   * @return The quantity or -1 if the stack’s item is not a {@link SimpleContainerItem}.
    */
   public int getAmount(final ItemStack stack) {
-    if (stack.getItem() != this) {
-      return -1;
-    }
-    return stack.getMaxDamage() - stack.getDamage();
+    return stack.getItem() != this ? -1 : stack.getMaxDamage() - stack.getDamage();
   }
 
   /**
-   * Return the capacity of the given bag, i.e. the maximum amount of stuff it can hold.
+   * Return the capacity of the given container, i.e. the maximum amount of stuff it can hold.
    *
    * @param stack The stack to check.
-   * @return The capacity or -1 if the stack’s item is not a {@link SimpleBagItem}.
+   * @return The capacity or -1 if the stack’s item is not a {@link SimpleContainerItem}.
    */
   public int getCapacity(final ItemStack stack) {
-    if (stack.getItem() != this) {
-      return -1;
-    }
-    return stack.getMaxDamage();
+    return stack.getItem() != this ? -1 : stack.getMaxDamage();
   }
 }

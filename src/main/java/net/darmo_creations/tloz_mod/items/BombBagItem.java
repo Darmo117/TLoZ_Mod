@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 /**
  * An item that holds a certain amount of bombs. Bombs can be drawn by using the item.
  */
-public class BombBagItem extends SimpleBagItem {
+public class BombBagItem extends SimpleContainerItem {
   public static final int FUSE_DELAY = 120; // 6 seconds
 
   /**
