@@ -15,7 +15,10 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A bag that contains all treasures the player has picked up.
@@ -42,10 +45,10 @@ public class TreasureBagItem extends TLoZItem {
       long handle = Minecraft.getInstance().getMainWindow().getHandle();
       if (InputMappings.isKeyDown(handle, 340) // LSHIFT
           || InputMappings.isKeyDown(handle, 344)) { // RSHIFT
-        //noinspection ConstantConditions
         treasures.entrySet().stream()
-            .sorted(Comparator.comparing(e -> e.getKey().getRegistryName()))
+            .sorted((a, b) -> TreasureItem.getComparator().compare(a.getKey(), b.getKey()))
             .forEach(entry -> {
+              //noinspection ConstantConditions
               String key = String.format("item.tloz.%s", entry.getKey().getRegistryName().getPath());
               String name = new TranslationTextComponent(key).getString();
               tooltip.add(new TranslationTextComponent("item.tloz.treasure_bag.tooltip.item", name, entry.getValue())

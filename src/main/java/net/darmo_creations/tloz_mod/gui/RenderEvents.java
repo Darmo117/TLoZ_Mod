@@ -55,7 +55,7 @@ public final class RenderEvents {
   @SubscribeEvent
   public static void onContainerDrawForeground(GuiContainerEvent.DrawForeground event) {
     if (event.getGuiContainer() instanceof InventoryScreen) {
-      TLoZ.INVENTORY_GUI.render(event.getMatrixStack(), event.getMouseX(), event.getMouseY());
+      TLoZ.INVENTORY_GUI.render(event.getMatrixStack(), (InventoryScreen) event.getGuiContainer(), event.getMouseX(), event.getMouseY());
     }
   }
 
