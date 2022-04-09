@@ -1,8 +1,10 @@
 package net.darmo_creations.tloz_mod.entities;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
@@ -12,9 +14,21 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WhirlwindEntity extends Entity {
+  /**
+   * List of entity types that can be hurt by this entity.
+   */
+  protected static final List<Class<? extends Entity>> AFFECTED_ENTITIES = new ArrayList<>();
+
+  static {
+    AFFECTED_ENTITIES.add(PickableEntity.class);
+    AFFECTED_ENTITIES.add(ItemEntity.class);
+    // TODO add custom small monsters
+  }
+
   private static final String MAX_AGE_KEY = "MaxAge";
   private static final String AGE_KEY = "Age";
 
@@ -26,6 +40,7 @@ public class WhirlwindEntity extends Entity {
 
   public WhirlwindEntity(EntityType<?> entityType, World world) {
     super(entityType, world);
+    this.noClip = true;
   }
 
   public WhirlwindEntity(World world, final int maxAge, double x, double y, double z, final Vector3d direction) {
@@ -37,6 +52,7 @@ public class WhirlwindEntity extends Entity {
     this.setMotion(direction.scale(0.5));
     this.setMaxAge(maxAge);
     this.setAge(0);
+    this.noClip = true;
   }
 
   @Override
@@ -46,22 +62,22 @@ public class WhirlwindEntity extends Entity {
       this.remove();
       return;
     }
-    List<Entity> entities = this.world.getEntitiesInAABBexcluding(this, this.getBoundingBox(), entity -> !entity.isPassenger());
+    List<Entity> entities = this.world.getEntitiesInAABBexcluding(this, this.getBoundingBox(),
+        entity -> AFFECTED_ENTITIES.stream().anyMatch(c -> c.isAssignableFrom(entity.getClass())));
     if (!entities.isEmpty()) {
       // Pick up and move encountered entities
-      entities.forEach(entity -> {
-        if (entity instanceof PickableEntity) {
-          entity.startRiding(this, true);
-        } // TODO move and stun custom monsters
-      });
+      entities.forEach(entity -> entity.startRiding(this, true));
     }
-    Vector3d prevMotion = this.getMotion();
     this.move(MoverType.SELF, this.getMotion());
-//    if (!prevMotion.equals(this.getMotion())) {
-//      this.remove();
-//      return;
-//    }
+    this.doBlockCollisions(); // Call explicitely as noclip skips it by default
     this.setAge(this.age + 1);
+  }
+
+  @Override
+  protected void onInsideBlock(BlockState state) {
+    if (state.isSolid()) {
+      this.remove();
+    }
   }
 
   public void setMaxAge(int maxAge) {

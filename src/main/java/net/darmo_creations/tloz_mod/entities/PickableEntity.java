@@ -158,7 +158,7 @@ public abstract class PickableEntity extends Entity {
   @Override
   public void tick() {
     super.tick();
-    System.out.println(this.getPosition()); // DEBUG
+
     boolean hitBlock = false;
     boolean hitEntity = false;
 
