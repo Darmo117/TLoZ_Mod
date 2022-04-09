@@ -65,7 +65,7 @@ public class QuiverBowItem extends TLoZItem {
         }
         QuiverItem quiver = (QuiverItem) quiverStack.getItem();
 
-        if (!quiver.isEmpty(stack)) {
+        if (!quiver.isEmpty(quiverStack)) {
           float arrowVelocity = getArrowVelocity(charge);
           if (arrowVelocity >= 0.1) {
             if (!world.isRemote) {
