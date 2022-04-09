@@ -39,22 +39,24 @@ public final class ModItems {
   public static final Item HEART_CONTAINER = new HeartContainerItem().setRegistryName("heart_container");
 
   // Treasures
-  public static final Item DEMON_FOSSIL = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("demon_fossil");
-  public static final Item STALFOS_SKULL = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("stalfos_skull");
-  public static final Item STAR_FRAGMENT = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("star_fragment");
-  public static final Item BEE_LARVAE = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("bee_larvae");
-  public static final Item WOOD_HEART = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("wood_heart");
-  public static final Item DARK_PEARL_LOOP = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("dark_pearl_loop");
-  public static final Item PEARL_NECKLACE = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("pearl_necklace");
-  public static final Item RUTO_CROWN = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("ruto_crown");
-  public static final Item DRAGON_SCALE = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("dragon_scale");
-  public static final Item PIRATE_NECKLACE = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("pirate_necklace");
-  public static final Item PALACE_DISH = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("palace_dish");
-  public static final Item GORON_AMBER = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("goron_amber");
-  public static final Item MYSTIC_JADE = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("mystic_jade");
-  public static final Item ANCIENT_GOLD_PIECE = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("ancient_gold_piece");
-  public static final Item ALCHEMY_STONE = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("alchemy_stone");
-  public static final Item REGAL_RING = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("regal_ring");
+  // TODO texture
+  public static final TreasureBagItem TREASURE_BAG = (TreasureBagItem) new TreasureBagItem().setRegistryName("treasure_bag");
+  public static final Item DEMON_FOSSIL = new TreasureItem(50).setRegistryName("demon_fossil");
+  public static final Item STALFOS_SKULL = new TreasureItem(50).setRegistryName("stalfos_skull");
+  public static final Item STAR_FRAGMENT = new TreasureItem(50).setRegistryName("star_fragment");
+  public static final Item BEE_LARVAE = new TreasureItem(50).setRegistryName("bee_larvae");
+  public static final Item WOOD_HEART = new TreasureItem(50).setRegistryName("wood_heart");
+  public static final Item DARK_PEARL_LOOP = new TreasureItem(150).setRegistryName("dark_pearl_loop");
+  public static final Item PEARL_NECKLACE = new TreasureItem(150).setRegistryName("pearl_necklace");
+  public static final Item RUTO_CROWN = new TreasureItem(150).setRegistryName("ruto_crown");
+  public static final Item DRAGON_SCALE = new TreasureItem(150).setRegistryName("dragon_scale");
+  public static final Item PIRATE_NECKLACE = new TreasureItem(150).setRegistryName("pirate_necklace");
+  public static final Item PALACE_DISH = new TreasureItem(500).setRegistryName("palace_dish");
+  public static final Item GORON_AMBER = new TreasureItem(500).setRegistryName("goron_amber");
+  public static final Item MYSTIC_JADE = new TreasureItem(500).setRegistryName("mystic_jade");
+  public static final Item ANCIENT_GOLD_PIECE = new TreasureItem(500).setRegistryName("ancient_gold_piece");
+  public static final Item ALCHEMY_STONE = new TreasureItem(2500).setRegistryName("alchemy_stone");
+  public static final Item REGAL_RING = new TreasureItem(2500).setRegistryName("regal_ring");
 
   // Rupees
   public static final SimpleBagItem RUPEE_BAG = (SimpleBagItem) new RupeeBagItem().setRegistryName("rupee_bag");

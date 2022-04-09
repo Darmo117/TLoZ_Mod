@@ -1,8 +1,10 @@
 package net.darmo_creations.tloz_mod.gui;
 
 import net.darmo_creations.tloz_mod.TLoZ;
+import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.GuiContainerEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -19,7 +21,7 @@ public final class RenderEvents {
    * <li>Offsets the health bar to bring it closer to the hotbar.
    */
   @SubscribeEvent
-  public static void onRenderPre(final RenderGameOverlayEvent.Pre event) {
+  public static void onGameOverlayRenderPre(final RenderGameOverlayEvent.Pre event) {
     switch (event.getType()) {
       case FOOD:
       case EXPERIENCE:
@@ -38,7 +40,7 @@ public final class RenderEvents {
    * <li>Performs the cleanup after offsetting the health-bar.
    */
   @SubscribeEvent
-  public static void onRenderPost(final RenderGameOverlayEvent.Post event) {
+  public static void onGameOverlayRenderPost(final RenderGameOverlayEvent.Post event) {
     switch (event.getType()) {
       case ALL:
         TLoZ.MAIN_HUD.render(event.getMatrixStack());
@@ -47,6 +49,13 @@ public final class RenderEvents {
       case HEALTH:
         HUD.offsetHealthBarPost();
         break;
+    }
+  }
+
+  @SubscribeEvent
+  public static void onContainerDrawForeground(GuiContainerEvent.DrawForeground event) {
+    if (event.getGuiContainer() instanceof InventoryScreen) {
+      TLoZ.INVENTORY_GUI.render(event.getMatrixStack(), event.getMouseX(), event.getMouseY());
     }
   }
 

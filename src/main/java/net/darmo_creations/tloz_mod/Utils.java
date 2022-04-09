@@ -3,6 +3,7 @@ package net.darmo_creations.tloz_mod;
 import net.darmo_creations.tloz_mod.items.BombBagItem;
 import net.darmo_creations.tloz_mod.items.QuiverItem;
 import net.darmo_creations.tloz_mod.items.RupeeBagItem;
+import net.darmo_creations.tloz_mod.items.TreasureBagItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -46,6 +47,16 @@ public final class Utils {
    */
   public static int getRupeeBagInventorySlot(final PlayerEntity player) {
     return getInventorySlot(player, RupeeBagItem.class);
+  }
+
+  /**
+   * Return the index of the slot in a player’s inventory that contains a treasure bag.
+   *
+   * @param player The player whose inventory is to be scanned.
+   * @return The slot index or -1 if no treasure bag could be found.
+   */
+  public static int getTreasureBagInventorySlot(final PlayerEntity player) {
+    return getInventorySlot(player, TreasureBagItem.class);
   }
 
   /**

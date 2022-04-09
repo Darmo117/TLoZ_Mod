@@ -8,6 +8,7 @@ import net.darmo_creations.tloz_mod.entities.ModEntities;
 import net.darmo_creations.tloz_mod.entities.PickableEntity;
 import net.darmo_creations.tloz_mod.entities.renderers.*;
 import net.darmo_creations.tloz_mod.gui.HUD;
+import net.darmo_creations.tloz_mod.gui.InventoryGUI;
 import net.darmo_creations.tloz_mod.gui.TeleporterEffectGUI;
 import net.darmo_creations.tloz_mod.items.ModItems;
 import net.darmo_creations.tloz_mod.items.QuiverItem;
@@ -60,6 +61,8 @@ public class TLoZ {
   public static final HUD MAIN_HUD = new HUD(Minecraft.getInstance());
   @OnlyIn(Dist.CLIENT)
   public static final TeleporterEffectGUI TELEPORTER_EFFECT_GUI = new TeleporterEffectGUI(Minecraft.getInstance());
+  @OnlyIn(Dist.CLIENT)
+  public static final InventoryGUI INVENTORY_GUI = new InventoryGUI(Minecraft.getInstance());
 
   public TLoZ() {
     IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
