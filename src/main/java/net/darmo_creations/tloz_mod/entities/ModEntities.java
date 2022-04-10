@@ -74,4 +74,13 @@ public class ModEntities {
           .immuneToFire()
           .build("whirlwind")
   );
+  public static final RegistryObject<EntityType<LocomotiveEntity>> LOCOMOTIVE = REGISTER.register(
+      "locomotive",
+      () -> EntityType.Builder.<LocomotiveEntity>create(LocomotiveEntity::new, EntityClassification.MISC)
+          .size(0.98f, 0.98f)
+          .trackingRange(10)
+          .updateInterval(10)
+          .immuneToFire()
+          .build("locomotive")
+  );
 }
