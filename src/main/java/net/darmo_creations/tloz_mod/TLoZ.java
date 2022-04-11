@@ -94,6 +94,7 @@ public class TLoZ {
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.SAFE_ZONE_EFFECT_AREA.get(), SafeZoneEffectAreaTileEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.SPIKES_EFFECT_AREA.get(), SpikesEffectAreaTileEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.SPAWNPOINT_SETTER.get(), SpawnPointSetterTileEntityRenderer::new);
+    ClientRegistry.bindTileEntityRenderer(ModTileEntities.KILL_TRIGGER.get(), KillTriggerTileEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.TREASURE_CHEST.get(), TreasureChestTileEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.BLUE_LIGHT_TELEPORTER.get(), BlueLightTeleporterTileEntityRenderer::new);
     // Transparent block textures

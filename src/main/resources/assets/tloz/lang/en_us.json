@@ -87,6 +87,7 @@
   "block.tloz.locked_door": "Locked Door",
   "block.tloz.locked_door.locked_message": "You need a key to open this door!",
   "block.tloz.spawnpoint_setter": "Spawnpoint Setter",
+  "block.tloz.kill_trigger": "Kill Trigger",
   "block.tloz.treasure_chest": "Treasure Chest",
   "block.tloz.double_treasure_chest": "Double Treasure Chest",
   "block.tloz.mimic_chest": "Mimic Chest",

@@ -1,5 +1,6 @@
 package net.darmo_creations.tloz_mod.blocks;
 
+import net.darmo_creations.tloz_mod.tile_entities.KillTriggerTileEntity;
 import net.darmo_creations.tloz_mod.tile_entities.SpawnpointSetterTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -17,12 +18,11 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 /**
- * A block that sets the spawnpoint of any player that collides with it.
- * The spawnpoint is set to the position of the collided block.
+ * A block that kills any player that collides with it.
  */
 @SuppressWarnings("deprecation")
-public class SpawnpointSetterBlock extends Block implements ITileEntityProvider {
-  public SpawnpointSetterBlock() {
+public class KillTriggerBlock extends Block implements ITileEntityProvider {
+  public KillTriggerBlock() {
     super(Properties.create(Material.AIR)
         .setAir()
         .doesNotBlockMovement()
@@ -37,11 +37,9 @@ public class SpawnpointSetterBlock extends Block implements ITileEntityProvider 
   @Override
   public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
     if (entity instanceof ServerPlayerEntity) {
-      // Set the spawn point of the player if it is not already within 2 blocks
       ServerPlayerEntity player = (ServerPlayerEntity) entity;
-      BlockPos currentSpawnPoint = player.func_241140_K_();
-      if (currentSpawnPoint == null || !pos.withinDistance(currentSpawnPoint, 2)) {
-        player.func_242111_a(world.getDimensionKey(), pos.down(), player.rotationYaw, true, false);
+      if (!player.isCreative() && !player.isSpectator()) {
+        player.onKillCommand();
       }
     }
   }
@@ -53,7 +51,7 @@ public class SpawnpointSetterBlock extends Block implements ITileEntityProvider 
 
   @Override
   public TileEntity createNewTileEntity(IBlockReader world) {
-    return new SpawnpointSetterTileEntity();
+    return new KillTriggerTileEntity();
   }
 
   @Override

@@ -57,6 +57,11 @@ public class ModTileEntities {
       () -> TileEntityType.Builder.create(SpawnpointSetterTileEntity::new, ModBlocks.SPAWNPOINT_SETTER).build(null)
   );
   @SuppressWarnings("ConstantConditions")
+  public static final RegistryObject<TileEntityType<KillTriggerTileEntity>> KILL_TRIGGER = REGISTER.register(
+      "kill_trigger",
+      () -> TileEntityType.Builder.create(KillTriggerTileEntity::new, ModBlocks.KILL_TRIGGER).build(null)
+  );
+  @SuppressWarnings("ConstantConditions")
   public static final RegistryObject<TileEntityType<TreasureChestTileEntity>> TREASURE_CHEST = REGISTER.register(
       "treasure_chest",
       () -> TileEntityType.Builder.create(TreasureChestTileEntity::new, ModBlocks.TREASURE_CHEST, ModBlocks.DOUBLE_TREASURE_CHEST, ModBlocks.MIMIC_CHEST)

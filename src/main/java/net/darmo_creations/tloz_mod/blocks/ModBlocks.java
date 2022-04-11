@@ -11,6 +11,7 @@ public final class ModBlocks {
 
   public static final Block BLUE_LIGHT_TELEPORTER = new BlueLightTeleporter().setRegistryName("blue_light_teleporter");
   public static final Block SPAWNPOINT_SETTER = new SpawnpointSetterBlock().setRegistryName("spawnpoint_setter");
+  public static final Block KILL_TRIGGER = new KillTriggerBlock().setRegistryName("kill_trigger");
 
   public static final Block SHOCK_SWITCH = new ShockSwitchBlock().setRegistryName("shock_switch");
   public static final Block PULL_SWITCH = new PullSwitchBlock().setRegistryName("pull_switch");
