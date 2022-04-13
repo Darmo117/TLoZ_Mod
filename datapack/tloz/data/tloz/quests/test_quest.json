@@ -1,0 +1,21 @@
+{
+  "stages": [
+    {
+      "description": "stage0.description",
+      "actions": [
+        {
+          "action": "give_item",
+          "item": "tloz:stalfos_skull"
+        },
+        {
+          "action": "empty_freight_car"
+        },
+        {
+          "action": "fill_freight_car",
+          "item": "tloz:wood_heart",
+          "amount": 10
+        }
+      ]
+    }
+  ]
+}

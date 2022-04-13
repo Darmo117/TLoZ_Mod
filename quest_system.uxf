@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>670</x>
+      <y>190</y>
+      <w>320</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Quest
+--
+stageIndex: int
+--
++ goToNextStage(ctx: GameContext): boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>700</x>
+      <y>350</y>
+      <w>260</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>QuestStage
+--
+descriptionKey: String
+--
++ execute(ctx: GameContext)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>820</x>
+      <y>250</y>
+      <w>70</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1..*
+r1=stages
+m2=1</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>350</x>
+      <y>670</y>
+      <w>200</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>GiveItemQuestStageAction
+--
+item: ResourceLocation</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>570</x>
+      <y>670</y>
+      <w>240</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>EmptyFreightCarQuestStageAction</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>830</x>
+      <y>670</y>
+      <w>220</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>FillFreightCarQuestStageAction
+--
+item: ResourceLocation
+amount: int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1070</x>
+      <y>670</y>
+      <w>220</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>ModifyTracksQuestStageAction
+--
+unlock: boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>450</x>
+      <y>560</y>
+      <w>330</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>310.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>700</x>
+      <y>560</y>
+      <w>110</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>90.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>830</x>
+      <y>560</y>
+      <w>130</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;110.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>860</x>
+      <y>560</y>
+      <w>340</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;320.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>700</x>
+      <y>510</y>
+      <w>260</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>/QuestStageAction/
+--
+--
+/+ execute(ctx: GameContext)/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>820</x>
+      <y>410</y>
+      <w>80</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1..*
+r1=actions
+m2=*</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1240</x>
+      <y>310</y>
+      <w>350</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>NPCDialog
+--
+--
++ isAvailable(ctx: GameContext): boolean
++ onTrigger(ctx: GameContext): boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>640</x>
+      <y>0</y>
+      <w>420</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>QuestsManager
+--
+--
++ advanceQuest(ctx: GameContext, questID: String): boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>800</x>
+      <y>50</y>
+      <w>90</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-[questID]
+m1=*
+r1=quests
+m2=1</panel_attributes>
+    <additional_attributes>30.0;140.0;30.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1390</x>
+      <y>50</y>
+      <w>100</w>
+      <h>280</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-[npcID]
+m1=*
+r1=dialogs
+m2=1</panel_attributes>
+    <additional_attributes>30.0;260.0;30.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1510</x>
+      <y>590</y>
+      <w>130</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>ChoiceDialogText</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1510</x>
+      <y>540</y>
+      <w>90</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;70.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1550</x>
+      <y>330</y>
+      <w>160</w>
+      <h>370</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-[textKey]
+m1=2..*
+r1=choices
+m2=1
+r2=parent</panel_attributes>
+    <additional_attributes>40.0;20.0;140.0;20.0;140.0;350.0;30.0;350.0;30.0;300.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1260</x>
+      <y>480</y>
+      <w>310</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>DialogText
+--
+textKey: String
+--
++ getText(ctx: GameContext): TextComponent</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1410</x>
+      <y>370</y>
+      <w>60</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=*
+r1=lines
+m2=1</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1110</x>
+      <y>50</y>
+      <w>240</w>
+      <h>550</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-[npcID]
+m1=*
+r1=ambientTexts
+m2=1</panel_attributes>
+    <additional_attributes>10.0;530.0;10.0;100.0;200.0;100.0;200.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1180</x>
+      <y>0</y>
+      <w>470</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>NPCDialogsManager
+--
+--
++ onPlayerInteractWithNPC(ctx: GameContext, npcID: String): boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1910</x>
+      <y>210</y>
+      <w>270</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>/DialogCondition/
+--
+--
+/+ evaluate(ctx: GameContext): boolean/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1510</x>
+      <y>200</y>
+      <w>420</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=*
+r1=conditions
+m2=*</panel_attributes>
+    <additional_attributes>400.0;20.0;10.0;20.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1740</x>
+      <y>640</y>
+      <w>180</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>GameContext
+--
+player: ServerPlayerEntity
+train: Train</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1190</x>
+      <y>240</y>
+      <w>160</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>NPC dialogs may be triggered by players or commands.
+style=wordwrap
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1470</x>
+      <y>110</y>
+      <w>160</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Dialogs with a quest condition have a higher priority.
+style=wordwrap
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1090</x>
+      <y>580</y>
+      <w>180</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>SimpleDialogText
+--
+questToAdvance: String?</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1180</x>
+      <y>540</y>
+      <w>130</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>110.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1730</x>
+      <y>310</y>
+      <w>200</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>PlayerEquipmentCondition</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1770</x>
+      <y>460</y>
+      <w>120</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>PlayerEquipment
+«enum»
+--
+TRAIN_DRIVER
+RECRUIT</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1820</x>
+      <y>330</y>
+      <w>160</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+r1=requiredEquipment</panel_attributes>
+    <additional_attributes>10.0;130.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1950</x>
+      <y>310</y>
+      <w>200</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>FreightCarContentCondition
+--
+item: ResourceLocation
+minAmount: int
+maxAmount: int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2170</x>
+      <y>310</y>
+      <w>200</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>QuestCondition
+--
+questName: String
+questStage: int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2040</x>
+      <y>260</y>
+      <w>30</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1820</x>
+      <y>260</y>
+      <w>130</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>110.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2140</x>
+      <y>260</y>
+      <w>150</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;130.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1820</x>
+      <y>530</y>
+      <w>100</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+r1=equipment</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1690</x>
+      <y>110</y>
+      <w>200</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>For an NPC dialog to be available, all of its conditions need to be true.
+style=wordwrap
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLInterface</id>
+    <coordinates>
+      <x>440</x>
+      <y>140</y>
+      <w>200</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>NBTSerializable
+--
++ write(): CompoundNBT
++ read(nbt: CompoundNBT)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>540</x>
+      <y>150</y>
+      <w>240</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;220.0;10.0;220.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>130</x>
+      <y>670</y>
+      <w>190</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>NPCRideQuestStageAction
+--
+embark: boolean
+npcName: String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>210</x>
+      <y>540</y>
+      <w>510</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>490.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2390</x>
+      <y>310</y>
+      <w>200</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>BlockCondition
+--
+pos: BlockPos
+block: ResourceLocation</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2610</x>
+      <y>310</y>
+      <w>200</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>EntityCondition
+--
+entitySelector: String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2170</x>
+      <y>250</y>
+      <w>330</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;310.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2170</x>
+      <y>230</y>
+      <w>560</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;540.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1130</x>
+      <y>830</y>
+      <w>100</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>TrackRegion
+«enum»</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1170</x>
+      <y>720</y>
+      <w>110</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+r1=trackRegion</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>

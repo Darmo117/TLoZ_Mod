@@ -1,0 +1,87 @@
+{
+  "interaction_dialogs": [
+    {
+      "trigger": "player_interaction",
+      "condition": {
+        "quest": {
+          "name": "test_quest",
+          "stage": 0
+        },
+        "freight_car_content": {
+          "item": "tloz:oak_log",
+          "amount_range": [5, 10]
+        }
+      },
+      "lines": [
+        {
+          "type": "text",
+          "text": "npc1.interaction_lines.test_quest.0"
+        },
+        {
+          "type": "choice",
+          "choices": [
+            {
+              "text": "npc1.interaction_lines.test_quest.1.choice1",
+              "lines": [
+                {
+                  "type": "text",
+                  "text": "npc1.interaction_lines.test_quest.1.choice1.selected",
+                  "advance_quest": "test_quest"
+                }
+              ]
+            },
+            {
+              "text": "npc1.interaction_lines.test_quest.1.choice2",
+              "lines": [
+                {
+                  "type": "text",
+                  "text": "npc1.interaction_lines.test_quest.1.choice2.selected"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "npc1.interaction_lines.test_quest.2"
+        }
+      ]
+    },
+    {
+      "trigger": "player_interaction",
+      "condition": {
+        "player_equipment": "recruit/driver"
+      },
+      "lines": [
+        {
+          "type": "text",
+          "text": "npc1.interaction_lines.text1"
+        }
+      ]
+    },
+    {
+      "trigger": "player_interaction",
+      "lines": [
+        {
+          "type": "text",
+          "text": "npc1.interaction_lines.text2"
+        }
+      ]
+    },
+    {
+      "trigger": "player_interaction",
+      "lines": [
+        {
+          "type": "text",
+          "text": "npc1.interaction_lines.text3"
+        }
+      ]
+    }
+  ],
+  "proximity_dialogs": [
+    {
+      "player_distance": 5,
+      "text": "npc1.proximity_lines.text1"
+    }
+  ]
+}
