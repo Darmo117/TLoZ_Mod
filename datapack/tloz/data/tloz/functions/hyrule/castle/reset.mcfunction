@@ -1,0 +1,165 @@
+# Castle interior
+fill -330 16 151 -330 16 153 tloz:jar
+fill -316 16 151 -316 16 153 tloz:jar
+fill -343 16 170 -343 16 171 tloz:jar
+fill -307 24 160 -305 24 160 tloz:jar
+fill -334 24 121 -334 24 122 tloz:jar
+fill -318 16 126 -316 16 126 tloz:jar
+# Castle front exterior
+fill -313 16 183 -313 16 184 tloz:rock
+fill -312 16 170 -311 16 170 tloz:rock
+fill -335 16 170 -335 16 171 tloz:rock
+setblock -351 17 134 minecraft:bee_nest[facing=south]
+# Castle back exterior
+## Level 1
+setblock -344 16 107 minecraft:grass
+setblock -343 16 113 minecraft:grass
+setblock -341 16 110 minecraft:grass
+setblock -341 16 108 minecraft:grass
+setblock -341 16 106 minecraft:grass
+setblock -340 16 116 minecraft:grass
+setblock -339 16 113 minecraft:grass
+setblock -339 16 111 minecraft:grass
+setblock -337 16 109 minecraft:grass
+setblock -336 16 118 minecraft:grass
+setblock -336 16 115 minecraft:grass
+setblock -336 16 110 tloz:rock
+setblock -336 16 108 minecraft:grass
+setblock -334 16 111 minecraft:grass
+setblock -334 16 106 minecraft:grass
+setblock -333 16 116 minecraft:grass
+setblock -332 16 109 minecraft:grass
+setblock -331 16 117 minecraft:grass
+setblock -331 16 114 minecraft:grass
+setblock -331 16 112 minecraft:grass
+setblock -330 16 115 tloz:rock
+setblock -330 16 110 minecraft:grass
+setblock -328 16 116 minecraft:grass
+setblock -327 16 114 minecraft:grass
+setblock -327 16 111 minecraft:grass
+setblock -326 16 118 minecraft:grass
+setblock -324 16 116 minecraft:grass
+setblock -324 16 112 minecraft:grass
+setblock -324 16 109 minecraft:grass
+setblock -323 16 114 minecraft:grass
+setblock -321 16 113 minecraft:grass
+setblock -321 16 111 minecraft:grass
+setblock -320 16 116 minecraft:grass
+setblock -319 16 109 minecraft:grass
+setblock -318 16 114 minecraft:grass
+setblock -318 16 111 minecraft:grass
+setblock -316 16 108 minecraft:grass
+setblock -315 16 115 minecraft:grass
+setblock -315 16 112 minecraft:grass
+setblock -314 16 116 minecraft:grass
+setblock -312 16 114 minecraft:grass
+setblock -312 16 112 minecraft:grass
+setblock -312 16 109 minecraft:grass
+setblock -309 16 109 minecraft:grass
+## Level 2
+setblock -349 18 103 minecraft:grass
+setblock -349 18 98 minecraft:grass
+setblock -348 18 100 minecraft:grass
+setblock -346 18 102 minecraft:grass
+setblock -345 18 101 minecraft:grass
+setblock -343 18 104 minecraft:grass
+setblock -342 18 100 minecraft:grass
+setblock -341 18 102 minecraft:grass
+setblock -340 18 103 tloz:rock
+setblock -339 18 100 minecraft:grass
+setblock -335 18 99 minecraft:grass
+setblock -334 18 100 minecraft:grass
+setblock -333 18 104 minecraft:grass
+setblock -332 18 102 minecraft:grass
+setblock -330 18 105 minecraft:grass
+setblock -330 18 103 minecraft:grass
+setblock -330 18 101 minecraft:grass
+setblock -328 18 105 minecraft:grass
+setblock -328 18 102 minecraft:grass
+setblock -327 18 103 minecraft:grass
+setblock -326 18 101 minecraft:grass
+setblock -324 18 103 minecraft:grass
+setblock -324 18 99 minecraft:grass
+setblock -323 18 102 minecraft:grass
+setblock -323 18 102 minecraft:grass
+setblock -322 18 101 minecraft:grass
+setblock -321 18 103 minecraft:grass
+setblock -319 18 101 minecraft:grass
+setblock -318 18 105 minecraft:grass
+setblock -317 18 102 minecraft:grass
+setblock -317 18 100 minecraft:grass
+setblock -316 18 106 minecraft:grass
+setblock -314 18 104 minecraft:grass
+setblock -314 18 98 minecraft:grass
+setblock -312 18 105 minecraft:grass
+setblock -312 18 101 minecraft:grass
+setblock -310 18 102 minecraft:grass
+setblock -309 18 105 minecraft:grass
+setblock -309 18 100 minecraft:grass
+setblock -307 18 102 minecraft:grass
+setblock -307 18 97 minecraft:grass
+setblock -306 18 103 minecraft:grass
+setblock -306 18 100 minecraft:grass
+setblock -305 18 98 minecraft:grass
+## Level 3
+setblock -348 20 95 minecraft:grass
+setblock -346 20 92 minecraft:grass
+setblock -345 20 94 minecraft:grass
+setblock -344 20 96 minecraft:grass
+setblock -344 20 91 minecraft:grass
+setblock -343 20 89 minecraft:grass
+setblock -342 20 96 minecraft:grass
+setblock -340 20 97 minecraft:grass
+setblock -340 20 91 minecraft:grass
+setblock -339 20 94 minecraft:grass
+setblock -338 20 92 minecraft:grass
+setblock -337 20 96 minecraft:grass
+setblock -337 20 89 minecraft:grass
+setblock -336 20 93 minecraft:grass
+setblock -335 20 96 minecraft:grass
+setblock -335 20 88 minecraft:grass
+setblock -334 20 94 minecraft:grass
+setblock -333 20 97 minecraft:grass
+setblock -333 20 92 minecraft:grass
+setblock -333 20 90 minecraft:grass
+setblock -332 20 95 minecraft:grass
+setblock -331 20 94 minecraft:grass
+setblock -331 20 89 minecraft:grass
+setblock -330 20 91 minecraft:grass
+setblock -329 20 97 minecraft:grass
+setblock -329 20 90 minecraft:grass
+setblock -328 20 93 minecraft:grass
+setblock -326 20 98 minecraft:grass
+setblock -326 20 92 minecraft:grass
+setblock -325 20 91 minecraft:grass
+setblock -325 20 88 minecraft:grass
+setblock -323 20 96 minecraft:grass
+setblock -322 20 94 minecraft:grass
+setblock -322 20 89 minecraft:grass
+setblock -321 20 91 minecraft:grass
+setblock -321 20 88 minecraft:grass
+setblock -320 20 95 minecraft:grass
+setblock -320 20 94 minecraft:grass
+setblock -319 20 97 minecraft:grass
+setblock -319 20 98 minecraft:grass
+setblock -318 20 92 minecraft:grass
+setblock -318 20 89 minecraft:grass
+setblock -317 20 94 minecraft:grass
+setblock -315 20 94 minecraft:grass
+setblock -315 20 89 minecraft:grass
+setblock -314 20 94 minecraft:grass
+setblock -313 20 91 minecraft:grass
+setblock -312 20 94 minecraft:grass
+setblock -312 20 89 minecraft:grass
+setblock -311 20 95 minecraft:grass
+setblock -311 20 86 minecraft:grass
+setblock -310 20 91 minecraft:grass
+setblock -310 20 89 minecraft:grass
+setblock -309 20 94 minecraft:grass
+setblock -309 20 87 minecraft:grass
+setblock -307 20 93 minecraft:grass
+setblock -307 20 90 minecraft:grass
+setblock -305 20 93 minecraft:grass
+setblock -305 20 92 minecraft:grass
+setblock -305 20 89 minecraft:grass
+setblock -304 20 88 minecraft:grass
