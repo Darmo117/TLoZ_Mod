@@ -23,6 +23,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+import java.util.Locale;
 import java.util.Optional;
 import java.util.OptionalInt;
 
@@ -51,12 +52,15 @@ public class BlueLightTeleporter extends ContainerBlock {
     TileEntity te = world.getTileEntity(pos);
     if (!world.isRemote && te instanceof BlueLightTeleporterTileEntity
         && entity instanceof PlayerEntity && entity.getPosition().equals(pos)) {
-      ((BlueLightTeleporterTileEntity) te).getTargetPos().ifPresent(targetPos -> {
+      BlueLightTeleporterTileEntity t = (BlueLightTeleporterTileEntity) te;
+      t.getTargetPos().ifPresent(targetPos -> {
         PlayerEntity player = (PlayerEntity) entity;
         EntityDataManager dataManager = player.getDataManager();
         if (!dataManager.get(AdditionalDataParameters.PLAYER_TELEPORTER_DELAY).isPresent()) {
           dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_DELAY, OptionalInt.of(DELAY));
           dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_TARGET_POS, Optional.of(targetPos));
+          dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_YAW, t.getYaw());
+          dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_PITCH, t.getPitch());
           world.playSound(null, pos, ModSoundEvents.TELEPORT, SoundCategory.BLOCKS, 0.2f, 1);
         }
       });
@@ -83,8 +87,13 @@ public class BlueLightTeleporter extends ContainerBlock {
         resetTeleportation(dataManager);
       } else if (delay == 0) {
         MinecraftServer server = ((ServerWorld) player.world).getServer();
-        server.getCommandManager().handleCommand(server.getCommandSource().withFeedbackDisabled(),
-            String.format("tp %s %d %d %d", player.getGameProfile().getName(), targetPos.getX(), targetPos.getY(), targetPos.getZ()));
+        String command = String.format(Locale.ENGLISH, "tp %s %d %d %d %f %f",
+            player.getGameProfile().getName(),
+            targetPos.getX(), targetPos.getY(), targetPos.getZ(),
+            dataManager.get(AdditionalDataParameters.PLAYER_TELEPORTER_YAW).orElse(player.rotationYaw),
+            dataManager.get(AdditionalDataParameters.PLAYER_TELEPORTER_PITCH).orElse(player.rotationPitch)
+        );
+        server.getCommandManager().handleCommand(server.getCommandSource().withFeedbackDisabled(), command);
         resetTeleportation(dataManager);
       } else {
         dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_DELAY, OptionalInt.of(delay - 1));
@@ -95,6 +104,8 @@ public class BlueLightTeleporter extends ContainerBlock {
   private static void resetTeleportation(EntityDataManager dataManager) {
     dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_DELAY, OptionalInt.empty());
     dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_TARGET_POS, Optional.empty());
+    dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_YAW, Optional.empty());
+    dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_PITCH, Optional.empty());
   }
 
   @SuppressWarnings("deprecation")

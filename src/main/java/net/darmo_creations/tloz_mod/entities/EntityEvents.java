@@ -21,6 +21,8 @@ public final class EntityEvents {
       PlayerEntity player = (PlayerEntity) entity;
       player.getDataManager().register(AdditionalDataParameters.PLAYER_TELEPORTER_DELAY, OptionalInt.empty());
       player.getDataManager().register(AdditionalDataParameters.PLAYER_TELEPORTER_TARGET_POS, Optional.empty());
+      player.getDataManager().register(AdditionalDataParameters.PLAYER_TELEPORTER_YAW, Optional.empty());
+      player.getDataManager().register(AdditionalDataParameters.PLAYER_TELEPORTER_PITCH, Optional.empty());
     }
   }
 

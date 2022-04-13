@@ -4,6 +4,7 @@ import net.darmo_creations.tloz_mod.blocks.BlueLightTeleporter;
 import net.darmo_creations.tloz_mod.blocks.IModBlock;
 import net.darmo_creations.tloz_mod.blocks.ModBlocks;
 import net.darmo_creations.tloz_mod.commands.SetMaxHealthCommand;
+import net.darmo_creations.tloz_mod.entities.ModDataSerializers;
 import net.darmo_creations.tloz_mod.entities.ModEntities;
 import net.darmo_creations.tloz_mod.entities.PickableEntity;
 import net.darmo_creations.tloz_mod.entities.renderers.*;
@@ -24,6 +25,7 @@ import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemModelsProperties;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.particles.ParticleType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -39,6 +41,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -66,6 +69,7 @@ public class TLoZ {
 
   public TLoZ() {
     IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    modEventBus.addListener(this::setupCommon);
     modEventBus.addListener(this::setupClient);
     ModTileEntities.REGISTER.register(modEventBus);
     ModEntities.REGISTER.register(modEventBus);
@@ -74,6 +78,10 @@ public class TLoZ {
     MinecraftForge.EVENT_BUS.register(SpecialPickableItem.class);
     MinecraftForge.EVENT_BUS.register(PickableEntity.class);
     MinecraftForge.EVENT_BUS.register(BlueLightTeleporter.class);
+  }
+
+  private void setupCommon(final FMLCommonSetupEvent event) {
+    DataSerializers.registerSerializer(ModDataSerializers.OPTIONAL_FLOAT);
   }
 
   private void setupClient(final FMLClientSetupEvent event) {

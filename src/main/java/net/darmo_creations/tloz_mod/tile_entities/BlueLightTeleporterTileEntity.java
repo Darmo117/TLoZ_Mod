@@ -13,8 +13,12 @@ import java.util.Optional;
 
 public class BlueLightTeleporterTileEntity extends SynchronizedTileEntity implements ITickableTileEntity {
   private static final String TARGET_POS_KEY = "TargetPos";
+  private static final String YAW_KEY = "Yaw";
+  private static final String PITCH_KEY = "Pitch";
 
   private BlockPos targetPos;
+  private Float yaw;
+  private Float pitch;
   private int ticks;
 
   public BlueLightTeleporterTileEntity() {
@@ -23,6 +27,14 @@ public class BlueLightTeleporterTileEntity extends SynchronizedTileEntity implem
 
   public Optional<BlockPos> getTargetPos() {
     return Optional.ofNullable(this.targetPos);
+  }
+
+  public Optional<Float> getYaw() {
+    return Optional.ofNullable(this.yaw);
+  }
+
+  public Optional<Float> getPitch() {
+    return Optional.ofNullable(this.pitch);
   }
 
   public void setTargetPos(BlockPos targetPos) {
@@ -47,16 +59,20 @@ public class BlueLightTeleporterTileEntity extends SynchronizedTileEntity implem
     if (this.targetPos != null) {
       compound.put(TARGET_POS_KEY, NBTUtil.writeBlockPos(this.targetPos));
     }
+    if (this.yaw != null) {
+      compound.putFloat(YAW_KEY, this.yaw);
+    }
+    if (this.pitch != null) {
+      compound.putFloat(PITCH_KEY, this.pitch);
+    }
     return compound;
   }
 
   @Override
   public void read(BlockState state, CompoundNBT nbt) {
     super.read(state, nbt);
-    if (nbt.contains(TARGET_POS_KEY)) {
-      this.targetPos = NBTUtil.readBlockPos(nbt.getCompound(TARGET_POS_KEY));
-    } else {
-      this.targetPos = null;
-    }
+    this.targetPos = nbt.contains(TARGET_POS_KEY) ? NBTUtil.readBlockPos(nbt.getCompound(TARGET_POS_KEY)) : null;
+    this.yaw = nbt.contains(YAW_KEY) ? nbt.getFloat(YAW_KEY) : null;
+    this.pitch = nbt.contains(PITCH_KEY) ? nbt.getFloat(PITCH_KEY) : null;
   }
 }
