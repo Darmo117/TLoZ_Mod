@@ -1,24 +1,22 @@
 package net.darmo_creations.tloz_mod.entities;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.IPacket;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
-public class LocomotiveEntity extends TrainPartEntity {
-  public LocomotiveEntity(EntityType<?> type, World world) {
+public class TestMinecartEntity extends AbstractMinecartEntity {
+  public TestMinecartEntity(EntityType<?> type, World world) {
     super(type, world);
   }
 
   @SuppressWarnings("unused")
-  public LocomotiveEntity(World world, Collection collection, double x, double y, double z) {
-    super(ModEntities.LOCOMOTIVE.get(), world, collection, x, y, z);
-  }
-
-  @Override
-  public double getMountedYOffset() {
-    return 1;
+  public TestMinecartEntity(World world, double x, double y, double z) {
+    super(ModEntities.TEST_MINECART.get(), world, x, y, z);
   }
 
   @Override
@@ -33,14 +31,12 @@ public class LocomotiveEntity extends TrainPartEntity {
   }
 
   @Override
-  public void tick() {
-    super.tick();
-    // TODO set speed and direction depending on some special items in the rider’s inventory
-    // FIXME movement lag
+  public Type getMinecartType() {
+    return Type.RIDEABLE;
   }
 
   @Override
-  public Type getMinecartType() {
-    return Type.RIDEABLE;
+  public IPacket<?> createSpawnPacket() {
+    return NetworkHooks.getEntitySpawningPacket(this);
   }
 }

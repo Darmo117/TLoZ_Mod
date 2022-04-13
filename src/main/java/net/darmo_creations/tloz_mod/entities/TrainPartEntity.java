@@ -21,8 +21,8 @@ public abstract class TrainPartEntity extends AbstractMinecartEntity {
     super(type, world);
   }
 
-  public TrainPartEntity(World world, Collection collection, double x, double y, double z) {
-    super(ModEntities.LOCOMOTIVE.get(), world, x, y, z);
+  public TrainPartEntity(EntityType<?> type, World world, Collection collection, double x, double y, double z) {
+    super(type, world, x, y, z);
     this.setCollection(collection);
   }
 

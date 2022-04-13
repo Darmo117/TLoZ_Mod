@@ -83,4 +83,13 @@ public class ModEntities {
           .immuneToFire()
           .build("locomotive")
   );
+  public static final RegistryObject<EntityType<TestMinecartEntity>> TEST_MINECART = REGISTER.register(
+      "test_minecart",
+      () -> EntityType.Builder.<TestMinecartEntity>create(TestMinecartEntity::new, EntityClassification.MISC)
+          .size(0.98f, 0.98f)
+          .trackingRange(10)
+          .updateInterval(10)
+          .immuneToFire()
+          .build("test_minecart")
+  );
 }

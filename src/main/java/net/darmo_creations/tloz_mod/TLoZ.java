@@ -94,6 +94,8 @@ public class TLoZ {
     RenderingRegistry.registerEntityRenderingHandler(ModEntities.ARROW.get(), TLoZArrowRenderer::new);
     RenderingRegistry.registerEntityRenderingHandler(ModEntities.WHIRLWIND.get(), WhirlwindEntityRenderer::new);
     RenderingRegistry.registerEntityRenderingHandler(ModEntities.LOCOMOTIVE.get(), LocomotiveEntityRenderer::new);
+    RenderingRegistry.registerEntityRenderingHandler(ModEntities.TEST_MINECART.get(), TestMinecartEntityRenderer::new);
+//    RenderingRegistry.registerEntityRenderingHandler(EntityType.MINECART, LocomotiveEntityRenderer::new);
     // Tile entity renderers
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.BOMB_BREAKABLE_BLOCK.get(), BombBreakableBlockTileEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.BOMB_FLOWER.get(), BombFlowerTileEntityRenderer::new);
