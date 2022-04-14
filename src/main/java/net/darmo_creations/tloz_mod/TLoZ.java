@@ -7,6 +7,7 @@ import net.darmo_creations.tloz_mod.commands.SetMaxHealthCommand;
 import net.darmo_creations.tloz_mod.entities.ModDataSerializers;
 import net.darmo_creations.tloz_mod.entities.ModEntities;
 import net.darmo_creations.tloz_mod.entities.PickableEntity;
+import net.darmo_creations.tloz_mod.entities.capabilities.TeleportDataCapabilityManager;
 import net.darmo_creations.tloz_mod.entities.renderers.*;
 import net.darmo_creations.tloz_mod.gui.HUD;
 import net.darmo_creations.tloz_mod.gui.InventoryGUI;
@@ -16,6 +17,7 @@ import net.darmo_creations.tloz_mod.items.QuiverItem;
 import net.darmo_creations.tloz_mod.items.SpecialPickableItem;
 import net.darmo_creations.tloz_mod.network.ModNetworkManager;
 import net.darmo_creations.tloz_mod.network.SetTrainSpeedMessage;
+import net.darmo_creations.tloz_mod.network.TeleportDataMessage;
 import net.darmo_creations.tloz_mod.particles.BlueTeleporterParticle;
 import net.darmo_creations.tloz_mod.particles.ModParticles;
 import net.darmo_creations.tloz_mod.tile_entities.ModTileEntities;
@@ -81,12 +83,23 @@ public class TLoZ {
   private void setupCommon(final FMLCommonSetupEvent event) {
     DataSerializers.registerSerializer(ModDataSerializers.OPTIONAL_FLOAT);
 
+    // Capabilities registration
+    TeleportDataCapabilityManager.registerCapabilities();
+
+    // Network
     ModNetworkManager.INSTANCE.registerMessage(
         0,
         SetTrainSpeedMessage.class,
         SetTrainSpeedMessage::writePacketData,
         SetTrainSpeedMessage::new,
         SetTrainSpeedMessage.Handler::handle
+    );
+    ModNetworkManager.INSTANCE.registerMessage(
+        1,
+        TeleportDataMessage.class,
+        TeleportDataMessage::writePacketData,
+        TeleportDataMessage::new,
+        TeleportDataMessage.Handler::handle
     );
   }
 

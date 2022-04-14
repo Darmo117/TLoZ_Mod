@@ -1,7 +1,10 @@
 package net.darmo_creations.tloz_mod.blocks;
 
 import net.darmo_creations.tloz_mod.ModSoundEvents;
-import net.darmo_creations.tloz_mod.entities.AdditionalDataParameters;
+import net.darmo_creations.tloz_mod.entities.capabilities.TeleportData;
+import net.darmo_creations.tloz_mod.entities.capabilities.TeleportDataCapabilityManager;
+import net.darmo_creations.tloz_mod.network.ModNetworkManager;
+import net.darmo_creations.tloz_mod.network.TeleportDataMessage;
 import net.darmo_creations.tloz_mod.tile_entities.BlueLightTeleporterTileEntity;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -10,7 +13,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
@@ -20,12 +23,13 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.Locale;
 import java.util.Optional;
-import java.util.OptionalInt;
 
 public class BlueLightTeleporter extends ContainerBlock {
   public static final int DELAY = 100; // 5s
@@ -54,15 +58,18 @@ public class BlueLightTeleporter extends ContainerBlock {
         && entity instanceof PlayerEntity && entity.getPosition().equals(pos)) {
       BlueLightTeleporterTileEntity t = (BlueLightTeleporterTileEntity) te;
       t.getTargetPos().ifPresent(targetPos -> {
-        PlayerEntity player = (PlayerEntity) entity;
-        EntityDataManager dataManager = player.getDataManager();
-        if (!dataManager.get(AdditionalDataParameters.PLAYER_TELEPORTER_DELAY).isPresent()) {
-          dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_DELAY, OptionalInt.of(DELAY));
-          dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_TARGET_POS, Optional.of(targetPos));
-          dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_YAW, t.getYaw());
-          dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_PITCH, t.getPitch());
-          world.playSound(null, pos, ModSoundEvents.TELEPORT, SoundCategory.BLOCKS, 0.2f, 1);
-        }
+        ServerPlayerEntity player = (ServerPlayerEntity) entity;
+        LazyOptional<TeleportData> capability = player.getCapability(TeleportDataCapabilityManager.INSTANCE);
+        capability.ifPresent(teleportData -> {
+          if (!teleportData.getDelay().isPresent()) {
+            teleportData.setDelay(DELAY);
+            teleportData.setTargetPosition(targetPos);
+            teleportData.setTargetYaw(t.getYaw().orElse(null));
+            teleportData.setTargetPitch(t.getPitch().orElse(null));
+            world.playSound(null, pos, ModSoundEvents.TELEPORT, SoundCategory.BLOCKS, 0.2f, 1);
+            ModNetworkManager.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new TeleportDataMessage(teleportData));
+          }
+        });
       });
     }
   }
@@ -77,35 +84,31 @@ public class BlueLightTeleporter extends ContainerBlock {
     if (player.world.isRemote) {
       return;
     }
-    EntityDataManager dataManager = player.getDataManager();
-    OptionalInt optDelay = dataManager.get(AdditionalDataParameters.PLAYER_TELEPORTER_DELAY);
-    Optional<BlockPos> optPos = dataManager.get(AdditionalDataParameters.PLAYER_TELEPORTER_TARGET_POS);
-    if (optDelay.isPresent() && optPos.isPresent()) {
-      int delay = optDelay.getAsInt();
-      BlockPos targetPos = optPos.get();
+    player.getCapability(TeleportDataCapabilityManager.INSTANCE).ifPresent(teleportData -> {
+      Optional<Integer> optDelay = teleportData.getDelay();
+      Optional<BlockPos> optPos = teleportData.getTargetPosition();
+      if (!optDelay.isPresent() || !optPos.isPresent()) {
+        return;
+      }
+      int delay = optDelay.get();
       if (!(player.world.getBlockState(player.getPosition()).getBlock() instanceof BlueLightTeleporter)) {
-        resetTeleportation(dataManager);
+        teleportData.reset();
       } else if (delay == 0) {
+        BlockPos targetPos = optPos.get();
         MinecraftServer server = ((ServerWorld) player.world).getServer();
         String command = String.format(Locale.ENGLISH, "tp %s %d %d %d %f %f",
             player.getGameProfile().getName(),
             targetPos.getX(), targetPos.getY(), targetPos.getZ(),
-            dataManager.get(AdditionalDataParameters.PLAYER_TELEPORTER_YAW).orElse(player.rotationYaw),
-            dataManager.get(AdditionalDataParameters.PLAYER_TELEPORTER_PITCH).orElse(player.rotationPitch)
+            teleportData.getTargetYaw().orElse(player.rotationYaw),
+            teleportData.getTargetPitch().orElse(player.rotationPitch)
         );
         server.getCommandManager().handleCommand(server.getCommandSource().withFeedbackDisabled(), command);
-        resetTeleportation(dataManager);
+        teleportData.reset();
       } else {
-        dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_DELAY, OptionalInt.of(delay - 1));
+        teleportData.setDelay(delay - 1);
       }
-    }
-  }
-
-  private static void resetTeleportation(EntityDataManager dataManager) {
-    dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_DELAY, OptionalInt.empty());
-    dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_TARGET_POS, Optional.empty());
-    dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_YAW, Optional.empty());
-    dataManager.set(AdditionalDataParameters.PLAYER_TELEPORTER_PITCH, Optional.empty());
+      ModNetworkManager.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new TeleportDataMessage(teleportData));
+    });
   }
 
   @SuppressWarnings("deprecation")
