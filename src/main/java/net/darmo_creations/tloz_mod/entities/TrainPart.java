@@ -1,10 +1,9 @@
 package net.darmo_creations.tloz_mod.entities;
 
+import net.darmo_creations.tloz_mod.entities.capabilities.TrainCollectionCapabilityManager;
 import net.minecraft.entity.item.minecart.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.OptionalInt;
 
 /**
  * List of all train parts.
@@ -35,7 +34,8 @@ public enum TrainPart {
     double y = pos.getY() + 0.0625 + (isRailAscending ? 0.5 : 0);
     double z = pos.getZ() + 0.5;
     AbstractMinecartEntity minecart = this.minecartminecartEntityProvider.apply(world, x, y, z);
-    minecart.getDataManager().set(AdditionalDataParameters.TRAIN_COLLECTION, OptionalInt.of(collection.ordinal()));
+    minecart.getCapability(TrainCollectionCapabilityManager.INSTANCE)
+        .ifPresent(trainCollectionData -> trainCollectionData.setCollection(collection));
     return minecart;
   }
 

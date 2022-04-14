@@ -40,11 +40,8 @@ public final class EntityEvents {
 //  public static void onEntityConstructing(EntityEvent.EntityConstructing event) {
 //    // Inject additional data parameters into players and minecarts
 //    Entity entity = event.getEntity();
-//    if (entity instanceof AbstractMinecartEntity) {
-//      register(entity, AdditionalDataParameters.TRAIN_COLLECTION, OptionalInt.empty());
-//      if (entity instanceof FurnaceMinecartEntity) {
-//        register(entity, AdditionalDataParameters.TRAIN_SPEED_SETTING, TrainSpeedSetting.IDLE.ordinal());
-//      }
+//    if (entity instanceof FurnaceMinecartEntity) {
+//      register(entity, AdditionalDataParameters.TRAIN_SPEED_SETTING, TrainSpeedSetting.IDLE.ordinal());
 //    }
 //  }
 //

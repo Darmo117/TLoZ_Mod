@@ -3,10 +3,13 @@ package net.darmo_creations.tloz_mod.items;
 import net.darmo_creations.tloz_mod.TLoZ;
 import net.darmo_creations.tloz_mod.entities.TrainCollection;
 import net.darmo_creations.tloz_mod.entities.TrainPart;
+import net.darmo_creations.tloz_mod.network.ModNetworkManager;
+import net.darmo_creations.tloz_mod.network.TrainCollectionMessage;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.state.properties.RailShape;
@@ -18,6 +21,7 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.List;
 
@@ -57,6 +61,9 @@ public abstract class TrainPartItem extends TLoZItem {
           trainPartEntity.setCustomName(itemstack.getDisplayName());
         }
         world.addEntity(trainPartEntity);
+        // Send capability data to client
+        ModNetworkManager.INSTANCE.send(PacketDistributor.PLAYER.with(
+            () -> (ServerPlayerEntity) context.getPlayer()), new TrainCollectionMessage(this.collection, trainPartEntity.getEntityId()));
       }
       itemstack.shrink(1);
 
