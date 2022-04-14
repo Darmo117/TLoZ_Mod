@@ -13,6 +13,7 @@ import java.util.OptionalInt;
  */
 @Deprecated
 public final class AdditionalDataParameters {
+  // TODO migrate to capabilities
   // Minecart data
   public static final DataParameter<OptionalInt> TRAIN_COLLECTION = EntityDataManager.createKey(AbstractMinecartEntity.class, DataSerializers.OPTIONAL_VARINT);
   public static final DataParameter<Integer> TRAIN_SPEED_SETTING = EntityDataManager.createKey(FurnaceMinecartEntity.class, DataSerializers.VARINT);

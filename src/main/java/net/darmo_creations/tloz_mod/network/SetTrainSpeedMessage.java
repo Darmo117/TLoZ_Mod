@@ -15,10 +15,19 @@ import net.minecraftforge.fml.network.NetworkEvent;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+/**
+ * Packet used to send the speed settings of a minecart to the server.
+ */
 public class SetTrainSpeedMessage implements IPacket<SetTrainSpeedMessage.Handler> {
   private TrainSpeedSetting speedSetting;
   private int minecartID;
 
+  /**
+   * Create a message for the given data.
+   *
+   * @param speedSetting The new speed setting.
+   * @param minecartID   ID of the minecart entity to update.
+   */
   public SetTrainSpeedMessage(final TrainSpeedSetting speedSetting, final int minecartID) {
     this.speedSetting = Objects.requireNonNull(speedSetting);
     this.minecartID = minecartID;
@@ -49,7 +58,13 @@ public class SetTrainSpeedMessage implements IPacket<SetTrainSpeedMessage.Handle
   public void processPacket(Handler handler) {
   }
 
+  /**
+   * Server-side handler for the {@link SetTrainSpeedMessage} class.
+   */
   public static class Handler implements INetHandler {
+    /**
+     * Handles the packet received from the client.
+     */
     public static void handle(SetTrainSpeedMessage msg, Supplier<NetworkEvent.Context> ctx) {
       NetworkEvent.Context context = ctx.get();
       context.enqueueWork(() -> {

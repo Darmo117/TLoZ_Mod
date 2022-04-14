@@ -58,8 +58,12 @@ public final class EntityEvents {
 
   public static final double SIZE = 12;
 
+  /**
+   * Teleport all minecarts of a train when any one of it is teleported.
+   */
   @SubscribeEvent
   public static void onEntityTeleport(EntityTeleportEvent event) {
+    // FIXME doesn’t work with immersive portals -> event is not fired
     Entity entity = event.getEntity();
     if (entity instanceof AbstractMinecartEntity) {
       Vector3d prevPos = event.getPrev();
@@ -74,9 +78,11 @@ public final class EntityEvents {
     }
   }
 
+  /**
+   * Keeps players’ food level at its maximum value.
+   */
   @SubscribeEvent
   public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-    // Prevent food level from decreasing.
     event.player.getFoodStats().addStats(1, 1);
   }
 

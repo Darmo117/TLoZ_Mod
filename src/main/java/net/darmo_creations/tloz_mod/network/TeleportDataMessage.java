@@ -55,7 +55,7 @@ public class TeleportDataMessage implements IPacket<TeleportDataMessage.Handler>
   }
 
   /**
-   * Handler for the {@link TeleportDataMessage} class.
+   * Client-side handler for the {@link TeleportDataMessage} class.
    */
   public static class Handler implements INetHandler {
     /**
