@@ -12,15 +12,14 @@ buildscript {
 }
 
 apply plugin: 'net.minecraftforge.gradle'
-//apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'org.spongepowered.mixin'
 
 group = 'net.darmo_creations'
 version = '1.0'
 
-//mixin {
-//    add sourceSets.main, 'main.refmap.json'
-//    config "tloz_mod.tloz_mixins.json"
-//}
+mixin {
+    add sourceSets.main, 'main.refmap.json'
+}
 
 java {
     archivesBaseName = 'tloz'
@@ -150,7 +149,6 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 }
 
-// Example for how to get properties into the manifest for reading at runtime.
 jar {
     manifest {
         attributes([
@@ -160,7 +158,10 @@ jar {
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "Darmo",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                // Mixins
+                'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+                'MixinConfigs': 'tloz_mixins.json',
         ])
     }
 }

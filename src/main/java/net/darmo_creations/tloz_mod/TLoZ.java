@@ -14,6 +14,8 @@ import net.darmo_creations.tloz_mod.gui.TeleporterEffectGUI;
 import net.darmo_creations.tloz_mod.items.ModItems;
 import net.darmo_creations.tloz_mod.items.QuiverItem;
 import net.darmo_creations.tloz_mod.items.SpecialPickableItem;
+import net.darmo_creations.tloz_mod.network.ModNetworkManager;
+import net.darmo_creations.tloz_mod.network.SetTrainSpeedMessage;
 import net.darmo_creations.tloz_mod.particles.BlueTeleporterParticle;
 import net.darmo_creations.tloz_mod.particles.ModParticles;
 import net.darmo_creations.tloz_mod.tile_entities.ModTileEntities;
@@ -22,6 +24,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemModelsProperties;
@@ -29,8 +32,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.particles.ParticleType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -60,11 +61,8 @@ public class TLoZ {
    */
   public static final CreativeTab CREATIVE_MODE_TAB = new CreativeTab();
 
-  @OnlyIn(Dist.CLIENT)
   public static final HUD MAIN_HUD = new HUD(Minecraft.getInstance());
-  @OnlyIn(Dist.CLIENT)
   public static final TeleporterEffectGUI TELEPORTER_EFFECT_GUI = new TeleporterEffectGUI(Minecraft.getInstance());
-  @OnlyIn(Dist.CLIENT)
   public static final InventoryGUI INVENTORY_GUI = new InventoryGUI(Minecraft.getInstance());
 
   public TLoZ() {
@@ -82,6 +80,14 @@ public class TLoZ {
 
   private void setupCommon(final FMLCommonSetupEvent event) {
     DataSerializers.registerSerializer(ModDataSerializers.OPTIONAL_FLOAT);
+
+    ModNetworkManager.INSTANCE.registerMessage(
+        0,
+        SetTrainSpeedMessage.class,
+        SetTrainSpeedMessage::writePacketData,
+        SetTrainSpeedMessage::new,
+        SetTrainSpeedMessage.Handler::handle
+    );
   }
 
   private void setupClient(final FMLClientSetupEvent event) {
@@ -93,9 +99,7 @@ public class TLoZ {
     RenderingRegistry.registerEntityRenderingHandler(ModEntities.BOSS_KEY.get(), BossKeyEntityRenderer::new);
     RenderingRegistry.registerEntityRenderingHandler(ModEntities.ARROW.get(), TLoZArrowRenderer::new);
     RenderingRegistry.registerEntityRenderingHandler(ModEntities.WHIRLWIND.get(), WhirlwindEntityRenderer::new);
-    RenderingRegistry.registerEntityRenderingHandler(ModEntities.LOCOMOTIVE.get(), LocomotiveEntityRenderer::new);
-    RenderingRegistry.registerEntityRenderingHandler(ModEntities.TEST_MINECART.get(), TestMinecartEntityRenderer::new);
-//    RenderingRegistry.registerEntityRenderingHandler(EntityType.MINECART, LocomotiveEntityRenderer::new);
+    RenderingRegistry.registerEntityRenderingHandler(EntityType.FURNACE_MINECART, FurnaceMinecartEntityRenderer::new);
     // Tile entity renderers
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.BOMB_BREAKABLE_BLOCK.get(), BombBreakableBlockTileEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.BOMB_FLOWER.get(), BombFlowerTileEntityRenderer::new);
@@ -110,6 +114,10 @@ public class TLoZ {
     // Transparent block textures
     RenderTypeLookup.setRenderLayer(ModBlocks.BOMB_FLOWER, RenderType.getCutoutMipped());
     RenderTypeLookup.setRenderLayer(ModBlocks.ITEM_BULB_FLOWER, RenderType.getCutoutMipped());
+    // Custom key bindings
+    ClientRegistry.registerKeyBinding(ModKeyBindings.TRAIN_INCREASE_SPEED);
+    ClientRegistry.registerKeyBinding(ModKeyBindings.TRAIN_DECREASE_SPEED);
+    ClientRegistry.registerKeyBinding(ModKeyBindings.TRAIN_WHISTLE);
   }
 
   @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)

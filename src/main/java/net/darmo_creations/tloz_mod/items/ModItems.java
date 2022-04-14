@@ -2,7 +2,7 @@ package net.darmo_creations.tloz_mod.items;
 
 import net.darmo_creations.tloz_mod.TLoZ;
 import net.darmo_creations.tloz_mod.Utils;
-import net.darmo_creations.tloz_mod.entities.TrainPartEntity;
+import net.darmo_creations.tloz_mod.entities.TrainCollection;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -72,7 +72,10 @@ public final class ModItems {
   public static final Item SMALL_KEY = new TLoZItem(new Item.Properties().group(TLoZ.CREATIVE_MODE_TAB)).setRegistryName("small_key");
 
   // Train-related
-  public static final Item SPIRIT_ENGINE = new LocomotiveItem(TrainPartEntity.Collection.SPIRIT).setRegistryName("spirit_engine");
+  public static final Item SPIRIT_ENGINE = new TrainEngineItem(TrainCollection.SPIRIT).setRegistryName("spirit_engine");
+  public static final Item SPIRIT_CANNON = new TrainCannonItem(TrainCollection.SPIRIT).setRegistryName("spirit_cannon");
+  public static final Item SPIRIT_COACH = new TrainCoachItem(TrainCollection.SPIRIT).setRegistryName("spirit_coach");
+  public static final Item SPIRIT_FREIGHT_CAR = new TrainFreightCarItem(TrainCollection.SPIRIT).setRegistryName("spirit_freight_car");
 
   /**
    * The list of all explicitly declared items for this mod.

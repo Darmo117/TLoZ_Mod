@@ -1,28 +1,44 @@
 package net.darmo_creations.tloz_mod.items;
 
 import net.darmo_creations.tloz_mod.TLoZ;
-import net.darmo_creations.tloz_mod.entities.TrainPartEntity;
+import net.darmo_creations.tloz_mod.entities.TrainCollection;
+import net.darmo_creations.tloz_mod.entities.TrainPart;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.state.properties.RailShape;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
-public abstract class TrainItem<T extends TrainPartEntity> extends TLoZItem {
-  private final Class<T> trainEntityClass;
-  private final TrainPartEntity.Collection collection;
+/**
+ * An item that spawns a minecart entity corresponding to the given train part and collection.
+ */
+public abstract class TrainPartItem extends TLoZItem {
+  private final TrainPart trainPart;
+  private final TrainCollection collection;
 
-  public TrainItem(final Class<T> trainEntityClass, TrainPartEntity.Collection collection) {
+  public TrainPartItem(final TrainPart trainPart, final TrainCollection collection) {
     super(new Properties().maxStackSize(1).group(TLoZ.CREATIVE_MODE_TAB));
-    this.trainEntityClass = trainEntityClass;
+    this.trainPart = trainPart;
     this.collection = collection;
+  }
+
+  @Override
+  public void addInformation(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+    //noinspection ConstantConditions
+    tooltip.add(new TranslationTextComponent(String.format("item.tloz.%s.description", this.getRegistryName().getPath()))
+        .setStyle(Style.EMPTY.setFormatting(TextFormatting.GRAY)));
   }
 
   @Override
@@ -36,17 +52,7 @@ public abstract class TrainItem<T extends TrainPartEntity> extends TLoZItem {
       ItemStack itemstack = context.getItem();
       if (!world.isRemote) {
         RailShape railshape = blockstate.getBlock() instanceof AbstractRailBlock ? ((AbstractRailBlock) blockstate.getBlock()).getRailDirection(blockstate, world, blockpos, null) : RailShape.NORTH_SOUTH;
-        double yOffset = 0;
-        if (railshape.isAscending()) {
-          yOffset = 0.5;
-        }
-        T trainPartEntity;
-        try {
-          Constructor<T> constructor = this.trainEntityClass.getConstructor(World.class, TrainPartEntity.Collection.class, double.class, double.class, double.class);
-          trainPartEntity = constructor.newInstance(world, this.collection, blockpos.getX() + 0.5, blockpos.getY() + 0.0625 + yOffset, blockpos.getZ() + 0.5);
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-          throw new RuntimeException(e);
-        }
+        AbstractMinecartEntity trainPartEntity = this.trainPart.createMinecartEntity(world, blockpos, railshape.isAscending(), this.collection);
         if (itemstack.hasDisplayName()) {
           trainPartEntity.setCustomName(itemstack.getDisplayName());
         }

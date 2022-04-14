@@ -2,10 +2,8 @@
   "required": true,
   "package": "net.darmo_creations.tloz_mod.mixins",
   "compatibilityLevel": "JAVA_8",
-  "refmap": "modid.refmap.json",
   "mixins": [
-  ],
-  "client": [
+    "FurnaceMinecartEntityMixin"
   ],
   "minVersion": "0.8"
 }
