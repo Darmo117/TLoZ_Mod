@@ -13,6 +13,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -67,17 +68,19 @@ public class TrainCollectionMessage implements IPacket<TrainCollectionMessage.Ha
     /**
      * Handles the packet received from the server.
      */
-    public static void handle(TrainCollectionMessage msg, Supplier<NetworkEvent.Context> ctx) {
+    public static void handleClient(TrainCollectionMessage msg, Supplier<NetworkEvent.Context> ctx) {
       NetworkEvent.Context context = ctx.get();
-      context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-            //noinspection ConstantConditions
-            Entity entity = Minecraft.getInstance().world.getEntityByID(msg.minecartID);
-            if (entity instanceof AbstractMinecartEntity) {
-              entity.getCapability(TrainCollectionCapabilityManager.INSTANCE)
-                  .ifPresent(trainCollectionWrapper -> trainCollectionWrapper.setCollection(msg.collection));
+      if (context.getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
+        context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+              //noinspection ConstantConditions
+              Entity entity = Minecraft.getInstance().world.getEntityByID(msg.minecartID);
+              if (entity instanceof AbstractMinecartEntity) {
+                entity.getCapability(TrainCollectionCapabilityManager.INSTANCE)
+                    .ifPresent(trainCollectionWrapper -> trainCollectionWrapper.setCollection(msg.collection));
+              }
             }
-          }
-      ));
+        ));
+      }
       context.setPacketHandled(true);
     }
 

@@ -10,6 +10,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -61,13 +62,15 @@ public class TeleportDataMessage implements IPacket<TeleportDataMessage.Handler>
     /**
      * Handles the packet received from the server.
      */
-    public static void handle(TeleportDataMessage msg, Supplier<NetworkEvent.Context> ctx) {
+    public static void handleClient(TeleportDataMessage msg, Supplier<NetworkEvent.Context> ctx) {
       NetworkEvent.Context context = ctx.get();
-      //noinspection ConstantConditions
-      context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
-          Minecraft.getInstance().player.getCapability(TeleportDataCapabilityManager.INSTANCE)
-              .ifPresent(teleportData -> teleportData.deserializeNBT(msg.data.serializeNBT()))
-      ));
+      if (context.getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
+        //noinspection ConstantConditions
+        context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
+            Minecraft.getInstance().player.getCapability(TeleportDataCapabilityManager.INSTANCE)
+                .ifPresent(teleportData -> teleportData.deserializeNBT(msg.data.serializeNBT()))
+        ));
+      }
       context.setPacketHandled(true);
     }
 

@@ -97,21 +97,21 @@ public class TLoZ {
         TeleportDataMessage.class,
         TeleportDataMessage::writePacketData,
         TeleportDataMessage::new,
-        TeleportDataMessage.Handler::handle
+        TeleportDataMessage.Handler::handleClient
     );
     ModNetworkManager.INSTANCE.registerMessage(
         1,
         TrainCollectionMessage.class,
         TrainCollectionMessage::writePacketData,
         TrainCollectionMessage::new,
-        TrainCollectionMessage.Handler::handle
+        TrainCollectionMessage.Handler::handleClient
     );
     ModNetworkManager.INSTANCE.registerMessage(
         2,
         TrainSpeedMessage.class,
         TrainSpeedMessage::writePacketData,
         TrainSpeedMessage::new,
-        TrainSpeedMessage.Handler::handle
+        TrainSpeedMessage.Handler::handleBothSides
     );
   }
 

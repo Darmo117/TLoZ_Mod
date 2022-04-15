@@ -11,6 +11,8 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -67,7 +69,7 @@ public class TrainSpeedMessage implements IPacket<TrainSpeedMessage.Handler> {
     /**
      * Handles the packet received from the client.
      */
-    public static void handle(TrainSpeedMessage msg, Supplier<NetworkEvent.Context> ctx) {
+    public static void handleBothSides(TrainSpeedMessage msg, Supplier<NetworkEvent.Context> ctx) {
       NetworkEvent.Context context = ctx.get();
       context.enqueueWork(() -> {
         if (context.getDirection() == NetworkDirection.PLAY_TO_SERVER) {
@@ -82,18 +84,20 @@ public class TrainSpeedMessage implements IPacket<TrainSpeedMessage.Handler> {
               System.out.println(direction); // DEBUG
               engine.getCapability(TrainSpeedSettingCapabilityManager.INSTANCE)
                   .ifPresent(trainSpeedSettingWrapper -> trainSpeedSettingWrapper.setSpeedSetting(msg.speedSetting));
-              // TODO check signs
+              // TODO check direction sign
               engine.pushX = Math.cos(engine.rotationYaw) * direction;
               engine.pushZ = Math.cos(engine.rotationYaw) * direction;
             }
           }
         } else if (context.getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
-          //noinspection ConstantConditions
-          Entity entity = Minecraft.getInstance().world.getEntityByID(msg.minecartID);
-          if (entity instanceof FurnaceMinecartEntity) {
-            entity.getCapability(TrainSpeedSettingCapabilityManager.INSTANCE)
-                .ifPresent(trainSpeedSettingWrapper -> trainSpeedSettingWrapper.setSpeedSetting(msg.speedSetting));
-          }
+          DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+            //noinspection ConstantConditions
+            Entity entity = Minecraft.getInstance().world.getEntityByID(msg.minecartID);
+            if (entity instanceof FurnaceMinecartEntity) {
+              entity.getCapability(TrainSpeedSettingCapabilityManager.INSTANCE)
+                  .ifPresent(trainSpeedSettingWrapper -> trainSpeedSettingWrapper.setSpeedSetting(msg.speedSetting));
+            }
+          });
         }
       });
       context.setPacketHandled(true);

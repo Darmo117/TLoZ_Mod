@@ -18,6 +18,7 @@ import org.lwjgl.glfw.GLFW;
 
 @Mod.EventBusSubscriber(modid = TLoZ.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class TrainManager {
+  // TODO display speed setting on HUD when player is inside furnace minecart
   @SubscribeEvent
   public static void onKeyInput(InputEvent.KeyInputEvent event) {
     // Only react to key presses
