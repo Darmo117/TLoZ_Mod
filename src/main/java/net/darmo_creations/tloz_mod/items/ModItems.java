@@ -2,7 +2,7 @@ package net.darmo_creations.tloz_mod.items;
 
 import net.darmo_creations.tloz_mod.TLoZ;
 import net.darmo_creations.tloz_mod.Utils;
-import net.darmo_creations.tloz_mod.entities.TrainCollection;
+import net.darmo_creations.tloz_mod.entities.trains.TrainCollection;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;

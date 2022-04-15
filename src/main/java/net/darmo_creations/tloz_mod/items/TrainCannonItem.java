@@ -1,10 +1,10 @@
 package net.darmo_creations.tloz_mod.items;
 
-import net.darmo_creations.tloz_mod.entities.TrainCollection;
-import net.darmo_creations.tloz_mod.entities.TrainPart;
+import net.darmo_creations.tloz_mod.entities.trains.TrainCollection;
+import net.darmo_creations.tloz_mod.entities.trains.RollingStockType;
 
 public class TrainCannonItem extends TrainPartItem {
   public TrainCannonItem(final TrainCollection collection) {
-    super(TrainPart.CANNON, collection);
+    super(RollingStockType.CANNON, collection);
   }
 }

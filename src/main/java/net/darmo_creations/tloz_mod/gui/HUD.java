@@ -4,15 +4,14 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.darmo_creations.tloz_mod.TLoZ;
 import net.darmo_creations.tloz_mod.Utils;
-import net.darmo_creations.tloz_mod.entities.TrainManager;
-import net.darmo_creations.tloz_mod.entities.TrainSpeedSetting;
+import net.darmo_creations.tloz_mod.entities.trains.TrainEngineEntity;
+import net.darmo_creations.tloz_mod.entities.trains.TrainSpeedSetting;
 import net.darmo_creations.tloz_mod.items.BombBagItem;
 import net.darmo_creations.tloz_mod.items.ModItems;
 import net.darmo_creations.tloz_mod.items.QuiverBowItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.minecart.FurnaceMinecartEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -43,8 +42,8 @@ public class HUD extends AbstractGui {
       return;
     }
     Entity riding = player.getRidingEntity();
-    if (riding instanceof FurnaceMinecartEntity) {
-      this.renderTrainHUD(matrixStack, (FurnaceMinecartEntity) riding);
+    if (riding instanceof TrainEngineEntity) {
+      this.renderTrainHUD(matrixStack, (TrainEngineEntity) riding);
     } else if (!player.isCreative() && !player.isSpectator()) {
       this.renderDefaultHUD(matrixStack, player);
     }
@@ -53,8 +52,8 @@ public class HUD extends AbstractGui {
     RenderSystem.defaultBlendFunc();
   }
 
-  private void renderTrainHUD(MatrixStack matrixStack, final FurnaceMinecartEntity engine) {
-    TrainSpeedSetting speedSetting = TrainManager.getTrainSpeed(engine);
+  private void renderTrainHUD(MatrixStack matrixStack, final TrainEngineEntity engine) {
+    TrainSpeedSetting speedSetting = engine.getSpeedSetting();
     // TODO draw custom texture instead of text
     drawString(matrixStack, this.minecraft.fontRenderer, speedSetting.name(), 10, 10, 0xffffff); // TEMP
   }

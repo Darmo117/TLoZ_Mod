@@ -117,6 +117,11 @@ public final class Utils {
     return entries;
   }
 
+  /**
+   * Handy method that mimics the behavior of Python’s print function.
+   *
+   * @param objects The values to print to the console.
+   */
   public static void print(Object... objects) {
     System.out.println(Arrays.stream(objects).map(Objects::toString).collect(Collectors.joining(" ")));
   }

@@ -3,8 +3,6 @@
   "package": "net.darmo_creations.tloz_mod.mixins",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "AbstractMinecartEntityMixin",
-    "FurnaceMinecartEntityMixin"
   ],
   "minVersion": "0.8"
 }

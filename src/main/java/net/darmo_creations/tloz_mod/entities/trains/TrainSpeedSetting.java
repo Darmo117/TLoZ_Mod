@@ -1,4 +1,4 @@
-package net.darmo_creations.tloz_mod.entities;
+package net.darmo_creations.tloz_mod.entities.trains;
 
 public enum TrainSpeedSetting {
   REVERSE(-1),
@@ -44,5 +44,13 @@ public enum TrainSpeedSetting {
 
   public int getMagnitude() {
     return Math.abs(this.direction);
+  }
+
+  public int getID() {
+    return this.ordinal();
+  }
+
+  public static TrainSpeedSetting fromID(final int id) {
+    return values()[id % values().length];
   }
 }

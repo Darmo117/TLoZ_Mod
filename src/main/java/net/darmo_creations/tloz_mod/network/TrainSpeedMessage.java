@@ -1,18 +1,14 @@
 package net.darmo_creations.tloz_mod.network;
 
-import net.darmo_creations.tloz_mod.entities.TrainSpeedSetting;
-import net.darmo_creations.tloz_mod.entities.capabilities.TrainSpeedSettingCapabilityManager;
-import net.minecraft.client.Minecraft;
+import net.darmo_creations.tloz_mod.entities.trains.TrainEngineEntity;
+import net.darmo_creations.tloz_mod.entities.trains.TrainSpeedSetting;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.minecart.FurnaceMinecartEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -48,13 +44,13 @@ public class TrainSpeedMessage implements IPacket<TrainSpeedMessage.Handler> {
 
   @Override
   public void readPacketData(PacketBuffer buf) {
-    this.speedSetting = TrainSpeedSetting.values()[buf.readShort() % TrainSpeedSetting.values().length];
+    this.speedSetting = TrainSpeedSetting.fromID(buf.readShort());
     this.minecartID = buf.readInt();
   }
 
   @Override
   public void writePacketData(PacketBuffer buf) {
-    buf.writeShort(this.speedSetting.ordinal());
+    buf.writeShort(this.speedSetting.getID());
     buf.writeInt(this.minecartID);
   }
 
@@ -69,33 +65,17 @@ public class TrainSpeedMessage implements IPacket<TrainSpeedMessage.Handler> {
     /**
      * Handles the packet received from the client.
      */
-    public static void handleBothSides(TrainSpeedMessage msg, Supplier<NetworkEvent.Context> ctx) {
+    public static void handleServer(TrainSpeedMessage msg, Supplier<NetworkEvent.Context> ctx) {
       NetworkEvent.Context context = ctx.get();
       context.enqueueWork(() -> {
         if (context.getDirection() == NetworkDirection.PLAY_TO_SERVER) {
           ServerPlayerEntity sender = context.getSender();
           if (sender != null) {
             Entity entity = sender.world.getEntityByID(msg.minecartID);
-            if (entity instanceof FurnaceMinecartEntity) {
-              FurnaceMinecartEntity engine = (FurnaceMinecartEntity) entity;
-              int direction = msg.speedSetting.getDirection();
-              double yaw = Math.toRadians(engine.rotationYaw);
-              engine.pushX = Math.cos(yaw) * direction;
-              engine.pushZ = Math.sin(yaw) * direction;
-              System.out.println("new: " + engine.pushX + " " + engine.pushZ + " " + engine.getEntityId()); // DEBUG
-              engine.getCapability(TrainSpeedSettingCapabilityManager.INSTANCE)
-                  .ifPresent(trainSpeedSettingWrapper -> trainSpeedSettingWrapper.setSpeedSetting(msg.speedSetting));
+            if (entity instanceof TrainEngineEntity) {
+              ((TrainEngineEntity) entity).setSpeedSetting(msg.speedSetting);
             }
           }
-        } else if (context.getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
-          DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-            //noinspection ConstantConditions
-            Entity entity = Minecraft.getInstance().world.getEntityByID(msg.minecartID);
-            if (entity instanceof FurnaceMinecartEntity) {
-              entity.getCapability(TrainSpeedSettingCapabilityManager.INSTANCE)
-                  .ifPresent(trainSpeedSettingWrapper -> trainSpeedSettingWrapper.setSpeedSetting(msg.speedSetting));
-            }
-          });
         }
       });
       context.setPacketHandled(true);

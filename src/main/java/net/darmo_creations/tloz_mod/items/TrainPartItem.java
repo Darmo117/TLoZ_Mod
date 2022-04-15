@@ -1,15 +1,12 @@
 package net.darmo_creations.tloz_mod.items;
 
 import net.darmo_creations.tloz_mod.TLoZ;
-import net.darmo_creations.tloz_mod.entities.TrainCollection;
-import net.darmo_creations.tloz_mod.entities.TrainPart;
-import net.darmo_creations.tloz_mod.network.ModNetworkManager;
-import net.darmo_creations.tloz_mod.network.TrainCollectionMessage;
+import net.darmo_creations.tloz_mod.entities.trains.RollingStockEntity;
+import net.darmo_creations.tloz_mod.entities.trains.RollingStockType;
+import net.darmo_creations.tloz_mod.entities.trains.TrainCollection;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.state.properties.RailShape;
@@ -21,7 +18,6 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.List;
 
@@ -29,12 +25,12 @@ import java.util.List;
  * An item that spawns a minecart entity corresponding to the given train part and collection.
  */
 public abstract class TrainPartItem extends TLoZItem {
-  private final TrainPart trainPart;
+  private final RollingStockType rollingStockType;
   private final TrainCollection collection;
 
-  public TrainPartItem(final TrainPart trainPart, final TrainCollection collection) {
+  public TrainPartItem(final RollingStockType rollingStockType, final TrainCollection collection) {
     super(new Properties().maxStackSize(1).group(TLoZ.CREATIVE_MODE_TAB));
-    this.trainPart = trainPart;
+    this.rollingStockType = rollingStockType;
     this.collection = collection;
   }
 
@@ -55,15 +51,14 @@ public abstract class TrainPartItem extends TLoZItem {
     } else {
       ItemStack itemstack = context.getItem();
       if (!world.isRemote) {
-        RailShape railshape = blockstate.getBlock() instanceof AbstractRailBlock ? ((AbstractRailBlock) blockstate.getBlock()).getRailDirection(blockstate, world, blockpos, null) : RailShape.NORTH_SOUTH;
-        AbstractMinecartEntity trainPartEntity = this.trainPart.createMinecartEntity(world, blockpos, railshape.isAscending(), this.collection);
+        RailShape railshape = blockstate.getBlock() instanceof AbstractRailBlock
+            ? ((AbstractRailBlock) blockstate.getBlock()).getRailDirection(blockstate, world, blockpos, null)
+            : RailShape.NORTH_SOUTH;
+        RollingStockEntity rollingStockEntity = this.rollingStockType.createMinecartEntity(world, blockpos, railshape.isAscending(), this.collection);
         if (itemstack.hasDisplayName()) {
-          trainPartEntity.setCustomName(itemstack.getDisplayName());
+          rollingStockEntity.setCustomName(itemstack.getDisplayName());
         }
-        world.addEntity(trainPartEntity);
-        // Send capability data to client
-        ModNetworkManager.INSTANCE.send(PacketDistributor.PLAYER.with(
-            () -> (ServerPlayerEntity) context.getPlayer()), new TrainCollectionMessage(this.collection, trainPartEntity.getEntityId()));
+        world.addEntity(rollingStockEntity);
       }
       itemstack.shrink(1);
 

@@ -8,9 +8,11 @@ import net.darmo_creations.tloz_mod.entities.ModDataSerializers;
 import net.darmo_creations.tloz_mod.entities.ModEntities;
 import net.darmo_creations.tloz_mod.entities.PickableEntity;
 import net.darmo_creations.tloz_mod.entities.capabilities.TeleportDataCapabilityManager;
-import net.darmo_creations.tloz_mod.entities.capabilities.TrainCollectionCapabilityManager;
-import net.darmo_creations.tloz_mod.entities.capabilities.TrainSpeedSettingCapabilityManager;
 import net.darmo_creations.tloz_mod.entities.renderers.*;
+import net.darmo_creations.tloz_mod.entities.trains.renderers.FreightCarEntityRenderer;
+import net.darmo_creations.tloz_mod.entities.trains.renderers.RailCannonEntityRenderer;
+import net.darmo_creations.tloz_mod.entities.trains.renderers.TrainCoachEntityRenderer;
+import net.darmo_creations.tloz_mod.entities.trains.renderers.TrainEngineEntityRenderer;
 import net.darmo_creations.tloz_mod.gui.HUD;
 import net.darmo_creations.tloz_mod.gui.InventoryGUI;
 import net.darmo_creations.tloz_mod.gui.TeleporterEffectGUI;
@@ -19,7 +21,6 @@ import net.darmo_creations.tloz_mod.items.QuiverItem;
 import net.darmo_creations.tloz_mod.items.SpecialPickableItem;
 import net.darmo_creations.tloz_mod.network.ModNetworkManager;
 import net.darmo_creations.tloz_mod.network.TeleportDataMessage;
-import net.darmo_creations.tloz_mod.network.TrainCollectionMessage;
 import net.darmo_creations.tloz_mod.network.TrainSpeedMessage;
 import net.darmo_creations.tloz_mod.particles.BlueTeleporterParticle;
 import net.darmo_creations.tloz_mod.particles.ModParticles;
@@ -29,7 +30,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.entity.EntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemModelsProperties;
@@ -88,30 +88,19 @@ public class TLoZ {
 
     // Capabilities registration
     TeleportDataCapabilityManager.registerCapabilities();
-    TrainCollectionCapabilityManager.registerCapabilities();
-    TrainSpeedSettingCapabilityManager.registerCapabilities();
 
     // Network
-    ModNetworkManager.INSTANCE.registerMessage(
-        0,
+    ModNetworkManager.registerMessage(
         TeleportDataMessage.class,
         TeleportDataMessage::writePacketData,
         TeleportDataMessage::new,
         TeleportDataMessage.Handler::handleClient
     );
-    ModNetworkManager.INSTANCE.registerMessage(
-        1,
-        TrainCollectionMessage.class,
-        TrainCollectionMessage::writePacketData,
-        TrainCollectionMessage::new,
-        TrainCollectionMessage.Handler::handleClient
-    );
-    ModNetworkManager.INSTANCE.registerMessage(
-        2,
+    ModNetworkManager.registerMessage(
         TrainSpeedMessage.class,
         TrainSpeedMessage::writePacketData,
         TrainSpeedMessage::new,
-        TrainSpeedMessage.Handler::handleBothSides
+        TrainSpeedMessage.Handler::handleServer
     );
   }
 
@@ -124,7 +113,10 @@ public class TLoZ {
     RenderingRegistry.registerEntityRenderingHandler(ModEntities.BOSS_KEY.get(), BossKeyEntityRenderer::new);
     RenderingRegistry.registerEntityRenderingHandler(ModEntities.ARROW.get(), TLoZArrowRenderer::new);
     RenderingRegistry.registerEntityRenderingHandler(ModEntities.WHIRLWIND.get(), WhirlwindEntityRenderer::new);
-    RenderingRegistry.registerEntityRenderingHandler(EntityType.FURNACE_MINECART, FurnaceMinecartEntityRenderer::new);
+    RenderingRegistry.registerEntityRenderingHandler(ModEntities.TRAIN_ENGINE.get(), TrainEngineEntityRenderer::new);
+    RenderingRegistry.registerEntityRenderingHandler(ModEntities.RAIL_CANNON.get(), RailCannonEntityRenderer::new);
+    RenderingRegistry.registerEntityRenderingHandler(ModEntities.TRAIN_COACH.get(), TrainCoachEntityRenderer::new);
+    RenderingRegistry.registerEntityRenderingHandler(ModEntities.FREIGHT_CAR.get(), FreightCarEntityRenderer::new);
     // Tile entity renderers
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.BOMB_BREAKABLE_BLOCK.get(), BombBreakableBlockTileEntityRenderer::new);
     ClientRegistry.bindTileEntityRenderer(ModTileEntities.BOMB_FLOWER.get(), BombFlowerTileEntityRenderer::new);
