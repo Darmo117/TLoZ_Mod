@@ -1,5 +1,9 @@
 package net.darmo_creations.tloz_mod.mixins;
 
+import net.darmo_creations.tloz_mod.entities.TrainSpeedSetting;
+import net.darmo_creations.tloz_mod.entities.capabilities.TrainSpeedSettingCapabilityManager;
+import net.darmo_creations.tloz_mod.network.ModNetworkManager;
+import net.darmo_creations.tloz_mod.network.TrainSpeedMessage;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -11,6 +15,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.PacketDistributor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -64,6 +69,10 @@ public abstract class FurnaceMinecartEntityMixin extends AbstractMinecartEntity 
         this.pushX = 0;
         this.pushZ = 0;
         this.fuel = 0;
+        this.getCapability(TrainSpeedSettingCapabilityManager.INSTANCE)
+            .ifPresent(trainSpeedSettingWrapper -> trainSpeedSettingWrapper.setSpeedSetting(TrainSpeedSetting.IDLE));
+        // Send to clients
+        ModNetworkManager.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new TrainSpeedMessage(TrainSpeedSetting.IDLE, this.getEntityId()));
       }
 
       this.setMinecartPowered(this.fuel > 0);

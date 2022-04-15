@@ -9,6 +9,7 @@ import net.darmo_creations.tloz_mod.entities.ModEntities;
 import net.darmo_creations.tloz_mod.entities.PickableEntity;
 import net.darmo_creations.tloz_mod.entities.capabilities.TeleportDataCapabilityManager;
 import net.darmo_creations.tloz_mod.entities.capabilities.TrainCollectionCapabilityManager;
+import net.darmo_creations.tloz_mod.entities.capabilities.TrainSpeedSettingCapabilityManager;
 import net.darmo_creations.tloz_mod.entities.renderers.*;
 import net.darmo_creations.tloz_mod.gui.HUD;
 import net.darmo_creations.tloz_mod.gui.InventoryGUI;
@@ -17,7 +18,7 @@ import net.darmo_creations.tloz_mod.items.ModItems;
 import net.darmo_creations.tloz_mod.items.QuiverItem;
 import net.darmo_creations.tloz_mod.items.SpecialPickableItem;
 import net.darmo_creations.tloz_mod.network.ModNetworkManager;
-import net.darmo_creations.tloz_mod.network.SetTrainSpeedMessage;
+import net.darmo_creations.tloz_mod.network.TrainSpeedMessage;
 import net.darmo_creations.tloz_mod.network.TeleportDataMessage;
 import net.darmo_creations.tloz_mod.network.TrainCollectionMessage;
 import net.darmo_creations.tloz_mod.particles.BlueTeleporterParticle;
@@ -88,28 +89,29 @@ public class TLoZ {
     // Capabilities registration
     TeleportDataCapabilityManager.registerCapabilities();
     TrainCollectionCapabilityManager.registerCapabilities();
+    TrainSpeedSettingCapabilityManager.registerCapabilities();
 
     // Network
     ModNetworkManager.INSTANCE.registerMessage(
         0,
-        SetTrainSpeedMessage.class,
-        SetTrainSpeedMessage::writePacketData,
-        SetTrainSpeedMessage::new,
-        SetTrainSpeedMessage.Handler::handle
-    );
-    ModNetworkManager.INSTANCE.registerMessage(
-        1,
         TeleportDataMessage.class,
         TeleportDataMessage::writePacketData,
         TeleportDataMessage::new,
         TeleportDataMessage.Handler::handle
     );
     ModNetworkManager.INSTANCE.registerMessage(
-        2,
+        1,
         TrainCollectionMessage.class,
         TrainCollectionMessage::writePacketData,
         TrainCollectionMessage::new,
         TrainCollectionMessage.Handler::handle
+    );
+    ModNetworkManager.INSTANCE.registerMessage(
+        2,
+        TrainSpeedMessage.class,
+        TrainSpeedMessage::writePacketData,
+        TrainSpeedMessage::new,
+        TrainSpeedMessage.Handler::handle
     );
   }
 

@@ -2,8 +2,10 @@ package net.darmo_creations.tloz_mod.entities;
 
 import net.darmo_creations.tloz_mod.ModKeyBindings;
 import net.darmo_creations.tloz_mod.TLoZ;
+import net.darmo_creations.tloz_mod.entities.capabilities.TrainSpeedSettingCapabilityManager;
+import net.darmo_creations.tloz_mod.entities.capabilities.TrainSpeedSettingWrapper;
 import net.darmo_creations.tloz_mod.network.ModNetworkManager;
-import net.darmo_creations.tloz_mod.network.SetTrainSpeedMessage;
+import net.darmo_creations.tloz_mod.network.TrainSpeedMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.minecart.FurnaceMinecartEntity;
@@ -52,17 +54,19 @@ public class TrainManager {
    * Return the speed setting of the given minecart.
    */
   public static TrainSpeedSetting getTrainSpeed(final FurnaceMinecartEntity engine) {
-    int i = engine.getDataManager().get(AdditionalDataParameters.TRAIN_SPEED_SETTING);
-    return TrainSpeedSetting.values()[i % TrainSpeedSetting.values().length];
+    return engine.getCapability(TrainSpeedSettingCapabilityManager.INSTANCE)
+        .orElseGet(TrainSpeedSettingWrapper::new).getSpeedSetting();
   }
 
   /**
-   * Set the speed of the given engine on the server.
+   * Set the speed of the given engine locally the sends an update packet to the server.
    *
    * @param speedSetting The new speed setting.
    * @param engine       The minecart entity.
    */
   public static void setTrainSpeed(final TrainSpeedSetting speedSetting, FurnaceMinecartEntity engine) {
-    ModNetworkManager.INSTANCE.sendToServer(new SetTrainSpeedMessage(speedSetting, engine.getEntityId()));
+    engine.getCapability(TrainSpeedSettingCapabilityManager.INSTANCE)
+        .ifPresent(trainSpeedSettingWrapper -> trainSpeedSettingWrapper.setSpeedSetting(speedSetting));
+    ModNetworkManager.INSTANCE.sendToServer(new TrainSpeedMessage(speedSetting, engine.getEntityId()));
   }
 }

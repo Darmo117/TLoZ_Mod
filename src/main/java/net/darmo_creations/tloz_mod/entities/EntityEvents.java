@@ -36,23 +36,6 @@ public final class EntityEvents {
     }
   }
 
-//  @SubscribeEvent
-//  public static void onEntityConstructing(EntityEvent.EntityConstructing event) {
-//    // Inject additional data parameters into players and minecarts
-//    Entity entity = event.getEntity();
-//    if (entity instanceof FurnaceMinecartEntity) {
-//      register(entity, AdditionalDataParameters.TRAIN_SPEED_SETTING, TrainSpeedSetting.IDLE.ordinal());
-//    }
-//  }
-//
-//  private static <T> void register(Entity entity, DataParameter<T> dataParameter, T defaultValue) {
-//    try {
-//    entity.getDataManager().register(dataParameter, defaultValue);
-//    } catch (IllegalArgumentException e) {
-//      // Parameter is already registered, skip
-//    }
-//  }
-
   public static final double SIZE = 12;
 
   /**
