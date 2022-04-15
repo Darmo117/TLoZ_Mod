@@ -14,6 +14,8 @@ import net.minecraft.util.SoundEvents;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Defines various utility functions.
@@ -113,6 +115,10 @@ public final class Utils {
         })
         .forEach(entries::add);
     return entries;
+  }
+
+  public static void print(Object... objects) {
+    System.out.println(Arrays.stream(objects).map(Objects::toString).collect(Collectors.joining(" ")));
   }
 
   private Utils() {

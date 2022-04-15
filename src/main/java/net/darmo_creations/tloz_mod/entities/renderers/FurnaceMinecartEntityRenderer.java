@@ -21,7 +21,7 @@ public class FurnaceMinecartEntityRenderer extends MinecartRenderer<FurnaceMinec
     if (optTrainCollection.isPresent()) {
       // TODO
       TrainCollection collection = optTrainCollection.orElseGet(TrainCollectionWrapper::new).getCollection();
-      System.out.println("collection: " + collection); // DEBUG
+//      System.out.println("collection: " + collection); // DEBUG
       super.render(entity, entityYaw, partialTicks, matrixStack, buffer, packedLight); // TEMP while no actual render implementation
     } else {
       super.render(entity, entityYaw, partialTicks, matrixStack, buffer, packedLight);

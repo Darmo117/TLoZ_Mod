@@ -39,6 +39,10 @@ public enum TrainSpeedSetting {
   }
 
   public int getDirection() {
-    return this.direction;
+    return (int) Math.signum(this.direction);
+  }
+
+  public int getMagnitude() {
+    return Math.abs(this.direction);
   }
 }

@@ -17,6 +17,7 @@ apply plugin: 'org.spongepowered.mixin'
 group = 'net.darmo_creations'
 version = '1.0'
 
+// Doc: https://docs.spongepowered.org/stable/en/plugin/internals/mixins.html
 mixin {
     add sourceSets.main, 'main.refmap.json'
 }

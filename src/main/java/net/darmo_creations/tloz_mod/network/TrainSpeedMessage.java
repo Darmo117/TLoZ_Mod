@@ -78,15 +78,13 @@ public class TrainSpeedMessage implements IPacket<TrainSpeedMessage.Handler> {
             Entity entity = sender.world.getEntityByID(msg.minecartID);
             if (entity instanceof FurnaceMinecartEntity) {
               FurnaceMinecartEntity engine = (FurnaceMinecartEntity) entity;
-              // yaw = 0 mod 180 -> x
-              // yaw = 0 mod 90 -> z
               int direction = msg.speedSetting.getDirection();
-              System.out.println(direction); // DEBUG
+              double yaw = Math.toRadians(engine.rotationYaw);
+              engine.pushX = Math.cos(yaw) * direction;
+              engine.pushZ = Math.sin(yaw) * direction;
+              System.out.println("new: " + engine.pushX + " " + engine.pushZ + " " + engine.getEntityId()); // DEBUG
               engine.getCapability(TrainSpeedSettingCapabilityManager.INSTANCE)
                   .ifPresent(trainSpeedSettingWrapper -> trainSpeedSettingWrapper.setSpeedSetting(msg.speedSetting));
-              // TODO check direction sign
-              engine.pushX = Math.cos(engine.rotationYaw) * direction;
-              engine.pushZ = Math.cos(engine.rotationYaw) * direction;
             }
           }
         } else if (context.getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
