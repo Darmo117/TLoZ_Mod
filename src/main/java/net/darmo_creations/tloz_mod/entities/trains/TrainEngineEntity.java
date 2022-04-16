@@ -1,5 +1,6 @@
 package net.darmo_creations.tloz_mod.entities.trains;
 
+import net.darmo_creations.tloz_mod.Utils;
 import net.darmo_creations.tloz_mod.entities.ModEntities;
 import net.darmo_creations.tloz_mod.items.ModItems;
 import net.minecraft.block.BlockState;
@@ -15,9 +16,6 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -28,17 +26,28 @@ public class TrainEngineEntity extends RollingStockEntity {
 
   public static final DataParameter<Integer> SPEED_SETTING = EntityDataManager.createKey(TrainEngineEntity.class, DataSerializers.VARINT);
 
-  public static final double DRAG = 0.85;
+  /**
+   * Drag due to rail and air friction.
+   */
+  public static final double FRICTION_DRAG = 0.99;
+  /**
+   * Drag to apply when braking, i.e. when the actual speed is above the desired speed.
+   */
+  public static final double BRAKE_DRAG = 0.97;
+  /**
+   * Quantity to multiply to the desired direction to obtain the base push force.
+   */
+  public static final double BASE_ABS_PUSH_FORCE = 0.01;
+  /**
+   * Amount of speed to multiply to the desired magnitude the desired absolute speed.
+   */
+  public static final double BASE_ABS_SPEED = 0.4;
+  /**
+   * Speed below which the engine should stop.
+   */
+  public static final double STOP_THRESHOLD = 1e-3;
 
   private TrainSpeedSetting speedSetting;
-  /**
-   * Vector representing the orientation of the push vector. Always positive.
-   */
-  private Vector3d pushOrientation;
-  /**
-   * Value representing the direction (+1, 0, or -1) of the push force.
-   */
-  private double pushDirection;
 
   public TrainEngineEntity(EntityType<?> type, World world) {
     super(type, world);
@@ -67,9 +76,6 @@ public class TrainEngineEntity extends RollingStockEntity {
   public void setSpeedSetting(TrainSpeedSetting speedSetting) {
     this.speedSetting = Objects.requireNonNull(speedSetting);
     this.dataManager.set(SPEED_SETTING, speedSetting.getID());
-    this.pushDirection = speedSetting.getDirection();
-    double yaw = Math.toRadians(this.rotationYaw);
-    this.pushOrientation = new Vector3d(Math.cos(yaw), 0, Math.sin(yaw));
   }
 
   // TODO set speed to IDLE when minecart hits block
@@ -91,33 +97,30 @@ public class TrainEngineEntity extends RollingStockEntity {
   }
 
   @Override
-  protected void moveAlongTrack(BlockPos pos, BlockState state) {
-    super.moveAlongTrack(pos, state);
-    Vector3d motion = this.getMotion();
-    double motionMagnitudeSq = horizontalMag(motion);
-    double pushMagnitudeSq = horizontalMag(this.pushOrientation);
-    if (pushMagnitudeSq > 1e-4 && motionMagnitudeSq > 0.001) {
-      double motionMagnitude = MathHelper.sqrt(motionMagnitudeSq);
-      double pushMagnitude = MathHelper.sqrt(pushMagnitudeSq);
-      // Update orientation to account for rail corners
-      this.pushOrientation = motion.scale(pushMagnitude / motionMagnitude);
-    }
-  }
-
-  // TODO add inertia to direction changes
-  @Override
   protected void applyDrag() {
-    double pushMagnitudeSq = horizontalMag(this.pushOrientation);
-    if (pushMagnitudeSq > 1e-7) {
-      double pushMagnitude = MathHelper.sqrt(pushMagnitudeSq);
-      double speedCoefficient = this.speedSetting.getMagnitude() / 20.0;
-      this.pushOrientation = this.pushOrientation.scale(speedCoefficient / pushMagnitude);
-      // Apply push direction to vector
-      Vector3d force = new Vector3d(Math.abs(this.pushOrientation.x) * this.pushDirection, 0, Math.abs(this.pushOrientation.z) * this.pushDirection);
-      this.setMotion(this.getMotion().mul(DRAG, 0, DRAG).add(force));
-    } else {
-      this.setMotion(this.getMotion().mul(DRAG, 0, DRAG));
+    double motionX = this.getMotion().getX() * FRICTION_DRAG;
+    double motionZ = this.getMotion().getZ() * FRICTION_DRAG;
+    double force = BASE_ABS_PUSH_FORCE * this.speedSetting.getDirection();
+    double yaw = Math.toRadians(this.rotationYaw);
+    motionX += Math.cos(yaw) * force;
+    motionZ += Math.sin(yaw) * force;
+    double targetAbsoluteSpeed = BASE_ABS_SPEED * this.speedSetting.getMagnitude();
+    // We’re going above the desired speed, brake
+    if (Math.abs(motionX) > targetAbsoluteSpeed) {
+      motionX *= BRAKE_DRAG;
     }
+    if (Math.abs(motionZ) > targetAbsoluteSpeed) {
+      motionZ *= BRAKE_DRAG;
+    }
+    // We’re going too slow, stop
+    if (Math.abs(motionX) < STOP_THRESHOLD) {
+      motionX = 0;
+    }
+    if (Math.abs(motionZ) < STOP_THRESHOLD) {
+      motionZ = 0;
+    }
+    this.setMotion(motionX, 0, motionZ);
+    Utils.print("motion:", this.getMotion()); // DEBUG
   }
 
   @Override
